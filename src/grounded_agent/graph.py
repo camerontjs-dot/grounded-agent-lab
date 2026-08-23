@@ -23,8 +23,8 @@ from grounded_agent.models import (
     RouteDecision,
 )
 from grounded_agent.receipt import build_receipt
-from grounded_agent.retrieve import retrieve
 from grounded_agent.router import route_intent
+from grounded_agent.tools import retrieve_traced
 
 ReviewDecision = Literal["approve", "reject"]
 
@@ -38,6 +38,8 @@ class ResearchGraphState(TypedDict):
     evidence: NotRequired[dict[str, Any]]
     answer: NotRequired[dict[str, Any]]
     review_decision: NotRequired[ReviewDecision]
+    tools_used: NotRequired[list[str]]
+    tool_errors: NotRequired[list[str]]
     receipt: NotRequired[dict[str, Any]]
 
 
@@ -53,7 +55,12 @@ def _route(state: ResearchGraphState) -> dict[str, Any]:
 def _retrieve(state: ResearchGraphState) -> dict[str, Any]:
     request = ResearchRequest.model_validate(state["request"])
     route = RouteDecision.model_validate(state["route"])
-    return {"evidence": _json(retrieve(request, route))}
+    trace = retrieve_traced(request, route)
+    return {
+        "evidence": _json(trace.bundle),
+        "tools_used": list(trace.tools_used),
+        "tool_errors": list(trace.tool_errors),
+    }
 
 
 def _draft(state: ResearchGraphState) -> dict[str, Any]:
@@ -92,7 +99,13 @@ def _emit_receipt(state: ResearchGraphState) -> dict[str, Any]:
             text="Refused: reviewer rejected the draft.",
             abstain_reason="review_rejected",
         )
-    receipt = build_receipt(request, route, answer)
+    receipt = build_receipt(
+        request,
+        route,
+        answer,
+        tools_used=tuple(state.get("tools_used") or ()),
+        tool_errors=tuple(state.get("tool_errors") or ()),
+    )
     payload: dict[str, Any] = {"receipt": _json(receipt)}
     if state.get("review_decision") == "reject":
         payload["answer"] = _json(answer)

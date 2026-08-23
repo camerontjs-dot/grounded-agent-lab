@@ -12,3 +12,7 @@ warnings.filterwarnings(
     "ignore",
     message="The default value of `allowed_objects` will change",
 )
+warnings.filterwarnings(
+    "ignore",
+    message="Field 'lifespan' has an incomplete definition",
+)

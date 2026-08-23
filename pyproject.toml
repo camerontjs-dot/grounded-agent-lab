@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grounded-agent-lab"
-version = "0.2.0"
+version = "0.3.0"
 description = "Grounded research agent: framework-free baseline plus a LangGraph wrap with trust-separated retrieval, abstention, and redacted receipts."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -26,6 +26,7 @@ classifiers = [
 dependencies = [
     "pydantic>=2.6,<3",
     "langgraph>=0.6,<0.7",
+    "mcp>=1.0,<2",
 ]
 
 [project.optional-dependencies]
@@ -44,6 +45,7 @@ where = ["src"]
 testpaths = ["tests"]
 filterwarnings = [
     "ignore:The default value of `allowed_objects` will change:PendingDeprecationWarning",
+    "ignore:Field 'lifespan' has an incomplete definition",
 ]
 
 [tool.ruff]

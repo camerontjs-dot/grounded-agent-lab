@@ -1,6 +1,6 @@
 """Framework-free grounded research agent."""
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 from grounded_agent.graph import run_research_graph
 from grounded_agent.models import (

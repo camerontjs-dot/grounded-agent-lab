@@ -55,7 +55,9 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.write("\ncitations:\n")
         for citation in result.answer.citations:
             sys.stdout.write(f"- {citation.trust_profile}: {citation.source_path}\n")
-    sys.stdout.write(f"\nreceipt_hash: {result.receipt.receipt_hash}\n")
+    if result.receipt.tools_used:
+        sys.stdout.write(f"tools_used: {', '.join(result.receipt.tools_used)}\n")
+    sys.stdout.write(f"receipt_hash: {result.receipt.receipt_hash}\n")
     return 0
 
 
