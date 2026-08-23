@@ -2,6 +2,16 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-008: Extractive stays default; Ollama and hosted fail closed (2026-08-23)
+
+**Decision:** Keep the extractive drafter as the default. Put Ollama and an OpenAI-compatible hosted adapter behind a typed provider boundary. Missing daemon, missing model, or missing credentials is an error, not a silent fallback. Model JSON is schema-checked. Invented citation paths abstain.
+
+**Rejected:** Making Ollama the CI default. Vendor SDKs as the portable layer. Running Temporal, Airflow, Prefect, or n8n as a phase gate.
+
+**Reason:** The skill is a provider-neutral call with validated I/O. A green CI run that required a local GPU would be a lie. Mapping a durable workflow engine is a different skill from deploying one.
+
+**Consequence:** `grounded-agent ask --provider ollama` exits 2 when the daemon or model is missing. Hosted needs `GROUNDED_AGENT_HOSTED_URL`, `GROUNDED_AGENT_HOSTED_API_KEY`, and `GROUNDED_AGENT_HOSTED_MODEL`. Receipts record `provider`. The workflow note is conceptual. I am not claiming I used OpenAI, Anthropic, Temporal, or n8n.
+
 ## ADR-007: Retrieved content cannot grant tools, and traces stay redacted (2026-08-23)
 
 **Decision:** Scan citable evidence for the same injection markers as the question. Redact planted fixture secrets in copied sentences. Emit stage traces with paths and hashes only. Freeze the Harbor MCP server so `add_tool` cannot register writes. Review approve/reject still cannot widen the allowlist.

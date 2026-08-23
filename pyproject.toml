@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grounded-agent-lab"
-version = "0.5.0"
-description = "Research agent that cites Harbor notes or abstains. Typed state, labelled retrieval, read-only MCP tools, LangGraph wrap, fixture shootout."
+version = "0.6.0"
+description = "Research agent that cites Harbor notes or abstains. Typed state, labelled retrieval, read-only MCP tools, LangGraph wrap, fail-closed model providers."
 readme = "README.md"
 requires-python = ">=3.11"
 keywords = ["agents", "rag", "retrieval", "evaluation", "provenance"]

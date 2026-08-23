@@ -91,4 +91,5 @@ def test_receipt_serialization_has_no_snippet_field() -> None:
     dumped = receipt.model_dump()
     assert "snippet" not in dumped
     assert dumped["content_redacted"] is True
+    assert dumped["provider"] == "extractive"
     assert receipt.model_dump_json().count("snippet") == 0

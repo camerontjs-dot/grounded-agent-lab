@@ -11,6 +11,7 @@ from pathlib import Path
 from grounded_agent.models import ResearchRequest
 from grounded_agent.paths import REPORTS_DIR
 from grounded_agent.pipeline import run_research
+from grounded_agent.provider import PROVIDER_NAMES, ProviderUnavailable, build_provider
 from grounded_agent.shootout import write_shootout
 
 
@@ -33,6 +34,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--trace",
         default="",
         help="Write a redacted stage JSONL trace to this path",
+    )
+    ask.add_argument(
+        "--provider",
+        choices=PROVIDER_NAMES,
+        default="extractive",
+        help="extractive needs no model; ollama and hosted fail closed if missing",
     )
     shoot = sub.add_parser("shootout", help="Run the Harbor retrieval comparison")
     shoot.add_argument(
@@ -61,21 +68,28 @@ def main(argv: list[str] | None = None) -> int:
         from grounded_agent.trace import MemoryTracer
 
         tracer = MemoryTracer()
-    if args.runtime == "graph":
-        from grounded_agent.graph import run_research_graph
-        from grounded_agent.trace import trace_result
+    try:
+        provider = build_provider(args.provider)
+        provider.ensure()
+        if args.runtime == "graph":
+            from grounded_agent.graph import run_research_graph
+            from grounded_agent.trace import trace_result
 
-        result = run_research_graph(request)
-        if tracer is not None:
-            trace_result(tracer, result)
-    else:
-        result = run_research(request, tracer=tracer)
+            result = run_research_graph(request, provider=provider)
+            if tracer is not None:
+                trace_result(tracer, result)
+        else:
+            result = run_research(request, tracer=tracer, provider=provider)
+    except ProviderUnavailable as exc:
+        sys.stderr.write(f"provider unavailable: {exc}\n")
+        return 2
     if tracer is not None and args.trace:
         tracer.dump_jsonl(Path(args.trace))
     if args.json:
         payload = {
             "outcome": result.answer.outcome,
             "intent": result.route.intent,
+            "provider": result.receipt.provider,
             "text": result.answer.text,
             "citations": [citation.model_dump() for citation in result.answer.citations],
             "receipt": result.receipt.model_dump(),
@@ -84,6 +98,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     sys.stdout.write(f"outcome: {result.answer.outcome}\n")
     sys.stdout.write(f"intent: {result.route.intent}\n")
+    sys.stdout.write(f"provider: {result.receipt.provider}\n")
     if result.answer.abstain_reason:
         sys.stdout.write(f"abstain_reason: {result.answer.abstain_reason}\n")
     sys.stdout.write(f"\n{result.answer.text}\n")

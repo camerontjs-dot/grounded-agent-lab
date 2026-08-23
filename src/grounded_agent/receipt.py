@@ -21,6 +21,7 @@ def build_receipt(
     *,
     tools_used: tuple[str, ...] = (),
     tool_errors: tuple[str, ...] = (),
+    provider: str = "extractive",
 ) -> Receipt:
     citation_paths = tuple(citation.source_path for citation in answer.citations)
     trust_profiles = tuple(dict.fromkeys(citation.trust_profile for citation in answer.citations))
@@ -34,6 +35,7 @@ def build_receipt(
         "abstain_reason": answer.abstain_reason,
         "tools_used": list(tools_used),
         "tool_errors": list(tool_errors),
+        "provider": provider,
         "content_redacted": True,
     }
     receipt = Receipt(
@@ -46,6 +48,7 @@ def build_receipt(
         abstain_reason=answer.abstain_reason,
         tools_used=tools_used,
         tool_errors=tool_errors,
+        provider=provider,
         content_redacted=True,
         receipt_hash=_digest(payload),
     )

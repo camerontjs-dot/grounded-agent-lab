@@ -127,6 +127,7 @@ class Receipt(FrozenModel):
     abstain_reason: str | None = None
     tools_used: tuple[str, ...] = ()
     tool_errors: tuple[str, ...] = ()
+    provider: NonBlankStr = "extractive"
     content_redacted: Literal[True] = True
     receipt_hash: NonBlankStr
 
