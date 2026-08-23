@@ -13,6 +13,15 @@ This agent answers from cited Harbor notes, or it abstains. I built it to show t
 
 The hard part is not attaching sources. The hard part is refusing to speak when those sources do not warrant the claim.
 
+```text
+question
+  -> route (knowledge | project | federated)
+  -> retrieve (query_knowledge / query_projects only)
+  -> draft or abstain (extractive default)
+  -> optional review interrupt
+  -> redacted receipt
+```
+
 **If you are evaluating this:** install, run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). 66 tests on Python 3.11-3.13 (CI badge above). The demo exits non-zero if an expected refusal does not hold.
 
 ## Install

@@ -32,7 +32,7 @@ Federated questions query both indexes. They never return one unlabelled list. T
 
 Ollama and hosted sit behind `--provider`. They are not in the default path.
 
-The Harbor MCP server exports the same two read-only tools. Live MindGraph is a fail-closed adapter and is not enabled in CI.
+The Harbor MCP server exports the same two read-only tools. Handlers are synchronous FastMCP functions. I did not wire asyncio, Celery, or Temporal here. The allowlist, schema, and timeout are the contract I would keep if retrieve moved onto async handlers or a worker so a one-thread pool does not starve under concurrent MCP calls. Live MindGraph is a fail-closed adapter and is not enabled in CI.
 
 Temporal, Airflow, Prefect, and n8n are a mapping note, not boxes in this graph. See [`workflow-portability.md`](workflow-portability.md).
 
