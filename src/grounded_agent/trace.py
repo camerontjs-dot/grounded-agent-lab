@@ -56,6 +56,7 @@ def trace_result(tracer: MemoryTracer, result: ResearchResult) -> None:
         outcome=result.answer.outcome,
         abstain_reason=result.answer.abstain_reason,
         citation_paths=[citation.source_path for citation in result.answer.citations],
+        provider=result.receipt.provider,
     )
     tracer.emit(
         "receipt",

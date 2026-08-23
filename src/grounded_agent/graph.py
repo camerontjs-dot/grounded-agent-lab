@@ -13,7 +13,6 @@ from typing import Any, Literal, NotRequired, TypedDict
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command, interrupt
 
-from grounded_agent.draft import draft_or_abstain
 from grounded_agent.models import (
     Answer,
     EvidenceBundle,
@@ -22,6 +21,7 @@ from grounded_agent.models import (
     ResearchResult,
     RouteDecision,
 )
+from grounded_agent.provider import DraftProvider, ExtractiveProvider, guarded_draft
 from grounded_agent.receipt import build_receipt
 from grounded_agent.router import route_intent
 from grounded_agent.tools import retrieve_traced
@@ -40,6 +40,7 @@ class ResearchGraphState(TypedDict):
     review_decision: NotRequired[ReviewDecision]
     tools_used: NotRequired[list[str]]
     tool_errors: NotRequired[list[str]]
+    provider: NotRequired[str]
     receipt: NotRequired[dict[str, Any]]
 
 
@@ -63,10 +64,14 @@ def _retrieve(state: ResearchGraphState) -> dict[str, Any]:
     }
 
 
-def _draft(state: ResearchGraphState) -> dict[str, Any]:
-    request = ResearchRequest.model_validate(state["request"])
-    evidence = EvidenceBundle.model_validate(state["evidence"])
-    return {"answer": _json(draft_or_abstain(request, evidence))}
+def _draft_with(provider: DraftProvider):
+    def _draft(state: ResearchGraphState) -> dict[str, Any]:
+        request = ResearchRequest.model_validate(state["request"])
+        evidence = EvidenceBundle.model_validate(state["evidence"])
+        answer = guarded_draft(provider, request, evidence)
+        return {"answer": _json(answer), "provider": provider.name}
+
+    return _draft
 
 
 def _review(state: ResearchGraphState) -> dict[str, Any]:
@@ -105,6 +110,7 @@ def _emit_receipt(state: ResearchGraphState) -> dict[str, Any]:
         answer,
         tools_used=tuple(state.get("tools_used") or ()),
         tool_errors=tuple(state.get("tool_errors") or ()),
+        provider=str(state.get("provider") or "extractive"),
     )
     payload: dict[str, Any] = {"receipt": _json(receipt)}
     if state.get("review_decision") == "reject":
@@ -112,11 +118,14 @@ def _emit_receipt(state: ResearchGraphState) -> dict[str, Any]:
     return payload
 
 
-def compile_research_graph(*, checkpointer: Any | None = None) -> Any:
+def compile_research_graph(
+    *, checkpointer: Any | None = None, provider: DraftProvider | None = None
+) -> Any:
+    drafter = provider if provider is not None else ExtractiveProvider()
     builder = StateGraph(ResearchGraphState)
     builder.add_node("route", _route)
     builder.add_node("retrieve", _retrieve)
-    builder.add_node("draft", _draft)
+    builder.add_node("draft", _draft_with(drafter))
     builder.add_node("review", _review)
     builder.add_node("emit_receipt", _emit_receipt)
     builder.add_edge(START, "route")
@@ -138,10 +147,12 @@ def result_from_state(state: ResearchGraphState) -> ResearchResult:
     )
 
 
-def run_research_graph(request: ResearchRequest) -> ResearchResult:
+def run_research_graph(
+    request: ResearchRequest, *, provider: DraftProvider | None = None
+) -> ResearchResult:
     """End-to-end graph run with no human review. Must match `run_research`."""
 
-    graph = compile_research_graph()
+    graph = compile_research_graph(provider=provider)
     state = graph.invoke({"request": _json(request), "require_review": False})
     return result_from_state(state)
 
@@ -154,10 +165,11 @@ def start_reviewed_run(
     request: ResearchRequest,
     *,
     checkpointer: Any,
+    provider: DraftProvider | None = None,
 ) -> Any:
     """Run until the review interrupt. No receipt is written yet."""
 
-    graph = compile_research_graph(checkpointer=checkpointer)
+    graph = compile_research_graph(checkpointer=checkpointer, provider=provider)
     config = thread_config(request.request_id)
     graph.invoke(
         {"request": _json(request), "require_review": True},

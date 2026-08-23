@@ -51,6 +51,7 @@ def test_receipt_omits_question_snippets_and_is_stable() -> None:
         result.answer,
         tools_used=result.receipt.tools_used,
         tool_errors=result.receipt.tool_errors,
+        provider=result.receipt.provider,
     )
     assert again.receipt_hash == result.receipt.receipt_hash
 
