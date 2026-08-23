@@ -2,6 +2,14 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-005 — Dual-index tools are allowlisted and read-only (2026-08-23)
+
+**Decision:** Retrieval goes through two named tools, `query_knowledge` and `query_projects`. The allowlist, Pydantic argument schema, timeout, and write-name denylist sit in front of both the in-process client and the Harbor MCP server. Live MindGraph is a fail-closed optional adapter that does not run in CI.
+
+**Reason:** MCP standardizes an interface; it does not make a tool safe. The skill to demonstrate is least privilege, schema validation, and labelled scopes — not connecting every connector.
+
+**Consequence:** Unknown tools, write-shaped names, extra fields, and over-budget calls fail closed. Receipts record tool names and errors, never snippets. Scope `both` is not a tool.
+
 ## ADR-004 — LangGraph wraps the baseline; it does not replace it (2026-08-23)
 
 **Decision:** Add a LangGraph `StateGraph` whose nodes call the same route/retrieve/draft/receipt functions as the framework-free loop. Fixture decisions must match. Optional checkpointed review can pause before a receipt is written and resume with `approve` or `reject`.

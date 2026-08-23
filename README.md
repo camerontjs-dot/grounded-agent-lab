@@ -4,7 +4,7 @@
 
 A small, testable research agent that answers only from cited evidence and abstains when the evidence is weak.
 
-This is a portfolio lab for AI engineering primitives: typed state, trust-separated retrieval, citations, abstention, and redacted run receipts. It is not a catalogue of vendor logos. A framework-free baseline is the source of behavior. LangGraph wraps that same loop so a reviewer can see what the framework adds (explicit nodes, checkpoint, resume) versus what it does not.
+This is a portfolio lab for AI engineering primitives: typed state, trust-separated retrieval, citations, abstention, redacted run receipts, and read-only tool boundaries. It is not a catalogue of vendor logos. A framework-free baseline is the source of behavior. LangGraph wraps that same loop. Retrieval is two allowlisted tools (`query_knowledge`, `query_projects`), also exported as a local MCP server.
 
 **If you are evaluating this:** clone, install, run the fixture question below, then open the matching test. The interesting cases are the ones that *refuse* — missing evidence and instruction-injection.
 
@@ -42,19 +42,20 @@ Abstention demo:
 | Redacted receipts | hash over metadata; snippets and prompts omitted |
 | LangGraph wrap | `src/grounded_agent/graph.py` — same fixture decisions as the baseline |
 | Checkpoint / resume | review interrupt before the receipt; approve or reject; one hash per thread |
+| Read-only tools / MCP | only `query_knowledge` and `query_projects`; writes, extra args, and timeouts fail closed |
 | Git hygiene | feature-branch PRs, CI, leak guards |
 
 ## What this is not
 
-- Not a live connection to anyone's private knowledge base. Tests use the synthetic Harbor fixture corpus.
+- Not a live connection to anyone's private knowledge base. Tests use the synthetic Harbor fixture corpus. A live MindGraph URL is fail-closed unless configured, and CI never requires it.
 - Not proof that a retrieved passage is true. Retrieval nominates; the pipeline cites or abstains.
 - Not production security. Injection coverage is a fixture, not a threat model.
 
 ## Layout
 
 ```text
-src/grounded_agent/   typed pipeline and LangGraph wrap
-tests/                fixture suite plus graph equivalence and checkpoint tests
+src/grounded_agent/   typed pipeline, LangGraph wrap, tool boundary, MCP server
+tests/                fixture suite, graph equivalence, checkpoint, tools, MCP
 fixtures/             synthetic two-index corpus + labelled questions
 DECISIONS.md          architecture tradeoffs
 ```
