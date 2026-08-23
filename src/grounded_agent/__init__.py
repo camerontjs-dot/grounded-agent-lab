@@ -9,8 +9,10 @@ from grounded_agent.models import (
     EvidenceItem,
     Receipt,
     ResearchRequest,
+    ResearchResult,
     RouteDecision,
 )
+from grounded_agent.pipeline import run_research
 
 __all__ = [
     "__version__",
@@ -20,5 +22,7 @@ __all__ = [
     "EvidenceItem",
     "Receipt",
     "ResearchRequest",
+    "ResearchResult",
     "RouteDecision",
+    "run_research",
 ]
