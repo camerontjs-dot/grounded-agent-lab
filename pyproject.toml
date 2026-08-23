@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grounded-agent-lab"
-version = "0.4.0"
+version = "0.5.0"
 description = "Research agent that cites Harbor notes or abstains. Typed state, labelled retrieval, read-only MCP tools, LangGraph wrap, fixture shootout."
 readme = "README.md"
 requires-python = ">=3.11"

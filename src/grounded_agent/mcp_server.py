@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
-from grounded_agent.tools import FixtureToolClient, ToolObservation
+from grounded_agent.tools import FixtureToolClient, ToolDenied, ToolObservation
 
 SERVER_NAME = "harbor-retrieval"
 
@@ -35,4 +35,8 @@ def build_harbor_mcp(client: FixtureToolClient | None = None) -> FastMCP:
     def query_projects(question: str) -> dict:
         return _dump(backend.invoke("query_projects", {"question": question}))
 
+    def _frozen_add_tool(*args: object, **kwargs: object) -> None:
+        raise ToolDenied("harbor MCP server is frozen; write tools cannot be added")
+
+    server.add_tool = _frozen_add_tool  # type: ignore[method-assign]
     return server
