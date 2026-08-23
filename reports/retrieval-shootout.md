@@ -8,16 +8,17 @@ top_k=3. Methods: lexical, hashed_vector, graph_expand.
 
 | method | n | macro recall | macro precision | abstain ok | mean latency ms |
 |---|---:|---:|---:|---:|---:|
-| lexical | 5 | 0.8 | 0.5333 | 1/1 | 0.485 |
-| hashed_vector | 5 | 0.6 | 0.3 | 0/1 | 0.135 |
-| graph_expand | 5 | 0.8 | 0.3667 | 0/1 | 0.052 |
+| lexical | 5 | 0.8 | 0.5333 | 1/1 | 0.069 |
+| hashed_vector | 5 | 0.5 | 0.2333 | 0/1 | 0.159 |
+| graph_expand | 5 | 0.8 | 0.3667 | 0/1 | 0.065 |
 
 ## Inspected failures
 
 - `lexical` / `g-graph-hop`: got `knowledge/receipt-redaction.md`; gold was `knowledge/neighbor-only.md`
-- `hashed_vector` / `g-graph-hop`: got `knowledge/receipt-redaction.md`, `knowledge/nomination-not-proof.md`; gold was `knowledge/neighbor-only.md`
-- `hashed_vector` / `g-insufficient`: got `knowledge/receipt-redaction.md`; gold was (none)
-- `graph_expand` / `g-insufficient`: got `knowledge/nomination-not-proof.md`, `knowledge/receipt-redaction.md`, `knowledge/trust-labels.md`; gold was (none)
+- `hashed_vector` / `g-federated`: got `projects/lantern-agent.md`, `projects/atlas-search.md`, `knowledge/operator-contact.md`; gold was `knowledge/trust-labels.md`, `projects/lantern-agent.md`
+- `hashed_vector` / `g-graph-hop`: got `knowledge/receipt-redaction.md`, `knowledge/operator-contact.md`, `knowledge/nomination-not-proof.md`; gold was `knowledge/neighbor-only.md`
+- `hashed_vector` / `g-insufficient`: got `knowledge/operator-contact.md`, `knowledge/receipt-redaction.md`; gold was (none)
+- `graph_expand` / `g-insufficient`: got `knowledge/nomination-not-proof.md`, `knowledge/operator-contact.md`, `knowledge/receipt-redaction.md`; gold was (none)
 
 ## Limitations
 
