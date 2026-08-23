@@ -1,6 +1,7 @@
 # Grounded Agent Lab
 
 [![CI](https://github.com/camerontjs-dot/grounded-agent-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/camerontjs-dot/grounded-agent-lab/actions/workflows/ci.yml)
+· [Install](#install)
 · [Demo](#try-it)
 · [Architecture](docs/architecture.md)
 · [Case study](docs/case-study.md)
@@ -12,16 +13,27 @@ This agent answers from cited Harbor notes, or it abstains. I built it to show t
 
 The hard part is not attaching sources. The hard part is refusing to speak when those sources do not warrant the claim.
 
-**If you are evaluating this:** run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). 66 tests on Python 3.11-3.13 (CI badge above). The demo exits non-zero if an expected refusal does not hold.
+**If you are evaluating this:** install, run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). 66 tests on Python 3.11-3.13 (CI badge above). The demo exits non-zero if an expected refusal does not hold.
 
-## Try it
+## Install
+
+Python 3.11 or newer. No API key. Default retrieval is the Harbor fixture notes in this repo, not a live knowledge graph.
 
 ```bash
+git clone https://github.com/camerontjs-dot/grounded-agent-lab.git
+cd grounded-agent-lab
 python3.11 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 .venv/bin/ruff check .
 .venv/bin/python -m pytest -q
 .venv/bin/grounded-agent demo
+```
+
+`demo` should print `7/7 passed`. That is the clone-and-run gate. Optional extras: `pip install -e ".[embeddings]"` for Sentence Transformers (fail-closed if missing), and `--provider ollama` or `--provider hosted` as below.
+
+## Try it
+
+```bash
 .venv/bin/grounded-agent ask \
   "What must Harbor do when combining retrieval results from different indexes?"
 .venv/bin/grounded-agent ask --runtime graph \
