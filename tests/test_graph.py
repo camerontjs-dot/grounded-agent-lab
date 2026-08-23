@@ -26,6 +26,8 @@ def _decision(result) -> tuple:
         result.receipt.outcome,
         result.receipt.citation_paths,
         result.receipt.abstain_reason,
+        result.receipt.tools_used,
+        result.receipt.tool_errors,
         result.receipt.receipt_hash,
         result.receipt.content_redacted,
     )

@@ -125,6 +125,8 @@ class Receipt(FrozenModel):
     citation_paths: tuple[str, ...] = ()
     trust_profiles_used: tuple[TrustProfile, ...] = ()
     abstain_reason: str | None = None
+    tools_used: tuple[str, ...] = ()
+    tool_errors: tuple[str, ...] = ()
     content_redacted: Literal[True] = True
     receipt_hash: NonBlankStr
 

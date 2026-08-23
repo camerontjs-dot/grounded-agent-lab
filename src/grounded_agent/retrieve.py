@@ -131,17 +131,16 @@ def _search(notes: tuple[FixtureNote, ...], question: str) -> tuple[EvidenceItem
     return tuple(item for item in ranked if item.citation_class != "excluded")
 
 
+def search_corpus(question: str, trust_profile: TrustProfile) -> tuple[EvidenceItem, ...]:
+    directory = KNOWLEDGE_CORPUS if trust_profile == "durable_knowledge" else PROJECT_CORPUS
+    return _search(load_corpus(directory, trust_profile), question)
+
+
 def retrieve(request: ResearchRequest, route: RouteDecision) -> EvidenceBundle:
     knowledge_items: tuple[EvidenceItem, ...] = ()
     project_items: tuple[EvidenceItem, ...] = ()
     if "durable_knowledge" in route.scopes:
-        knowledge_items = _search(
-            load_corpus(KNOWLEDGE_CORPUS, "durable_knowledge"),
-            request.question,
-        )
+        knowledge_items = search_corpus(request.question, "durable_knowledge")
     if "project_status" in route.scopes:
-        project_items = _search(
-            load_corpus(PROJECT_CORPUS, "project_status"),
-            request.question,
-        )
+        project_items = search_corpus(request.question, "project_status")
     return EvidenceBundle(knowledge=knowledge_items, project=project_items)

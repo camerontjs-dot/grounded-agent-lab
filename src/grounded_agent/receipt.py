@@ -13,7 +13,14 @@ def _digest(payload: dict[str, object]) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
-def build_receipt(request: ResearchRequest, route: RouteDecision, answer: Answer) -> Receipt:
+def build_receipt(
+    request: ResearchRequest,
+    route: RouteDecision,
+    answer: Answer,
+    *,
+    tools_used: tuple[str, ...] = (),
+    tool_errors: tuple[str, ...] = (),
+) -> Receipt:
     citation_paths = tuple(citation.source_path for citation in answer.citations)
     trust_profiles = tuple(dict.fromkeys(citation.trust_profile for citation in answer.citations))
     payload = {
@@ -24,6 +31,8 @@ def build_receipt(request: ResearchRequest, route: RouteDecision, answer: Answer
         "citation_paths": list(citation_paths),
         "trust_profiles_used": list(trust_profiles),
         "abstain_reason": answer.abstain_reason,
+        "tools_used": list(tools_used),
+        "tool_errors": list(tool_errors),
         "content_redacted": True,
     }
     receipt = Receipt(
@@ -34,6 +43,8 @@ def build_receipt(request: ResearchRequest, route: RouteDecision, answer: Answer
         citation_paths=citation_paths,
         trust_profiles_used=trust_profiles,
         abstain_reason=answer.abstain_reason,
+        tools_used=tools_used,
+        tool_errors=tool_errors,
         content_redacted=True,
         receipt_hash=_digest(payload),
     )

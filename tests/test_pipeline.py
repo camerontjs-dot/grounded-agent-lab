@@ -45,7 +45,13 @@ def test_receipt_omits_question_snippets_and_is_stable() -> None:
     assert "snippet" not in serialized
     for item in result.evidence.knowledge:
         assert item.snippet not in serialized
-    again = build_receipt(request, result.route, result.answer)
+    again = build_receipt(
+        request,
+        result.route,
+        result.answer,
+        tools_used=result.receipt.tools_used,
+        tool_errors=result.receipt.tool_errors,
+    )
     assert again.receipt_hash == result.receipt.receipt_hash
 
 
