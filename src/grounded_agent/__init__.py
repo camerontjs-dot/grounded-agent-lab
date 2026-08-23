@@ -1,7 +1,8 @@
 """Framework-free grounded research agent."""
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
+from grounded_agent.graph import run_research_graph
 from grounded_agent.models import (
     Answer,
     Citation,
@@ -25,4 +26,5 @@ __all__ = [
     "ResearchResult",
     "RouteDecision",
     "run_research",
+    "run_research_graph",
 ]

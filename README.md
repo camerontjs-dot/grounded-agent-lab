@@ -4,7 +4,7 @@
 
 A small, testable research agent that answers only from cited evidence and abstains when the evidence is weak.
 
-This is a portfolio lab for AI engineering primitives: typed state, trust-separated retrieval, citations, abstention, and redacted run receipts. It is not a catalogue of vendor logos. Frameworks such as LangGraph are added later, only after this baseline is green, so the comparison is honest.
+This is a portfolio lab for AI engineering primitives: typed state, trust-separated retrieval, citations, abstention, and redacted run receipts. It is not a catalogue of vendor logos. A framework-free baseline is the source of behavior. LangGraph wraps that same loop so a reviewer can see what the framework adds (explicit nodes, checkpoint, resume) versus what it does not.
 
 **If you are evaluating this:** clone, install, run the fixture question below, then open the matching test. The interesting cases are the ones that *refuse* — missing evidence and instruction-injection.
 
@@ -17,9 +17,11 @@ python3.11 -m venv .venv
 .venv/bin/python -m pytest -q
 .venv/bin/grounded-agent ask \
   "What must Harbor do when combining retrieval results from different indexes?"
+.venv/bin/grounded-agent ask --runtime graph \
+  "What must Harbor do when combining retrieval results from different indexes?"
 ```
 
-Expected: an `answered` result with a `durable_knowledge` citation. Receipts list source paths and a hash; they do not include retrieved snippet text.
+Expected: both runtimes return an `answered` result with a `durable_knowledge` citation. Receipts list source paths and a hash; they do not include retrieved snippet text. The graph path uses the same functions as the baseline.
 
 Abstention demo:
 
@@ -38,11 +40,12 @@ Abstention demo:
 | Grounded answering | citations required; weak-fit matches are not evidence |
 | Abstention | empty, weak-only, and injection questions fail closed |
 | Redacted receipts | hash over metadata; snippets and prompts omitted |
+| LangGraph wrap | `src/grounded_agent/graph.py` — same fixture decisions as the baseline |
+| Checkpoint / resume | review interrupt before the receipt; approve or reject; one hash per thread |
 | Git hygiene | feature-branch PRs, CI, leak guards |
 
 ## What this is not
 
-- Not LangGraph yet. The same fixtures will wrap a graph in the next phase.
 - Not a live connection to anyone's private knowledge base. Tests use the synthetic Harbor fixture corpus.
 - Not proof that a retrieved passage is true. Retrieval nominates; the pipeline cites or abstains.
 - Not production security. Injection coverage is a fixture, not a threat model.
@@ -50,8 +53,8 @@ Abstention demo:
 ## Layout
 
 ```text
-src/grounded_agent/   typed pipeline
-tests/                fixture suite
+src/grounded_agent/   typed pipeline and LangGraph wrap
+tests/                fixture suite plus graph equivalence and checkpoint tests
 fixtures/             synthetic two-index corpus + labelled questions
 DECISIONS.md          architecture tradeoffs
 ```

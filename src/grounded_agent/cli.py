@@ -7,6 +7,7 @@ import json
 import sys
 import uuid
 
+from grounded_agent.graph import run_research_graph
 from grounded_agent.models import ResearchRequest
 from grounded_agent.pipeline import run_research
 
@@ -20,6 +21,12 @@ def build_parser() -> argparse.ArgumentParser:
     ask = sub.add_parser("ask", help="Answer or abstain from the fixture corpus")
     ask.add_argument("question", help="Question to route, retrieve, and answer")
     ask.add_argument("--json", action="store_true", help="Print machine-readable output")
+    ask.add_argument(
+        "--runtime",
+        choices=("baseline", "graph"),
+        default="baseline",
+        help="baseline is the framework-free loop; graph is the LangGraph wrap",
+    )
     return parser
 
 
@@ -27,9 +34,8 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.command != "ask":
         return 1
-    result = run_research(
-        ResearchRequest(request_id=str(uuid.uuid4()), question=args.question)
-    )
+    request = ResearchRequest(request_id=str(uuid.uuid4()), question=args.question)
+    result = run_research_graph(request) if args.runtime == "graph" else run_research(request)
     if args.json:
         payload = {
             "outcome": result.answer.outcome,
