@@ -50,6 +50,7 @@ def test_write_shootout_receipt(tmp_path: Path) -> None:
     assert "Do not generalize" in text
     assert "hashed_vector" in text
     assert "Inspected failures" in text
+    assert "n=5 Harbor notes" in text
 
 
 def _ranking(payload: dict) -> dict:

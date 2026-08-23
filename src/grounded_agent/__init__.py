@@ -1,8 +1,11 @@
-"""Framework-free grounded research agent."""
+"""Grounded research agent for the Harbor fixture corpus."""
+
+from __future__ import annotations
+
+from typing import Any
 
 __version__ = "0.4.0"
 
-from grounded_agent.graph import run_research_graph
 from grounded_agent.models import (
     Answer,
     Citation,
@@ -28,3 +31,11 @@ __all__ = [
     "run_research",
     "run_research_graph",
 ]
+
+
+def __getattr__(name: str) -> Any:
+    if name == "run_research_graph":
+        from grounded_agent.graph import run_research_graph
+
+        return run_research_graph
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

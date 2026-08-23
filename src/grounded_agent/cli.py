@@ -8,7 +8,6 @@ import sys
 import uuid
 from pathlib import Path
 
-from grounded_agent.graph import run_research_graph
 from grounded_agent.models import ResearchRequest
 from grounded_agent.paths import REPORTS_DIR
 from grounded_agent.pipeline import run_research
@@ -52,7 +51,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.command != "ask":
         return 1
     request = ResearchRequest(request_id=str(uuid.uuid4()), question=args.question)
-    result = run_research_graph(request) if args.runtime == "graph" else run_research(request)
+    if args.runtime == "graph":
+        from grounded_agent.graph import run_research_graph
+
+        result = run_research_graph(request)
+    else:
+        result = run_research(request)
     if args.json:
         payload = {
             "outcome": result.answer.outcome,

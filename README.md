@@ -1,12 +1,14 @@
 # Grounded Agent Lab
 
 [![CI](https://github.com/camerontjs-dot/grounded-agent-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/camerontjs-dot/grounded-agent-lab/actions/workflows/ci.yml)
+· [Design decisions](DECISIONS.md)
+· [Shootout receipt](reports/retrieval-shootout.md)
 
-A small, testable research agent that answers only from cited evidence and abstains when the evidence is weak.
+This agent answers from cited Harbor notes, or it abstains. I built it to show the parts of an AI engineer loop I actually want judged: typed state, labelled retrieval, a read-only tool allowlist, and an evaluation receipt you can rerun.
 
-This is a portfolio lab for AI engineering primitives: typed state, trust-separated retrieval, citations, abstention, redacted run receipts, and read-only tool boundaries. It is not a catalogue of vendor logos. A framework-free baseline is the source of behavior. LangGraph wraps that same loop. Retrieval is two allowlisted tools (`query_knowledge`, `query_projects`), also exported as a local MCP server.
+The hard part is not attaching sources. The hard part is refusing to speak when those sources do not warrant the claim.
 
-**If you are evaluating this:** clone, install, run the fixture question below, then open the matching test. The interesting cases are the ones that *refuse* — missing evidence and instruction-injection.
+**If you are evaluating this:** run the two refusal cases below, then read [`DECISIONS.md`](DECISIONS.md) and [`reports/retrieval-shootout.md`](reports/retrieval-shootout.md). 38 tests on Python 3.11-3.13 (CI badge above).
 
 ## Try it
 
@@ -21,9 +23,9 @@ python3.11 -m venv .venv
   "What must Harbor do when combining retrieval results from different indexes?"
 ```
 
-Expected: both runtimes return an `answered` result with a `durable_knowledge` citation. Receipts list source paths and a hash; they do not include retrieved snippet text. The graph path uses the same functions as the baseline.
+Both runtimes should return `answered` with a `durable_knowledge` citation. Receipts list source paths and a hash. They do not include retrieved snippet text. `--runtime graph` is the same loop as LangGraph nodes; the fixture decisions match.
 
-Abstention demo:
+Refusal cases:
 
 ```bash
 .venv/bin/grounded-agent ask "What is Harbor's CEO salary?"
@@ -32,37 +34,39 @@ Abstention demo:
 .venv/bin/grounded-agent shootout
 ```
 
-The shootout writes `reports/retrieval-shootout.json` and `.md`. Those numbers are from this fixture only.
+Salary should abstain (`insufficient_evidence`). The write-grant prompt should abstain (`unsafe_instruction`). Shootout writes `reports/retrieval-shootout.json` and `.md` from a live run on this fixture only.
 
-## What this phase proves
+## What you can inspect
 
-| Skill | How you can see it |
+| Claim | Where |
 |---|---|
-| Typed contracts | `src/grounded_agent/models.py` — extra fields forbidden, trust groups cannot mix |
-| Intent routing | knowledge / project / federated scopes stay labelled |
-| Grounded answering | citations required; weak-fit matches are not evidence |
-| Abstention | empty, weak-only, and injection questions fail closed |
-| Redacted receipts | hash over metadata; snippets and prompts omitted |
-| LangGraph wrap | `src/grounded_agent/graph.py` — same fixture decisions as the baseline |
-| Checkpoint / resume | review interrupt before the receipt; approve or reject; one hash per thread |
-| Read-only tools / MCP | only `query_knowledge` and `query_projects`; writes, extra args, and timeouts fail closed |
-| Retrieval evaluation | `grounded-agent shootout` — lexical vs hashed vectors vs 1-hop links, inspected misses |
-| Git hygiene | feature-branch PRs, CI, leak guards |
+| Trust groups cannot mix | `src/grounded_agent/models.py` |
+| Knowledge / project / federated stay labelled | router tests |
+| Weak-fit matches are not citations | retrieval tests |
+| Missing evidence and injection fail closed | pipeline + CLI above |
+| Receipts omit snippets and prompts | receipt tests |
+| LangGraph matches the baseline fixtures | `tests/test_graph.py` |
+| Review can pause before a receipt | `tests/test_graph_checkpoint.py` |
+| Only `query_knowledge` and `query_projects` exist | `tests/test_tools.py`, `tests/test_mcp.py` |
+| Retrieval methods are measured, not advertised | `grounded-agent shootout` |
 
 ## What this is not
 
-- Not a live connection to anyone's private knowledge base. Tests use the synthetic Harbor fixture corpus. A live MindGraph URL is fail-closed unless configured, and CI never requires it.
-- Not proof that a retrieved passage is true. Retrieval nominates; the pipeline cites or abstains.
-- Not production security. Injection coverage is a fixture, not a threat model.
-- Not a neural embedding bake-off. `hashed_vector` is a bag-of-tokens index. Sentence Transformers is optional (`pip install -e ".[embeddings]"`) and fail-closed when missing.
+This is not a live knowledge base. Tests use the synthetic Harbor corpus. A live MindGraph URL is fail-closed unless you set it, and CI never requires it.
+
+Retrieval nominates. It does not prove a passage is true.
+
+Injection coverage is a fixture, not a threat model.
+
+The shootout is not a neural embedding bake-off. `hashed_vector` is a bag-of-tokens index. Sentence Transformers is optional (`pip install -e ".[embeddings]"`) and fail-closed when missing. n=5 Harbor notes. Do not quote those recalls as a general benchmark.
 
 ## Layout
 
 ```text
-src/grounded_agent/   typed pipeline, LangGraph wrap, tool boundary, MCP server
-tests/                fixture suite, graph equivalence, checkpoint, tools, MCP
-fixtures/             synthetic two-index corpus, questions, gold labels
-reports/              shootout JSON receipt + Markdown (regenerated by CLI)
+src/grounded_agent/   pipeline, LangGraph wrap, tools, MCP server, shootout
+tests/                fixture, graph, checkpoint, tools, MCP, shootout
+fixtures/             Harbor corpus, questions, gold labels
+reports/              shootout JSON receipt + Markdown
 DECISIONS.md          architecture tradeoffs
 ```
 
