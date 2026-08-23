@@ -2,6 +2,14 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-006 — Shootout metrics come from a frozen fixture run (2026-08-23)
+
+**Decision:** Phase 4 compares lexical overlap, a sha256 hashed-token vector index, and one-hop `[[wiki]]` expansion on labelled Harbor questions. Neural embeddings (Sentence Transformers) are an optional extra that fail closed if missing. Ragas is not the acceptance gate.
+
+**Reason:** A five-note corpus cannot support vendor ranking. The skill is measuring retrieval with gold paths, inspected misses, and written limits.
+
+**Consequence:** CI reruns the shooter and checks the committed JSON ranking (latency excluded). Do not quote these recall numbers as a general embedding benchmark.
+
 ## ADR-005 — Dual-index tools are allowlisted and read-only (2026-08-23)
 
 **Decision:** Retrieval goes through two named tools, `query_knowledge` and `query_projects`. The allowlist, Pydantic argument schema, timeout, and write-name denylist sit in front of both the in-process client and the Harbor MCP server. Live MindGraph is a fail-closed optional adapter that does not run in CI.
