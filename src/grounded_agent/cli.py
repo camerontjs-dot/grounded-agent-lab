@@ -8,6 +8,7 @@ import sys
 import uuid
 from pathlib import Path
 
+from grounded_agent.demo import format_demo, run_demo
 from grounded_agent.models import ResearchRequest
 from grounded_agent.paths import REPORTS_DIR
 from grounded_agent.pipeline import run_research
@@ -47,6 +48,8 @@ def build_parser() -> argparse.ArgumentParser:
         default=str(REPORTS_DIR),
         help="Directory for retrieval-shootout.json and .md",
     )
+    demo = sub.add_parser("demo", help="Run the reviewer checklist against Harbor fixtures")
+    demo.add_argument("--json", action="store_true", help="Print machine-readable output")
     return parser
 
 
@@ -60,6 +63,13 @@ def main(argv: list[str] | None = None) -> int:
                 f"{method}: recall={row['macro_recall']} precision={row['macro_precision']}\n"
             )
         return 0
+    if args.command == "demo":
+        payload = run_demo()
+        if args.json:
+            sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+        else:
+            sys.stdout.write(format_demo(payload))
+        return 0 if payload["ok"] else 1
     if args.command != "ask":
         return 1
     request = ResearchRequest(request_id=str(uuid.uuid4()), question=args.question)
