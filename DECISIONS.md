@@ -2,6 +2,16 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-007: Retrieved content cannot grant tools, and traces stay redacted (2026-08-23)
+
+**Decision:** Scan citable evidence for the same injection markers as the question. Redact planted fixture secrets in copied sentences. Emit stage traces with paths and hashes only. Freeze the Harbor MCP server so `add_tool` cannot register writes. Review approve/reject still cannot widen the allowlist.
+
+**Rejected:** Hosted guardrail SaaS as a Phase 5 requirement. Also rejected: logging retrieved snippets "just for debugging" in the public trace.
+
+**Reason:** MCP and LangGraph interrupts do not make a tool safe. The failure I care about is a note or a tool description that tries to mint `write_index`.
+
+**Consequence:** A forged tool card is retrieved, then the run abstains. A planted alias is copied as `[redacted]`. Receipts and JSONL traces fail closed if those markers appear.
+
 ## ADR-006: Shootout metrics come from a frozen fixture run (2026-08-23)
 
 **Decision:** Phase 4 compares lexical overlap, a sha256 hashed-token vector index, and one-hop `[[wiki]]` expansion on labelled Harbor questions. Neural embeddings (Sentence Transformers) are an optional extra that fail closed if missing. Ragas is not the acceptance gate.
