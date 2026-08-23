@@ -6,6 +6,7 @@ import hashlib
 import json
 
 from grounded_agent.models import Answer, Receipt, ResearchRequest, RouteDecision
+from grounded_agent.redact import assert_no_sensitive
 
 
 def _digest(payload: dict[str, object]) -> str:
@@ -53,4 +54,5 @@ def build_receipt(
         raise ValueError("receipt leaked the question text")
     if answer.text in serialized and answer.outcome == "answered":
         raise ValueError("receipt leaked answer text")
+    assert_no_sensitive(serialized, label="receipt")
     return receipt

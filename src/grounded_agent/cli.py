@@ -29,6 +29,11 @@ def build_parser() -> argparse.ArgumentParser:
         default="baseline",
         help="baseline is the framework-free loop; graph is the LangGraph wrap",
     )
+    ask.add_argument(
+        "--trace",
+        default="",
+        help="Write a redacted stage JSONL trace to this path",
+    )
     shoot = sub.add_parser("shootout", help="Run the Harbor retrieval comparison")
     shoot.add_argument(
         "--out",
@@ -51,12 +56,22 @@ def main(argv: list[str] | None = None) -> int:
     if args.command != "ask":
         return 1
     request = ResearchRequest(request_id=str(uuid.uuid4()), question=args.question)
+    tracer = None
+    if args.trace:
+        from grounded_agent.trace import MemoryTracer
+
+        tracer = MemoryTracer()
     if args.runtime == "graph":
         from grounded_agent.graph import run_research_graph
+        from grounded_agent.trace import trace_result
 
         result = run_research_graph(request)
+        if tracer is not None:
+            trace_result(tracer, result)
     else:
-        result = run_research(request)
+        result = run_research(request, tracer=tracer)
+    if tracer is not None and args.trace:
+        tracer.dump_jsonl(Path(args.trace))
     if args.json:
         payload = {
             "outcome": result.answer.outcome,

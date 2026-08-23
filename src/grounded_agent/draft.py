@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from grounded_agent.models import Answer, Citation, EvidenceBundle, EvidenceItem, ResearchRequest
+from grounded_agent.redact import redact_text
 
 INJECTION_MARKERS = (
     "ignore previous instructions",
@@ -13,9 +14,16 @@ INJECTION_MARKERS = (
 )
 
 
-def is_injection(question: str) -> bool:
-    lowered = question.lower()
+def is_injection(text: str) -> bool:
+    lowered = text.lower()
     return any(marker in lowered for marker in INJECTION_MARKERS)
+
+
+def evidence_is_injection(evidence: EvidenceBundle) -> bool:
+    for item in evidence.citable():
+        if is_injection(item.title) or is_injection(item.snippet):
+            return True
+    return False
 
 
 def _first_sentence(snippet: str) -> str:
@@ -36,7 +44,7 @@ def _citation(item: EvidenceItem) -> Citation:
 
 
 def draft_or_abstain(request: ResearchRequest, evidence: EvidenceBundle) -> Answer:
-    if is_injection(request.question):
+    if is_injection(request.question) or evidence_is_injection(evidence):
         return Answer(
             outcome="abstained",
             text="Refused: the question asks to bypass tool or trust boundaries.",
@@ -64,7 +72,9 @@ def draft_or_abstain(request: ResearchRequest, evidence: EvidenceBundle) -> Answ
             continue
         lines.append(f"[{profile}]")
         for item in usable:
-            lines.append(f"- {_first_sentence(item.snippet)} ({item.source_path})")
+            lines.append(
+                f"- {redact_text(_first_sentence(item.snippet))} ({item.source_path})"
+            )
             if item.source_path not in seen_paths:
                 citations.append(_citation(item))
                 seen_paths.add(item.source_path)
