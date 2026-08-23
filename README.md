@@ -1,14 +1,18 @@
 # Grounded Agent Lab
 
 [![CI](https://github.com/camerontjs-dot/grounded-agent-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/camerontjs-dot/grounded-agent-lab/actions/workflows/ci.yml)
-· [Design decisions](DECISIONS.md)
-· [Shootout receipt](reports/retrieval-shootout.md)
+· [Demo](#try-it)
+· [Architecture](docs/architecture.md)
+· [Case study](docs/case-study.md)
+· [Limits](docs/limitations.md)
+· [Decisions](DECISIONS.md)
+· [Shootout](reports/retrieval-shootout.md)
 
 This agent answers from cited Harbor notes, or it abstains. I built it to show the parts of an AI engineer loop I actually want judged: typed state, labelled retrieval, a read-only tool allowlist, a provider switch that fails closed, and an evaluation receipt you can rerun.
 
 The hard part is not attaching sources. The hard part is refusing to speak when those sources do not warrant the claim.
 
-**If you are evaluating this:** run the two refusal cases below, then the missing-provider case, then read [`DECISIONS.md`](DECISIONS.md), [`docs/workflow-portability.md`](docs/workflow-portability.md), and [`reports/retrieval-shootout.md`](reports/retrieval-shootout.md). 61 tests on Python 3.11-3.13 (CI badge above).
+**If you are evaluating this:** run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). 66 tests on Python 3.11-3.13 (CI badge above). The demo exits non-zero if an expected refusal does not hold.
 
 ## Try it
 
@@ -17,6 +21,7 @@ python3.11 -m venv .venv
 .venv/bin/pip install -e ".[dev]"
 .venv/bin/ruff check .
 .venv/bin/python -m pytest -q
+.venv/bin/grounded-agent demo
 .venv/bin/grounded-agent ask \
   "What must Harbor do when combining retrieval results from different indexes?"
 .venv/bin/grounded-agent ask --runtime graph \
@@ -67,6 +72,7 @@ Provider switch (this should fail closed unless you actually have the backend):
 | Review cannot widen the tool allowlist | checkpoint + security tests |
 | Ollama and hosted fail closed when missing | `--provider ollama` / `--provider hosted` |
 | Workflow engines are mapped, not run | [`docs/workflow-portability.md`](docs/workflow-portability.md) |
+| Reviewer checklist is rerunnable | `grounded-agent demo` |
 
 ## What this is not
 
@@ -85,11 +91,11 @@ I did not run Temporal, Airflow, Prefect, or n8n. [`docs/workflow-portability.md
 ## Layout
 
 ```text
-src/grounded_agent/   pipeline, LangGraph wrap, tools, MCP server, providers, shootout
-tests/                fixture, graph, checkpoint, tools, MCP, shootout, providers
+src/grounded_agent/   pipeline, LangGraph wrap, tools, MCP server, providers, demo
+tests/                fixture, graph, checkpoint, tools, MCP, shootout, providers, demo
 fixtures/             Harbor corpus, questions, gold labels
 reports/              shootout JSON receipt + Markdown
-docs/                 conceptual workflow-engine mapping
+docs/                 architecture, case study, limits, workflow mapping
 DECISIONS.md          architecture tradeoffs
 ```
 

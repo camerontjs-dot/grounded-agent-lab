@@ -2,6 +2,16 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-009: The demo is the packaging gate (2026-08-23)
+
+**Decision:** Phase 7 packaging is a runnable `grounded-agent demo`, an architecture note, a case study, and a limitations page. The README stays the ninety-second path. The demo checks expected outcomes and exits non-zero on mismatch.
+
+**Rejected:** A screenshot walkthrough as the only proof. A logo matrix. Committing a demo JSON full of hashes that change every `request_id`.
+
+**Reason:** A reviewer should not have to reconstruct the argument from six phase PRs. They should run one command, then read what was not tested.
+
+**Consequence:** `demo` is deterministic and credential-free. Ollama is probed against a closed local port so CI does not depend on a daemon. Conceptual engines stay in [`docs/workflow-portability.md`](docs/workflow-portability.md). Claim language lives in [`docs/limitations.md`](docs/limitations.md).
+
 ## ADR-008: Extractive stays default; Ollama and hosted fail closed (2026-08-23)
 
 **Decision:** Keep the extractive drafter as the default. Put Ollama and an OpenAI-compatible hosted adapter behind a typed provider boundary. Missing daemon, missing model, or missing credentials is an error, not a silent fallback. Model JSON is schema-checked. Invented citation paths abstain.
