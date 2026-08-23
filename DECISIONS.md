@@ -2,6 +2,14 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-004 — LangGraph wraps the baseline; it does not replace it (2026-08-23)
+
+**Decision:** Add a LangGraph `StateGraph` whose nodes call the same route/retrieve/draft/receipt functions as the framework-free loop. Fixture decisions must match. Optional checkpointed review can pause before a receipt is written and resume with `approve` or `reject`.
+
+**Reason:** “I used LangGraph” is only honest if the graph is a visible wrap of already-tested behavior. Checkpoint/resume is the thing the framework actually adds.
+
+**Consequence:** Live retrieval adapters stay out of this phase. A rejected review becomes `abstain_reason=review_rejected` and still emits one redacted receipt. Re-invoking a finished thread does not mint a second hash.
+
 ## ADR-003 — Redacted receipts are the public trace (2026-08-23)
 
 **Decision:** Every run emits a receipt with route, outcome, citation paths, trust profiles, and a stable hash. Receipts omit the question text, prompts, and retrieved snippets.
