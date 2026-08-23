@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grounded-agent-lab"
-version = "0.1.0"
-description = "Framework-free grounded research agent with trust-separated retrieval, citations, abstention, and redacted receipts."
+version = "0.2.0"
+description = "Grounded research agent: framework-free baseline plus a LangGraph wrap with trust-separated retrieval, abstention, and redacted receipts."
 readme = "README.md"
 requires-python = ">=3.11"
 keywords = ["agents", "rag", "retrieval", "evaluation", "provenance"]
@@ -25,6 +25,7 @@ classifiers = [
 ]
 dependencies = [
     "pydantic>=2.6,<3",
+    "langgraph>=0.6,<0.7",
 ]
 
 [project.optional-dependencies]
@@ -41,6 +42,9 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+filterwarnings = [
+    "ignore:The default value of `allowed_objects` will change:PendingDeprecationWarning",
+]
 
 [tool.ruff]
 line-length = 100
