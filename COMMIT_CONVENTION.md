@@ -1,4 +1,4 @@
-# Commit Convention
+# Commit convention
 
 This repository follows Conventional Commits 1.0.0.
 
