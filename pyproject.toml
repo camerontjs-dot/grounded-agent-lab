@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grounded-agent-lab"
-version = "0.3.0"
-description = "Grounded research agent: framework-free baseline plus a LangGraph wrap with trust-separated retrieval, abstention, and redacted receipts."
+version = "0.4.0"
+description = "Grounded research agent with trust-separated retrieval, LangGraph wrap, read-only MCP tools, and a fixture retrieval shootout."
 readme = "README.md"
 requires-python = ">=3.11"
 keywords = ["agents", "rag", "retrieval", "evaluation", "provenance"]
@@ -33,6 +33,9 @@ dependencies = [
 dev = [
     "pytest>=8.0,<10",
     "ruff>=0.15,<1",
+]
+embeddings = [
+    "sentence-transformers>=3.0,<4",
 ]
 
 [project.scripts]

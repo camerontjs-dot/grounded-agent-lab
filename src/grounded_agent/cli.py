@@ -6,10 +6,13 @@ import argparse
 import json
 import sys
 import uuid
+from pathlib import Path
 
 from grounded_agent.graph import run_research_graph
 from grounded_agent.models import ResearchRequest
+from grounded_agent.paths import REPORTS_DIR
 from grounded_agent.pipeline import run_research
+from grounded_agent.shootout import write_shootout
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -27,11 +30,25 @@ def build_parser() -> argparse.ArgumentParser:
         default="baseline",
         help="baseline is the framework-free loop; graph is the LangGraph wrap",
     )
+    shoot = sub.add_parser("shootout", help="Run the Harbor retrieval comparison")
+    shoot.add_argument(
+        "--out",
+        default=str(REPORTS_DIR),
+        help="Directory for retrieval-shootout.json and .md",
+    )
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "shootout":
+        payload = write_shootout(Path(args.out))
+        sys.stdout.write(f"wrote {args.out}/retrieval-shootout.json\n")
+        for method, row in payload["metrics"].items():
+            sys.stdout.write(
+                f"{method}: recall={row['macro_recall']} precision={row['macro_precision']}\n"
+            )
+        return 0
     if args.command != "ask":
         return 1
     request = ResearchRequest(request_id=str(uuid.uuid4()), question=args.question)

@@ -90,6 +90,16 @@ def parse_note(path: Path, expected_trust: TrustProfile) -> FixtureNote:
     )
 
 
+def load_all_notes() -> tuple[FixtureNote, ...]:
+    return load_corpus(KNOWLEDGE_CORPUS, "durable_knowledge") + load_corpus(
+        PROJECT_CORPUS, "project_status"
+    )
+
+
+def notes_for_scopes(scopes: tuple[TrustProfile, ...]) -> tuple[FixtureNote, ...]:
+    return tuple(note for note in load_all_notes() if note.trust_profile in scopes)
+
+
 def load_corpus(directory: Path, expected_trust: TrustProfile) -> tuple[FixtureNote, ...]:
     notes = tuple(
         parse_note(path, expected_trust)
