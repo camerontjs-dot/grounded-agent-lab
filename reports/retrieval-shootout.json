@@ -1,0 +1,374 @@
+{
+  "schema": "grounded-agent-shootout-v1",
+  "corpus": "fixtures/corpus",
+  "gold": "fixtures/gold.json",
+  "top_k": 3,
+  "methods": [
+    "lexical",
+    "hashed_vector",
+    "graph_expand"
+  ],
+  "metrics": {
+    "lexical": {
+      "n": 5,
+      "macro_recall": 0.8,
+      "macro_precision": 0.5333,
+      "abstain_ok": 1,
+      "abstain_n": 1,
+      "mean_latency_ms": 0.048
+    },
+    "hashed_vector": {
+      "n": 5,
+      "macro_recall": 0.6,
+      "macro_precision": 0.3,
+      "abstain_ok": 0,
+      "abstain_n": 1,
+      "mean_latency_ms": 0.127
+    },
+    "graph_expand": {
+      "n": 5,
+      "macro_recall": 0.8,
+      "macro_precision": 0.3667,
+      "abstain_ok": 0,
+      "abstain_n": 1,
+      "mean_latency_ms": 0.047
+    }
+  },
+  "rows": {
+    "lexical": [
+      {
+        "id": "g-knowledge-trust",
+        "retrieved": [
+          "knowledge/trust-labels.md",
+          "knowledge/nomination-not-proof.md"
+        ],
+        "relevant": [
+          "knowledge/trust-labels.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.5,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.066,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-project-next-action",
+        "retrieved": [
+          "projects/atlas-search.md",
+          "projects/lantern-agent.md"
+        ],
+        "relevant": [
+          "projects/lantern-agent.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.5,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.024,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-federated",
+        "retrieved": [
+          "projects/atlas-search.md",
+          "projects/lantern-agent.md",
+          "knowledge/trust-labels.md"
+        ],
+        "relevant": [
+          "knowledge/trust-labels.md",
+          "projects/lantern-agent.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.065,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-graph-hop",
+        "retrieved": [
+          "knowledge/receipt-redaction.md"
+        ],
+        "relevant": [
+          "knowledge/neighbor-only.md"
+        ],
+        "recall": 0.0,
+        "precision": 0.0,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.042,
+        "miss": true,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-insufficient",
+        "retrieved": [],
+        "relevant": [],
+        "recall": 1.0,
+        "precision": 1.0,
+        "abstained": true,
+        "expected_abstain": true,
+        "latency_ms": 0.043,
+        "miss": false,
+        "false_hits_on_abstain": false
+      }
+    ],
+    "hashed_vector": [
+      {
+        "id": "g-knowledge-trust",
+        "retrieved": [
+          "knowledge/trust-labels.md",
+          "knowledge/nomination-not-proof.md",
+          "knowledge/neighbor-only.md"
+        ],
+        "relevant": [
+          "knowledge/trust-labels.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.174,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-project-next-action",
+        "retrieved": [
+          "projects/lantern-agent.md",
+          "projects/atlas-search.md"
+        ],
+        "relevant": [
+          "projects/lantern-agent.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.5,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.06,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-federated",
+        "retrieved": [
+          "projects/lantern-agent.md",
+          "projects/atlas-search.md",
+          "knowledge/trust-labels.md"
+        ],
+        "relevant": [
+          "knowledge/trust-labels.md",
+          "projects/lantern-agent.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.194,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-graph-hop",
+        "retrieved": [
+          "knowledge/receipt-redaction.md",
+          "knowledge/nomination-not-proof.md"
+        ],
+        "relevant": [
+          "knowledge/neighbor-only.md"
+        ],
+        "recall": 0.0,
+        "precision": 0.0,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.1,
+        "miss": true,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-insufficient",
+        "retrieved": [
+          "knowledge/receipt-redaction.md"
+        ],
+        "relevant": [],
+        "recall": 0.0,
+        "precision": 0.0,
+        "abstained": false,
+        "expected_abstain": true,
+        "latency_ms": 0.106,
+        "miss": false,
+        "false_hits_on_abstain": true
+      }
+    ],
+    "graph_expand": [
+      {
+        "id": "g-knowledge-trust",
+        "retrieved": [
+          "knowledge/trust-labels.md",
+          "knowledge/nomination-not-proof.md",
+          "knowledge/receipt-redaction.md"
+        ],
+        "relevant": [
+          "knowledge/trust-labels.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.073,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-project-next-action",
+        "retrieved": [
+          "projects/atlas-search.md",
+          "projects/lantern-agent.md"
+        ],
+        "relevant": [
+          "projects/lantern-agent.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.5,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.02,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-federated",
+        "retrieved": [
+          "projects/atlas-search.md",
+          "projects/lantern-agent.md",
+          "knowledge/trust-labels.md"
+        ],
+        "relevant": [
+          "knowledge/trust-labels.md",
+          "projects/lantern-agent.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.6666666666666666,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.062,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-graph-hop",
+        "retrieved": [
+          "knowledge/receipt-redaction.md",
+          "knowledge/neighbor-only.md",
+          "knowledge/nomination-not-proof.md"
+        ],
+        "relevant": [
+          "knowledge/neighbor-only.md"
+        ],
+        "recall": 1.0,
+        "precision": 0.3333333333333333,
+        "abstained": false,
+        "expected_abstain": false,
+        "latency_ms": 0.041,
+        "miss": false,
+        "false_hits_on_abstain": false
+      },
+      {
+        "id": "g-insufficient",
+        "retrieved": [
+          "knowledge/nomination-not-proof.md",
+          "knowledge/receipt-redaction.md",
+          "knowledge/trust-labels.md"
+        ],
+        "relevant": [],
+        "recall": 0.0,
+        "precision": 0.0,
+        "abstained": false,
+        "expected_abstain": true,
+        "latency_ms": 0.04,
+        "miss": false,
+        "false_hits_on_abstain": true
+      }
+    ]
+  },
+  "inspected_failures": [
+    {
+      "method": "lexical",
+      "id": "g-graph-hop",
+      "retrieved": [
+        "knowledge/receipt-redaction.md"
+      ],
+      "relevant": [
+        "knowledge/neighbor-only.md"
+      ],
+      "recall": 0.0,
+      "precision": 0.0,
+      "abstained": false,
+      "expected_abstain": false,
+      "latency_ms": 0.042,
+      "miss": true,
+      "false_hits_on_abstain": false
+    },
+    {
+      "method": "hashed_vector",
+      "id": "g-graph-hop",
+      "retrieved": [
+        "knowledge/receipt-redaction.md",
+        "knowledge/nomination-not-proof.md"
+      ],
+      "relevant": [
+        "knowledge/neighbor-only.md"
+      ],
+      "recall": 0.0,
+      "precision": 0.0,
+      "abstained": false,
+      "expected_abstain": false,
+      "latency_ms": 0.1,
+      "miss": true,
+      "false_hits_on_abstain": false
+    },
+    {
+      "method": "hashed_vector",
+      "id": "g-insufficient",
+      "retrieved": [
+        "knowledge/receipt-redaction.md"
+      ],
+      "relevant": [],
+      "recall": 0.0,
+      "precision": 0.0,
+      "abstained": false,
+      "expected_abstain": true,
+      "latency_ms": 0.106,
+      "miss": false,
+      "false_hits_on_abstain": true
+    },
+    {
+      "method": "graph_expand",
+      "id": "g-insufficient",
+      "retrieved": [
+        "knowledge/nomination-not-proof.md",
+        "knowledge/receipt-redaction.md",
+        "knowledge/trust-labels.md"
+      ],
+      "relevant": [],
+      "recall": 0.0,
+      "precision": 0.0,
+      "abstained": false,
+      "expected_abstain": true,
+      "latency_ms": 0.04,
+      "miss": false,
+      "false_hits_on_abstain": true
+    }
+  ],
+  "limitations": [
+    "n is the Harbor fixture set, not a public IR benchmark.",
+    "hashed_vector is a sha256 bag-of-tokens index, not a neural embedding API.",
+    "graph_expand is one-hop [[wiki]] following, not Microsoft GraphRAG.",
+    "Do not generalize these numbers to production corpora."
+  ]
+}

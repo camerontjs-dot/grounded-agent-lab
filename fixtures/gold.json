@@ -1,0 +1,37 @@
+[
+  {
+    "id": "g-knowledge-trust",
+    "question": "What must Harbor do when combining retrieval results from different indexes?",
+    "scopes": ["durable_knowledge"],
+    "relevant_paths": ["knowledge/trust-labels.md"],
+    "expected_abstain": false
+  },
+  {
+    "id": "g-project-next-action",
+    "question": "What is the next action for lantern-agent?",
+    "scopes": ["project_status"],
+    "relevant_paths": ["projects/lantern-agent.md"],
+    "expected_abstain": false
+  },
+  {
+    "id": "g-federated",
+    "question": "How does the lantern-agent next action relate to Harbor trust labels?",
+    "scopes": ["durable_knowledge", "project_status"],
+    "relevant_paths": ["knowledge/trust-labels.md", "projects/lantern-agent.md"],
+    "expected_abstain": false
+  },
+  {
+    "id": "g-graph-hop",
+    "question": "When a Harbor receipt omits snippet text, what remains unproven?",
+    "scopes": ["durable_knowledge"],
+    "relevant_paths": ["knowledge/neighbor-only.md"],
+    "expected_abstain": false
+  },
+  {
+    "id": "g-insufficient",
+    "question": "What is Harbor's CEO salary?",
+    "scopes": ["durable_knowledge"],
+    "relevant_paths": [],
+    "expected_abstain": true
+  }
+]
