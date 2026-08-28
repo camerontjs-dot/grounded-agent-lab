@@ -9,7 +9,7 @@
 · [Decisions](DECISIONS.md)
 · [Shootout](reports/retrieval-shootout.md)
 
-This agent answers from cited Harbor notes, or it abstains. I built it to show the parts of an AI engineer loop I actually want judged: typed state, labelled retrieval, a read-only tool allowlist, a provider switch that fails closed, and an evaluation receipt you can rerun.
+This agent answers from cited Harbor notes, or it abstains. I built it around a concrete loop: typed state, labelled retrieval, a read-only tool allowlist, a provider switch that fails closed, and an evaluation receipt you can rerun.
 
 The hard part is not attaching sources. The hard part is refusing to speak when those sources do not warrant the claim.
 
@@ -22,7 +22,7 @@ question
   -> redacted receipt
 ```
 
-**If you are evaluating this:** install, run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). 66 tests on Python 3.11-3.13 (CI badge above). The demo exits non-zero if an expected refusal does not hold.
+For the shortest reproduction path, install, run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). 66 tests run on Python 3.11-3.13 in CI. The demo exits non-zero if an expected refusal does not hold.
 
 ## Install
 
@@ -93,7 +93,7 @@ Provider switch (this should fail closed unless you actually have the backend):
 | Review cannot widen the tool allowlist | checkpoint + security tests |
 | Ollama and hosted fail closed when missing | `--provider ollama` / `--provider hosted` |
 | Workflow engines are mapped, not run | [`docs/workflow-portability.md`](docs/workflow-portability.md) |
-| Reviewer checklist is rerunnable | `grounded-agent demo` |
+| Demo checklist is rerunnable | `grounded-agent demo` |
 
 ## What this is not
 
