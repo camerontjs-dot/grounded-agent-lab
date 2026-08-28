@@ -106,12 +106,20 @@ class FixtureToolClient:
             items = search_corpus(args.question, TOOL_TRUST[name])
             return ToolObservation(tool=name, trust_profile=TOOL_TRUST[name], items=items)
 
-        with ThreadPoolExecutor(max_workers=1) as pool:
+        # Do not use the executor as a context manager here. Its __exit__ method
+        # calls shutdown(wait=True), which would make a timed-out call wait for
+        # the worker before returning control to the caller.
+        pool = ThreadPoolExecutor(max_workers=1)
+        try:
             future = pool.submit(_run)
             try:
                 return future.result(timeout=budget)
             except FuturesTimeout as exc:
                 raise ToolTimeout(name) from exc
+        finally:
+            # Python threads cannot be forcefully killed. A running worker may
+            # finish in the background, but the caller must not wait for it.
+            pool.shutdown(wait=False, cancel_futures=True)
 
 
 class LiveMindgraphAdapter:

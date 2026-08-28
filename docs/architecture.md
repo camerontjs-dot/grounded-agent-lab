@@ -28,6 +28,16 @@ The LangGraph wrap uses five named nodes: `route`, `retrieve`, `draft`, `review`
 
 Federated questions query both indexes. They never return one unlabelled list. That split is a type invariant, not a prompt instruction.
 
+## Timeout semantics
+
+The fixture tool client gives each retrieval call a wall-clock budget. When the
+budget expires, it shuts down the one-shot worker without waiting for it, so the
+caller receives `ToolTimeout` within the budget plus small scheduling slack.
+Python threads cannot be forcefully killed, so a worker that is already running
+may finish in the background. Returning control to the caller is the guarantee;
+hard worker termination would require a process or an async backend with
+cancellation support.
+
 ## What is outside this diagram
 
 Ollama and hosted sit behind `--provider`. They are not in the default path.
