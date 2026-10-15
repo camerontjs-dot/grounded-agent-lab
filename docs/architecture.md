@@ -38,6 +38,14 @@ may finish in the background. Returning control to the caller is the guarantee;
 hard worker termination would require a process or an async backend with
 cancellation support.
 
+Interpreter exit is not bounded by this. `concurrent.futures` joins its worker
+threads at shutdown, so a timed-out worker that is still running delays process
+exit until it returns. With a 2.0 s fixture delay and a 0.05 s budget on Python
+3.12, `ToolTimeout` reached the caller after about 0.06 s and the process exited
+after about 2.2 s. A worker that never returns would block exit. Bounding exit
+as well would need a subprocess or a daemon worker; the fixture client does not
+do that.
+
 ## What is outside this diagram
 
 Ollama and hosted sit behind `--provider`. They are not in the default path.
