@@ -88,12 +88,29 @@ class UrlLibTransport:
 
 
 def guarded_draft(
-    provider: DraftProvider, request: ResearchRequest, evidence: EvidenceBundle
+    provider: DraftProvider,
+    request: ResearchRequest,
+    evidence: EvidenceBundle,
+    *,
+    tool_errors: tuple[str, ...] = (),
 ) -> Answer:
-    """Refuse injection and empty evidence before calling a live model."""
+    """Refuse injection, failed required sources, and empty evidence before a live model.
+
+    Every routed scope is required. Any tool error means no complete answer: the provider
+    is not called and surviving evidence is not cited. Injection is checked first so a
+    poisoned surviving note is still reported as unsafe; the outage stays in tool_errors.
+    """
 
     provider.ensure()
-    if is_injection(request.question) or evidence_is_injection(evidence) or not evidence.citable():
+    if is_injection(request.question) or evidence_is_injection(evidence):
+        return draft_or_abstain(request, evidence)
+    if tool_errors:
+        return Answer(
+            outcome="abstained",
+            text="A required index was unavailable, so no complete answer was produced.",
+            abstain_reason="required_source_unavailable",
+        )
+    if not evidence.citable():
         return draft_or_abstain(request, evidence)
     return provider.draft(request, evidence)
 

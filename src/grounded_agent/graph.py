@@ -68,7 +68,12 @@ def _draft_with(provider: DraftProvider):
     def _draft(state: ResearchGraphState) -> dict[str, Any]:
         request = ResearchRequest.model_validate(state["request"])
         evidence = EvidenceBundle.model_validate(state["evidence"])
-        answer = guarded_draft(provider, request, evidence)
+        answer = guarded_draft(
+            provider,
+            request,
+            evidence,
+            tool_errors=tuple(state.get("tool_errors") or ()),
+        )
         return {"answer": _json(answer), "provider": provider.name}
 
     return _draft
