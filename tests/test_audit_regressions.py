@@ -206,7 +206,6 @@ def test_timeout_restores_caller_within_bounded_wall_clock() -> None:
     assert elapsed < 0.25, f"timeout=0.05s returned after {elapsed:.3f}s"
 
 
-@pytest.mark.xfail(strict=True, reason="#16: the FastMCP manager can still register a write tool")
 def test_mcp_registry_cannot_gain_write_capability() -> None:
     server = build_harbor_mcp()
 
