@@ -26,6 +26,8 @@ If a sentence is not in the left column with a matching proof, I should not say 
 
 Harbor is synthetic. The gold set is five questions. `hashed_vector` is a sha256 bag-of-tokens index, not MiniLM and not Pinecone. Graph expansion is one-hop wiki links, not Microsoft GraphRAG.
 
+Each shootout method has its own gate, so the abstain column compares gates, not one threshold. The `hashed_vector` cutoff comes from a null built on the corpus without gold labels. On this corpus it is close to the scores it separates: `trust-labels.md` clears it by 0.005 on one question, and the project-scope cutoff rests on 51 null scores.
+
 A live MindGraph URL is fail-closed unless you set it. CI never requires it.
 
 ## Resume phrases that are safe

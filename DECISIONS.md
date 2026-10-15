@@ -2,6 +2,16 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-012: Each shootout method gets its own gate (2026-10-15)
+
+**Decision:** The shootout separates ranking from gating and gives each method a gate on its own scale. Lexical keeps the agent's citable rule. `hashed_vector` admits a note only above a null cutoff: the 95th percentile of cosines from pseudo-queries that share exactly one token with the note, built from the corpus without gold labels. `graph_expand` only expands seeds that pass the lexical gate, so it can abstain. Indexes are built outside the timer, and latency is the median query time.
+
+**Rejected:** Reusing 0.2 across token recall and cosine. Choosing a cosine cutoff by looking at the gold questions: anything just above 0.327 makes the insufficient question abstain, and it would be fitted to that test. Also rejected: putting the lexical gate in front of the vector method, which turns it into a reordered lexical method.
+
+**Reason:** The 2026-08-23 abstain column measured a scale mismatch for `hashed_vector` and a missing gate for `graph_expand`, and every latency in that table included per-note work.
+
+**Consequence:** The 2026-08-23 receipt stays in `reports/history/`. In the republished table `hashed_vector` abstains on the insufficient question, but it also abstains on `g-graph-hop` and drops `trust-labels.md` from the federated case. One admission clears the cutoff by 0.005, so these numbers are fragile. n=5 stays n=5.
+
 ## ADR-009: The demo is the packaging gate (2026-08-23)
 
 **Decision:** Phase 7 packaging is a runnable `grounded-agent demo`, an architecture note, a case study, and a limitations page. The README stays the ninety-second path. The demo checks expected outcomes and exits non-zero on mismatch.

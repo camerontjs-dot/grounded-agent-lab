@@ -103,7 +103,7 @@ Retrieval nominates. It does not prove a passage is true.
 
 Injection coverage is a fixture, not a threat model. I planted a forged tool card and a fake secret so the tests have something to catch. That is not Lakera or a production red-team.
 
-The shootout is not a neural embedding bake-off. `hashed_vector` is a bag-of-tokens index. Sentence Transformers is optional (`pip install -e ".[embeddings]"`) and fail-closed when missing. The gold set is five labelled questions. Do not quote those recalls as a general benchmark.
+The shootout is not a neural embedding bake-off. `hashed_vector` is a bag-of-tokens index. Sentence Transformers is optional (`pip install -e ".[embeddings]"`) and fail-closed when missing. The gold set is five labelled questions. Do not quote those recalls as a general benchmark. Each method has its own gate; the first published table, which did not, is kept in `reports/history/`.
 
 Ollama is optional. CI does not start a daemon and does not pull a model. Hosted is the OpenAI-compatible HTTP shape; I have not run OpenAI, Anthropic, or another paid API from this repo. Default `ask` stays extractive.
 

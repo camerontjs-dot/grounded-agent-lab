@@ -16,6 +16,8 @@ The retrieval shootout compares lexical overlap, a hashed-token vector index, an
 
 n is five. That is the whole experiment. I inspected the misses, including a designed lexical miss that graph expansion is supposed to recover. Do not quote those recalls as an embedding benchmark.
 
+The first published table (2026-08-23) measured the harness as much as the methods. It applied the lexical recall cutoff to cosine scores, gave graph expansion no way to abstain, and timed per-note work for every question. The 2026-10-15 republish gives each method its own gate, builds indexes outside the timer, and keeps the old table in `reports/history/` with a note on what it measured.
+
 ## What I skipped, and how the skill still shows up
 
 I did not use Pinecone, CrewAI, LangSmith, Lakera, or Temporal.
