@@ -113,8 +113,8 @@ I did not run Temporal, Airflow, Prefect, or n8n. [`docs/workflow-portability.md
 
 ```text
 src/grounded_agent/   pipeline, LangGraph wrap, tools, MCP server, providers, demo
+  fixtures/           Harbor corpus, questions, gold labels (shipped in the wheel)
 tests/                fixture, graph, checkpoint, tools, MCP, shootout, providers, demo
-fixtures/             Harbor corpus, questions, gold labels
 reports/              shootout JSON receipt + Markdown
 docs/                 architecture, case study, limits, workflow mapping
 DECISIONS.md          architecture tradeoffs

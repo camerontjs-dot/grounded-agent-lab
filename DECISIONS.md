@@ -2,6 +2,16 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-011: Harbor fixtures ship inside the package (2026-10-15)
+
+**Decision:** The default Harbor corpus, questions, and gold labels ship inside the package at `src/grounded_agent/fixtures/`. A source checkout and an installed wheel read the same files, with no network and no working-tree dependency. Optional providers keep failing closed when missing. Any external corpus must fail closed the same way; none is added here. `shootout --out` defaults to `./reports` in the current directory. The installed-wheel smoke runs as a CI job on Python 3.11 to 3.13. This decision implies no version bump or release.
+
+**Rejected:** Resolving `fixtures/` from the source checkout, which passes in a clone and fails after `pip install`. Also rejected: regenerating the committed `reports/` here. The committed JSON keeps its old `fixtures/corpus` label until the shootout is next republished.
+
+**Reason:** `grounded-agent demo` from an installed wheel failed with `no fixture notes in knowledge`. The reviewer demo should not depend on where the package was installed from.
+
+**Consequence:** `pyproject.toml` declares package data for the fixture files, and `tests/test_packaging.py` fails when a fixture has no matching glob. Adding the CI job does not by itself make it a required status check. That is a repository setting.
+
 ## ADR-009: The demo is the packaging gate (2026-08-23)
 
 **Decision:** Phase 7 packaging is a runnable `grounded-agent demo`, an architecture note, a case study, and a limitations page. The README stays the ninety-second path. The demo checks expected outcomes and exits non-zero on mismatch.
