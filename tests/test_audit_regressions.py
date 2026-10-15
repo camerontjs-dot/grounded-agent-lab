@@ -108,7 +108,7 @@ def test_count_question_without_count_evidence_abstains_in_both_runtimes() -> No
     assert graphed.receipt.outcome == "abstained"
 
 
-@pytest.mark.xfail(strict=True, reason="#11: citable token overlap need not support a requested number")
+@pytest.mark.xfail(strict=True, reason="#11: overlap does not warrant a number")
 def test_citable_near_miss_without_number_abstains() -> None:
     request = _request("near-miss", COUNT_QUESTION)
     evidence = _citable_note(
@@ -119,7 +119,7 @@ def test_citable_near_miss_without_number_abstains() -> None:
     assert answer.citations == ()
 
 
-@pytest.mark.xfail(strict=True, reason="#11: a real citation path cannot license invented model facts")
+@pytest.mark.xfail(strict=True, reason="#11: citation path does not warrant invented facts")
 def test_model_valid_path_does_not_warrant_unrelated_salary_claim() -> None:
     draft = ModelDraft(
         outcome="answered",
@@ -131,7 +131,7 @@ def test_model_valid_path_does_not_warrant_unrelated_salary_claim() -> None:
     assert answer.citations == ()
 
 
-@pytest.mark.xfail(strict=True, reason="#11: numerical contradiction must be rejected despite valid path")
+@pytest.mark.xfail(strict=True, reason="#11: changed number not warranted by cited text")
 def test_model_valid_path_does_not_warrant_changed_number() -> None:
     draft = ModelDraft(
         outcome="answered",
@@ -171,7 +171,7 @@ def test_same_path_changed_source_bytes_change_receipt_hash(
 
 
 @pytest.mark.parametrize("failed_tool", ["query_knowledge", "query_projects"])
-@pytest.mark.xfail(strict=True, reason="audit: required federated source outage still permits answered")
+@pytest.mark.xfail(strict=True, reason="audit: missing required index still answers")
 def test_federated_outage_cannot_produce_complete_answer(
     monkeypatch: pytest.MonkeyPatch, failed_tool: str
 ) -> None:
@@ -195,7 +195,7 @@ def test_federated_outage_cannot_produce_complete_answer(
     assert result.receipt.outcome == "abstained"
 
 
-@pytest.mark.xfail(strict=True, reason="#12: timed-out caller still waits for ThreadPoolExecutor worker")
+@pytest.mark.xfail(strict=True, reason="#12: timeout still waits for worker")
 def test_timeout_restores_caller_within_bounded_wall_clock() -> None:
     client = FixtureToolClient(min_delay_s=0.4, timeout_s=0.05)
     started = time.monotonic()
