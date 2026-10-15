@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import time
+
 import pytest
 from pydantic import ValidationError
 
@@ -44,14 +46,22 @@ def test_extra_arguments_fail_schema() -> None:
         client.invoke("query_knowledge", {})
 
 
-def test_timeout_fails_closed() -> None:
-    client = FixtureToolClient(min_delay_s=0.3)
+def test_timeout_fails_closed_and_returns_control_within_budget() -> None:
+    timeout_s = 0.05
+    worker_delay_s = 0.3
+    client = FixtureToolClient(min_delay_s=worker_delay_s)
+    started = time.monotonic()
     with pytest.raises(ToolTimeout, match="query_knowledge"):
         client.invoke(
             "query_knowledge",
             {"question": "Harbor trust labels"},
-            timeout_s=0.05,
+            timeout_s=timeout_s,
         )
+    elapsed = time.monotonic() - started
+    assert elapsed < timeout_s * 4, (
+        f"timed-out call returned after {elapsed:.3f}s; "
+        f"worker delay was {worker_delay_s:.3f}s"
+    )
 
 
 def test_federated_route_calls_both_labelled_tools() -> None:
