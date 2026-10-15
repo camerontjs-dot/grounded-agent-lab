@@ -22,11 +22,11 @@ No material production code, model/provider behaviour, shared contract, or main 
 | Unsupported model claim | Valid path does not authorize invented salary | #11 |
 | Model numeric mutation | Seven-index claim is rejected against two-index source | #11 |
 | Same-path source mutation | Cited source bytes change the receipt digest | #14 |
-| Federated index unavailable | Required-source failure is not reported as complete | New audit finding |
+| Federated index unavailable | Required-source failure is not reported as complete | #19 |
 | Timeout wall clock | Caller returns within budget plus bounded slack | #12 |
 | MCP manager registration | No write capability appears in tool registry | #16 |
 | Retrieval missing fact | Hashed-vector and graph ranking can reject an insufficient query | #15 |
-| Built wheel used outside checkout | CLI demo functions with packaged corpus | New audit finding |
+| Built wheel used outside checkout | CLI demo functions with packaged corpus | #20 |
 
 The tests do not exercise a real MCP stdio client (#13), since that transport is not implemented or selected by the current product contract. A separate transport smoke belongs with that feature. The five-question shootout is not a model benchmark, and these gates do not validate general semantic entailment.
 
