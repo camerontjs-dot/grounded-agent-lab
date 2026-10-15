@@ -32,7 +32,7 @@ A live MindGraph URL is fail-closed unless you set it. CI never requires it.
 
 - I built a grounded research agent that abstains when evidence is missing.
 - I wrapped that loop in LangGraph and checked the fixture decisions match.
-- I exported two read-only MCP tools and froze `add_tool`.
+- I exported two read-only MCP tools and froze the FastMCP tool manager, so a write tool cannot be registered, listed, or called.
 - I measured retrieval on a frozen Harbor gold set.
 - I built a fail-closed Ollama adapter.
 
