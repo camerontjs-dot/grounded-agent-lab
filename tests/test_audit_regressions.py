@@ -195,7 +195,6 @@ def test_federated_outage_cannot_produce_complete_answer(
     assert result.receipt.outcome == "abstained"
 
 
-@pytest.mark.xfail(strict=True, reason="#12: timeout still waits for worker")
 def test_timeout_restores_caller_within_bounded_wall_clock() -> None:
     client = FixtureToolClient(min_delay_s=0.4, timeout_s=0.05)
     started = time.monotonic()
