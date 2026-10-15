@@ -106,3 +106,31 @@ def test_pipeline_still_green_with_new_note() -> None:
         ResearchRequest(request_id="post-hop-salary", question="What is Harbor's CEO salary?")
     )
     assert salary.answer.outcome == "abstained"
+
+
+def test_previous_table_is_kept_as_measured() -> None:
+    # The 2026-08-23 receipt stays as it was measured, with its old gates.
+    history = REPORTS_DIR / "history" / "2026-08-23-retrieval-shootout.json"
+    old = json.loads(history.read_text(encoding="utf-8"))
+    assert old["schema"] == "grounded-agent-shootout-v1"
+    assert old["metrics"]["hashed_vector"]["abstain_ok"] == 0
+    assert old["metrics"]["graph_expand"]["abstain_ok"] == 0
+    current = json.loads((REPORTS_DIR / "retrieval-shootout.json").read_text(encoding="utf-8"))
+    assert current["previous_report"]["path"] == f"reports/history/{history.name}"
+
+
+def test_every_method_declares_a_gate_and_separate_build_time() -> None:
+    payload = run_shootout(repeats=1)
+    assert set(payload["gates"]) == set(METHODS)
+    assert set(payload["timing"]["mean_index_build_ms"]) == set(METHODS)
+    for row in payload["rows"]["hashed_vector"]:
+        assert row["cutoff"] is not None
+        assert row["null_scores"] >= 20
+
+
+def test_graph_expand_abstains_without_a_seed_that_passes_the_lexical_gate() -> None:
+    payload = run_shootout(repeats=1)
+    insufficient = next(r for r in payload["rows"]["graph_expand"] if r["id"] == "g-insufficient")
+    lexical = next(r for r in payload["rows"]["lexical"] if r["id"] == "g-insufficient")
+    assert lexical["retrieved"] == []
+    assert insufficient["retrieved"] == []

@@ -226,7 +226,6 @@ def test_mcp_registry_cannot_gain_write_capability() -> None:
 
 
 @pytest.mark.parametrize("method", ["hashed_vector", "graph_expand"])
-@pytest.mark.xfail(strict=True, reason="#15: retrieval method needs a meaningful no-evidence gate")
 def test_shootout_insufficient_case_abstains_for_every_method(method: str) -> None:
     payload = run_shootout()
     case = next(row for row in payload["rows"][method] if row["id"] == "g-insufficient")

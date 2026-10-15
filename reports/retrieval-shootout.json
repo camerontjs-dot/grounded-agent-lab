@@ -1,5 +1,5 @@
 {
-  "schema": "grounded-agent-shootout-v1",
+  "schema": "grounded-agent-shootout-v2",
   "corpus": "fixtures/corpus",
   "gold": "fixtures/gold.json",
   "top_k": 3,
@@ -8,6 +8,21 @@
     "hashed_vector",
     "graph_expand"
   ],
+  "gates": {
+    "lexical": "query-token recall >= 0.2 and >= 2 shared tokens",
+    "hashed_vector": "cosine above the 95th percentile of a single-shared-token null (hashed-vector-single-token-null-v1)",
+    "graph_expand": "lexical seeds that pass the lexical gate, plus one-hop [[wiki]] neighbours"
+  },
+  "timing": {
+    "repeats": 25,
+    "latency_ms": "median query time per question; the index is built outside the timer",
+    "mean_index_build_ms": {
+      "lexical": 0.0347,
+      "hashed_vector": 0.0998,
+      "graph_expand": 0.0384
+    },
+    "mean_calibration_ms": 16.3392
+  },
   "metrics": {
     "lexical": {
       "n": 5,
@@ -15,23 +30,23 @@
       "macro_precision": 0.5333,
       "abstain_ok": 1,
       "abstain_n": 1,
-      "mean_latency_ms": 0.069
+      "mean_latency_ms": 0.003
     },
     "hashed_vector": {
       "n": 5,
-      "macro_recall": 0.5,
-      "macro_precision": 0.2333,
-      "abstain_ok": 0,
+      "macro_recall": 0.7,
+      "macro_precision": 0.6,
+      "abstain_ok": 1,
       "abstain_n": 1,
-      "mean_latency_ms": 0.159
+      "mean_latency_ms": 0.0178
     },
     "graph_expand": {
       "n": 5,
-      "macro_recall": 0.8,
-      "macro_precision": 0.3667,
-      "abstain_ok": 0,
+      "macro_recall": 1.0,
+      "macro_precision": 0.6333,
+      "abstain_ok": 1,
       "abstain_n": 1,
-      "mean_latency_ms": 0.065
+      "mean_latency_ms": 0.0035
     }
   },
   "rows": {
@@ -49,7 +64,7 @@
         "precision": 0.5,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.096,
+        "latency_ms": 0.0036,
         "miss": false,
         "false_hits_on_abstain": false
       },
@@ -66,7 +81,7 @@
         "precision": 0.5,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.027,
+        "latency_ms": 0.002,
         "miss": false,
         "false_hits_on_abstain": false
       },
@@ -85,7 +100,7 @@
         "precision": 0.6666666666666666,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.094,
+        "latency_ms": 0.004,
         "miss": false,
         "false_hits_on_abstain": false
       },
@@ -101,7 +116,7 @@
         "precision": 0.0,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.071,
+        "latency_ms": 0.0032,
         "miss": true,
         "false_hits_on_abstain": false
       },
@@ -113,7 +128,7 @@
         "precision": 1.0,
         "abstained": true,
         "expected_abstain": true,
-        "latency_ms": 0.059,
+        "latency_ms": 0.0021,
         "miss": false,
         "false_hits_on_abstain": false
       }
@@ -122,20 +137,21 @@
       {
         "id": "g-knowledge-trust",
         "retrieved": [
-          "knowledge/trust-labels.md",
-          "knowledge/nomination-not-proof.md",
-          "knowledge/operator-contact.md"
+          "knowledge/trust-labels.md"
         ],
         "relevant": [
           "knowledge/trust-labels.md"
         ],
         "recall": 1.0,
-        "precision": 0.3333333333333333,
+        "precision": 1.0,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.204,
+        "latency_ms": 0.0195,
         "miss": false,
-        "false_hits_on_abstain": false
+        "false_hits_on_abstain": false,
+        "query_tokens": 10,
+        "null_scores": 1244,
+        "cutoff": 0.472805
       },
       {
         "id": "g-project-next-action",
@@ -150,61 +166,65 @@
         "precision": 0.5,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.059,
+        "latency_ms": 0.0108,
         "miss": false,
-        "false_hits_on_abstain": false
+        "false_hits_on_abstain": false,
+        "query_tokens": 7,
+        "null_scores": 51,
+        "cutoff": 0.29277
       },
       {
         "id": "g-federated",
         "retrieved": [
           "projects/lantern-agent.md",
-          "projects/atlas-search.md",
-          "knowledge/operator-contact.md"
+          "projects/atlas-search.md"
         ],
         "relevant": [
           "knowledge/trust-labels.md",
           "projects/lantern-agent.md"
         ],
         "recall": 0.5,
-        "precision": 0.3333333333333333,
+        "precision": 0.5,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.209,
+        "latency_ms": 0.0233,
         "miss": true,
-        "false_hits_on_abstain": false
+        "false_hits_on_abstain": false,
+        "query_tokens": 11,
+        "null_scores": 1789,
+        "cutoff": 0.454794
       },
       {
         "id": "g-graph-hop",
-        "retrieved": [
-          "knowledge/receipt-redaction.md",
-          "knowledge/operator-contact.md",
-          "knowledge/nomination-not-proof.md"
-        ],
+        "retrieved": [],
         "relevant": [
           "knowledge/neighbor-only.md"
         ],
         "recall": 0.0,
         "precision": 0.0,
-        "abstained": false,
+        "abstained": true,
         "expected_abstain": false,
-        "latency_ms": 0.165,
+        "latency_ms": 0.0188,
         "miss": true,
-        "false_hits_on_abstain": false
+        "false_hits_on_abstain": false,
+        "query_tokens": 9,
+        "null_scores": 1361,
+        "cutoff": 0.460566
       },
       {
         "id": "g-insufficient",
-        "retrieved": [
-          "knowledge/operator-contact.md",
-          "knowledge/receipt-redaction.md"
-        ],
+        "retrieved": [],
         "relevant": [],
-        "recall": 0.0,
-        "precision": 0.0,
-        "abstained": false,
+        "recall": 1.0,
+        "precision": 1.0,
+        "abstained": true,
         "expected_abstain": true,
-        "latency_ms": 0.159,
+        "latency_ms": 0.0168,
         "miss": false,
-        "false_hits_on_abstain": true
+        "false_hits_on_abstain": false,
+        "query_tokens": 4,
+        "null_scores": 4299,
+        "cutoff": 0.417029
       }
     ],
     "graph_expand": [
@@ -212,17 +232,16 @@
         "id": "g-knowledge-trust",
         "retrieved": [
           "knowledge/trust-labels.md",
-          "knowledge/nomination-not-proof.md",
-          "knowledge/forged-tool-card.md"
+          "knowledge/nomination-not-proof.md"
         ],
         "relevant": [
           "knowledge/trust-labels.md"
         ],
         "recall": 1.0,
-        "precision": 0.3333333333333333,
+        "precision": 0.5,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.079,
+        "latency_ms": 0.004,
         "miss": false,
         "false_hits_on_abstain": false
       },
@@ -239,7 +258,7 @@
         "precision": 0.5,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.022,
+        "latency_ms": 0.0025,
         "miss": false,
         "false_hits_on_abstain": false
       },
@@ -258,7 +277,7 @@
         "precision": 0.6666666666666666,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.091,
+        "latency_ms": 0.0045,
         "miss": false,
         "false_hits_on_abstain": false
       },
@@ -266,35 +285,30 @@
         "id": "g-graph-hop",
         "retrieved": [
           "knowledge/receipt-redaction.md",
-          "knowledge/neighbor-only.md",
-          "knowledge/nomination-not-proof.md"
+          "knowledge/neighbor-only.md"
         ],
         "relevant": [
           "knowledge/neighbor-only.md"
         ],
         "recall": 1.0,
-        "precision": 0.3333333333333333,
+        "precision": 0.5,
         "abstained": false,
         "expected_abstain": false,
-        "latency_ms": 0.07,
+        "latency_ms": 0.004,
         "miss": false,
         "false_hits_on_abstain": false
       },
       {
         "id": "g-insufficient",
-        "retrieved": [
-          "knowledge/nomination-not-proof.md",
-          "knowledge/operator-contact.md",
-          "knowledge/receipt-redaction.md"
-        ],
+        "retrieved": [],
         "relevant": [],
-        "recall": 0.0,
-        "precision": 0.0,
-        "abstained": false,
+        "recall": 1.0,
+        "precision": 1.0,
+        "abstained": true,
         "expected_abstain": true,
-        "latency_ms": 0.061,
+        "latency_ms": 0.0025,
         "miss": false,
-        "false_hits_on_abstain": true
+        "false_hits_on_abstain": false
       }
     ]
   },
@@ -312,7 +326,7 @@
       "precision": 0.0,
       "abstained": false,
       "expected_abstain": false,
-      "latency_ms": 0.071,
+      "latency_ms": 0.0032,
       "miss": true,
       "false_hits_on_abstain": false
     },
@@ -321,78 +335,56 @@
       "id": "g-federated",
       "retrieved": [
         "projects/lantern-agent.md",
-        "projects/atlas-search.md",
-        "knowledge/operator-contact.md"
+        "projects/atlas-search.md"
       ],
       "relevant": [
         "knowledge/trust-labels.md",
         "projects/lantern-agent.md"
       ],
       "recall": 0.5,
-      "precision": 0.3333333333333333,
+      "precision": 0.5,
       "abstained": false,
       "expected_abstain": false,
-      "latency_ms": 0.209,
+      "latency_ms": 0.0233,
       "miss": true,
-      "false_hits_on_abstain": false
+      "false_hits_on_abstain": false,
+      "query_tokens": 11,
+      "null_scores": 1789,
+      "cutoff": 0.454794
     },
     {
       "method": "hashed_vector",
       "id": "g-graph-hop",
-      "retrieved": [
-        "knowledge/receipt-redaction.md",
-        "knowledge/operator-contact.md",
-        "knowledge/nomination-not-proof.md"
-      ],
+      "retrieved": [],
       "relevant": [
         "knowledge/neighbor-only.md"
       ],
       "recall": 0.0,
       "precision": 0.0,
-      "abstained": false,
+      "abstained": true,
       "expected_abstain": false,
-      "latency_ms": 0.165,
+      "latency_ms": 0.0188,
       "miss": true,
-      "false_hits_on_abstain": false
-    },
-    {
-      "method": "hashed_vector",
-      "id": "g-insufficient",
-      "retrieved": [
-        "knowledge/operator-contact.md",
-        "knowledge/receipt-redaction.md"
-      ],
-      "relevant": [],
-      "recall": 0.0,
-      "precision": 0.0,
-      "abstained": false,
-      "expected_abstain": true,
-      "latency_ms": 0.159,
-      "miss": false,
-      "false_hits_on_abstain": true
-    },
-    {
-      "method": "graph_expand",
-      "id": "g-insufficient",
-      "retrieved": [
-        "knowledge/nomination-not-proof.md",
-        "knowledge/operator-contact.md",
-        "knowledge/receipt-redaction.md"
-      ],
-      "relevant": [],
-      "recall": 0.0,
-      "precision": 0.0,
-      "abstained": false,
-      "expected_abstain": true,
-      "latency_ms": 0.061,
-      "miss": false,
-      "false_hits_on_abstain": true
+      "false_hits_on_abstain": false,
+      "query_tokens": 9,
+      "null_scores": 1361,
+      "cutoff": 0.460566
     }
   ],
+  "previous_report": {
+    "path": "reports/history/2026-08-23-retrieval-shootout.json",
+    "notes": [
+      "hashed_vector was gated by the lexical recall cutoff (0.2) applied to raw cosine, with no two-token minimum. Its 0/1 abstain measured that scale mismatch, not retrieval quality.",
+      "graph_expand had no gate and always returned up to top_k notes, so its 0/1 abstain could not have been anything else.",
+      "No latency was query-only. Every method redid per-note work for every question: lexical and graph_expand tokenized each note, and hashed_vector rebuilt its index, the most expensive of the three. Query-only, hashed_vector is still the slowest here."
+    ]
+  },
   "limitations": [
     "n is the Harbor fixture set, not a public IR benchmark.",
     "hashed_vector is a sha256 bag-of-tokens index, not a neural embedding API.",
     "graph_expand is one-hop [[wiki]] following, not Microsoft GraphRAG.",
+    "Each gate is defined on its own method's scale; abstain counts compare gates, not one shared threshold.",
+    "Latencies are microsecond-scale medians on one machine; they order methods loosely at best.",
     "Do not generalize these numbers to production corpora."
   ]
 }

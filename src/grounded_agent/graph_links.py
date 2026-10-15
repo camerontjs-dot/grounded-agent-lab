@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-from grounded_agent.retrieve import FixtureNote, overlap_score
+from grounded_agent.retrieve import FixtureNote
 
 LINK_RE = re.compile(r"\[\[([^\]]+)\]\]")
 
@@ -35,36 +35,29 @@ def neighbors(note: FixtureNote, notes: tuple[FixtureNote, ...]) -> tuple[str, .
     return tuple(found)
 
 
-def graph_expand_rank(
-    question: str,
-    notes: tuple[FixtureNote, ...],
+def neighbour_map(notes: tuple[FixtureNote, ...]) -> dict[str, tuple[str, ...]]:
+    """One-hop [[wiki]] neighbours for every note, resolved within `notes`."""
+
+    return {note.source_path: neighbors(note, notes) for note in notes}
+
+
+def expand_from_seeds(
+    seeds: tuple[tuple[str, float], ...],
+    neighbours: dict[str, tuple[str, ...]],
     *,
     k: int,
-    seed_k: int | None = None,
 ) -> tuple[tuple[str, float], ...]:
-    """Lexical seeds plus one-hop neighbors, re-ranked by score."""
+    """Seeds plus their one-hop neighbours, re-ranked by score.
 
-    by_path = {note.source_path: note for note in notes}
-    lexical = sorted(
-        (
-            (
-                note.source_path,
-                overlap_score(question, strip_wiki_links(f"{note.title}\n{note.body}")),
-            )
-            for note in notes
-        ),
-        key=lambda item: item[1],
-        reverse=True,
-    )
+    A neighbour scores 0.85 of the seed that reached it. Callers decide which
+    seeds count; with no seeds the result is empty.
+    """
+
     scores: dict[str, float] = {}
-    seeds = lexical[: seed_k if seed_k is not None else k]
     for path, score in seeds:
         scores[path] = max(scores.get(path, 0.0), score)
-        seed = by_path[path]
-        for neighbor in neighbors(seed, notes):
-            if neighbor not in by_path:
-                continue
+        for neighbour in neighbours.get(path, ()):
             hop = score * 0.85 if score > 0 else 0.15
-            scores[neighbor] = max(scores.get(neighbor, 0.0), hop)
+            scores[neighbour] = max(scores.get(neighbour, 0.0), hop)
     ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
     return tuple(ranked[:k])
