@@ -171,7 +171,7 @@ def test_same_path_changed_source_bytes_change_receipt_hash(
 
 
 @pytest.mark.parametrize("failed_tool", ["query_knowledge", "query_projects"])
-@pytest.mark.xfail(strict=True, reason="audit: missing required index still answers")
+@pytest.mark.xfail(strict=True, reason="#19: missing required index still answers")
 def test_federated_outage_cannot_produce_complete_answer(
     monkeypatch: pytest.MonkeyPatch, failed_tool: str
 ) -> None:
