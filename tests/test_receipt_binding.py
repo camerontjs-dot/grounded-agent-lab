@@ -512,6 +512,14 @@ def test_corpus_digest_binds_paths_and_bytes_not_load_order(corpus: Path) -> Non
     assert len({original, edited, renamed}) == 3
 
 
+def test_notes_built_in_memory_have_no_digest_and_cannot_be_manifested() -> None:
+    # The four-field constructor still works; such a note simply has nothing to bind.
+    note = retrieve_module.FixtureNote("knowledge/a.md", "durable_knowledge", "A", "alpha beta")
+    assert note.source_sha256 is None
+    with pytest.raises(ValueError, match="unhashed"):
+        corpus_digest((note,))
+
+
 def test_cli_json_receipt_carries_the_bindings(capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["ask", "--json", TRUST_QUESTION]) == 0
     receipt = json.loads(capsys.readouterr().out)["receipt"]

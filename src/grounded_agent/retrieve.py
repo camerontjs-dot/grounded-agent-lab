@@ -44,7 +44,9 @@ class FixtureNote:
     trust_profile: TrustProfile
     title: str
     body: str
-    source_sha256: str
+    # Set by parse_note from the file's bytes. Notes built in memory have none and
+    # cannot enter a corpus digest or a receipt citation.
+    source_sha256: str | None = None
 
 
 def _tokens(text: str) -> set[str]:
@@ -118,6 +120,9 @@ def load_corpus(directory: Path, expected_trust: TrustProfile) -> tuple[FixtureN
 def corpus_digest(notes: tuple[FixtureNote, ...]) -> str:
     """Manifest digest: which notes were searched, and the bytes behind each one."""
 
+    missing = [note.source_path for note in notes if note.source_sha256 is None]
+    if missing:
+        raise ValueError(f"cannot digest a corpus with unhashed notes: {missing}")
     manifest = sorted([note.source_path, note.source_sha256] for note in notes)
     canonical = json.dumps(manifest, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
