@@ -28,6 +28,8 @@ Harbor is synthetic. The gold set is five questions. `hashed_vector` is a sha256
 
 A live MindGraph URL is fail-closed unless you set it. CI never requires it.
 
+Every routed index is required, and outages are injected in-process, so a live index outage is not exercised.
+
 ## Resume phrases that are safe
 
 - I built a grounded research agent that abstains when evidence is missing.

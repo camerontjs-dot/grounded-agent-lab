@@ -28,6 +28,8 @@ The LangGraph wrap uses five named nodes: `route`, `retrieve`, `draft`, `review`
 
 Federated questions query both indexes. They never return one unlabelled list. That split is a type invariant, not a prompt instruction.
 
+Every scope the router selects is required. There is no optional-source tier: if retrieval fails or times out for any routed scope, the run abstains with `abstain_reason="required_source_unavailable"`, cites nothing, and does not call the drafter. An injected question or a poisoned surviving note still abstains as `unsafe_instruction`. Either way the receipt keeps `tools_used` and `tool_errors` exactly as observed, and `evidence` keeps whatever a surviving index returned. The baseline and LangGraph runtimes share `guarded_draft`, so they make the same decision.
+
 ## What is outside this diagram
 
 Ollama and hosted sit behind `--provider`. They are not in the default path.
