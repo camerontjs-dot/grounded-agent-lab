@@ -26,6 +26,8 @@ The skills still have a runnable path: a local vector index, an explicit graph w
 
 The hard part was not attaching citations. The hard part was keeping weak-fit nominations out of answers, and keeping a forged tool card from minting `write_index`.
 
+The 2026-10-15 audit found that keeping weak-fit notes out was not enough. A citable note "answered" how many Harbor notes the durable index holds with a sentence about two indexes, and a model draft could cite a valid path while inventing a salary or changing a number. The repair is a narrow deterministic gate for counts, numbers, and names. It is not a semantic judge, and open questions still get first-sentence extracts.
+
 A planted operator alias is copied as `[redacted]`. Receipts and JSONL traces fail if that alias appears. Missing Ollama or hosted credentials exit 2. They do not fall back to extractive.
 
 ## What you can infer

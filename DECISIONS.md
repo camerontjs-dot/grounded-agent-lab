@@ -2,6 +2,16 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-010: A support gate sits between nomination and answer (2026-10-15)
+
+**Decision:** Retrieval nominates; it does not license an answer. A deterministic gate in `src/grounded_agent/support.py` now sits in both drafting paths. A quantity question ("how many", "how much", "number of") needs a cited sentence that states the quantity, with the number attached to the counted noun. A model claim may not add numbers, acronyms, identifiers, e-mail addresses, URLs, or mid-sentence capitalised names that its cited notes lack. Refusals use `abstain_reason=unsupported_claim`.
+
+**Rejected:** An NLI or LLM judge as the gate. Nothing here would qualify its accuracy, and a confident unvalidated judge is the failure this lab exists to catch. Also rejected: requiring every word of a model claim to appear in the cited note. That refuses ordinary paraphrase and still accepts a dropped "not".
+
+**Reason:** The PR #21 regressions showed a citable note answering a count it never stated, and a valid citation path carrying an invented salary and a changed number. Those failures are about specifics, and specifics are what a deterministic check can see.
+
+**Consequence:** The four #11 regressions pass without their xfail markers. Open questions still get first-sentence extracts, which are nominations, not checked answers. The known gaps (dropped negation, ordinary-word fabrication, a count from the wrong index, unchecked open-question extracts) are strict xfails in `tests/test_support.py`. Closing them needs a different mechanism with its own evaluation, not more overlap thresholds.
+
 ## ADR-009: The demo is the packaging gate (2026-08-23)
 
 **Decision:** Phase 7 packaging is a runnable `grounded-agent demo`, an architecture note, a case study, and a limitations page. The README stays the ninety-second path. The demo checks expected outcomes and exits non-zero on mismatch.
