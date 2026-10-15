@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from grounded_agent.graph_links import graph_expand_rank, strip_wiki_links
-from grounded_agent.paths import GOLD_PATH, REPORTS_DIR
+from grounded_agent.paths import GOLD_PATH
 from grounded_agent.retrieve import (
     CITABLE_THRESHOLD,
     MIN_CITABLE_TOKENS,
@@ -131,8 +131,8 @@ def run_shootout(*, gold_path: Path = GOLD_PATH, top_k: int = TOP_K) -> dict[str
                 inspected.append({"method": method, **row})
     return {
         "schema": "grounded-agent-shootout-v1",
-        "corpus": "fixtures/corpus",
-        "gold": "fixtures/gold.json",
+        "corpus": "grounded_agent/fixtures/corpus",
+        "gold": "grounded_agent/fixtures/gold.json",
         "top_k": top_k,
         "methods": list(METHODS),
         "metrics": metrics,
@@ -186,11 +186,12 @@ def render_report(payload: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def write_shootout(out_dir: Path = REPORTS_DIR) -> dict[str, Any]:
-    out_dir.mkdir(parents=True, exist_ok=True)
+def write_shootout(out_dir: Path | str = "reports") -> dict[str, Any]:
+    target = Path(out_dir)
+    target.mkdir(parents=True, exist_ok=True)
     payload = run_shootout()
-    json_path = out_dir / "retrieval-shootout.json"
-    md_path = out_dir / "retrieval-shootout.md"
+    json_path = target / "retrieval-shootout.json"
+    md_path = target / "retrieval-shootout.md"
     json_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     md_path.write_text(render_report(payload), encoding="utf-8")
     return payload
