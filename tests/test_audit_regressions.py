@@ -143,7 +143,6 @@ def test_model_valid_path_does_not_warrant_changed_number() -> None:
     assert answer.citations == ()
 
 
-@pytest.mark.xfail(strict=True, reason="#14: receipt hash does not bind cited source bytes")
 def test_same_path_changed_source_bytes_change_receipt_hash(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

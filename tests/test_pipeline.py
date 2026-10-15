@@ -49,6 +49,8 @@ def test_receipt_omits_question_snippets_and_is_stable() -> None:
         request,
         result.route,
         result.answer,
+        evidence=result.evidence,
+        corpus_digests=result.receipt.corpus_digests,
         tools_used=result.receipt.tools_used,
         tool_errors=result.receipt.tool_errors,
         provider=result.receipt.provider,

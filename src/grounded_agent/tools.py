@@ -22,9 +22,10 @@ from grounded_agent.models import (
     NonBlankStr,
     ResearchRequest,
     RouteDecision,
+    Sha256Hex,
     TrustProfile,
 )
-from grounded_agent.retrieve import search_corpus
+from grounded_agent.retrieve import search_corpus_with_digest
 
 ALLOWED_TOOLS = frozenset({"query_knowledge", "query_projects"})
 DENIED_WRITE_TOOLS = frozenset({"write_index", "delete_note", "grant_write", "merge_indexes"})
@@ -64,6 +65,7 @@ class ToolObservation(FrozenModel):
     trust_profile: TrustProfile
     items: tuple[EvidenceItem, ...] = ()
     error: str | None = None
+    corpus_sha256: Sha256Hex | None = None
 
 
 @dataclass(frozen=True)
@@ -71,6 +73,7 @@ class RetrievalTrace:
     bundle: EvidenceBundle
     tools_used: tuple[str, ...]
     tool_errors: tuple[str, ...] = ()
+    corpus_digests: tuple[tuple[TrustProfile, str], ...] = ()
 
 
 class FixtureToolClient:
@@ -103,8 +106,10 @@ class FixtureToolClient:
         def _run() -> ToolObservation:
             if self.min_delay_s:
                 time.sleep(self.min_delay_s)
-            items = search_corpus(args.question, TOOL_TRUST[name])
-            return ToolObservation(tool=name, trust_profile=TOOL_TRUST[name], items=items)
+            items, digest = search_corpus_with_digest(args.question, TOOL_TRUST[name])
+            return ToolObservation(
+                tool=name, trust_profile=TOOL_TRUST[name], items=items, corpus_sha256=digest
+            )
 
         with ThreadPoolExecutor(max_workers=1) as pool:
             future = pool.submit(_run)
@@ -148,6 +153,7 @@ def retrieve_traced(
     project: list[EvidenceItem] = []
     tools_used: list[str] = []
     errors: list[str] = []
+    digests: list[tuple[TrustProfile, str]] = []
     buckets: dict[TrustProfile, list[EvidenceItem]] = {
         "durable_knowledge": knowledge,
         "project_status": project,
@@ -158,10 +164,13 @@ def retrieve_traced(
         try:
             observation = client.invoke(tool, {"question": request.question})
             buckets[scope].extend(observation.items)
+            if observation.corpus_sha256 is not None:
+                digests.append((scope, observation.corpus_sha256))
         except (ToolDenied, ToolTimeout, ToolSchemaError, ToolUnavailable) as exc:
             errors.append(f"{tool}:{type(exc).__name__}")
     return RetrievalTrace(
         bundle=EvidenceBundle(knowledge=tuple(knowledge), project=tuple(project)),
         tools_used=tuple(tools_used),
         tool_errors=tuple(errors),
+        corpus_digests=tuple(digests),
     )
