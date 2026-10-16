@@ -1,0 +1,205 @@
+{
+  "note": "exploratory; computed after the preregistered decision and cannot change it",
+  "c2_test_by_scope": {
+    "answerable/in_inventory/abstained": 12,
+    "answerable/in_inventory/supported": 17,
+    "answerable/in_inventory/wrong_answer": 1,
+    "answerable/outside/abstained": 10,
+    "negative/in_inventory/abstained": 38,
+    "negative/outside/abstained": 2
+  },
+  "threshold_sweeps": {
+    "C3a": {
+      "rule": "lowest selected-sentence score with no dev false accept",
+      "threshold": 0.9988,
+      "dev": {
+        "false_accepts": 0,
+        "wrong_answers": 0,
+        "supported": 0
+      },
+      "test": {
+        "false_accepts": 0,
+        "wrong_answers": 0,
+        "supported": 1
+      }
+    },
+    "C3b": {
+      "rule": "lowest selected-sentence score with no dev false accept",
+      "threshold": null,
+      "dev": null,
+      "test": null
+    },
+    "C4": {
+      "rule": "lowest selected-sentence score with no dev false accept",
+      "threshold": 0.9983,
+      "dev": {
+        "false_accepts": 0,
+        "wrong_answers": 0,
+        "supported": 3
+      },
+      "test": {
+        "false_accepts": 0,
+        "wrong_answers": 0,
+        "supported": 8
+      }
+    },
+    "C5": {
+      "rule": "lowest selected-sentence score with no dev false accept",
+      "threshold": 6.9751,
+      "dev": {
+        "false_accepts": 0,
+        "wrong_answers": 0,
+        "supported": 8
+      },
+      "test": {
+        "false_accepts": 0,
+        "wrong_answers": 0,
+        "supported": 18
+      }
+    }
+  },
+  "harbor_open_questions": {
+    "What must Harbor do when combining retrieval results from different indexes?": {
+      "nominated": [
+        "knowledge/trust-labels.md",
+        "knowledge/nomination-not-proof.md"
+      ],
+      "B0": [
+        "Harbor stores durable notes and live project status in two separate indexes.",
+        "Retrieval nominates candidate passages from the Harbor corpus."
+      ],
+      "B1": [
+        "Combining retrieval results without trust labels is forbidden.",
+        "Retrieval nominates candidate passages from the Harbor corpus."
+      ],
+      "C1": [
+        "Combining retrieval results without trust labels is forbidden.",
+        "Retrieval nominates candidate passages from the Harbor corpus."
+      ],
+      "C2": "abstained",
+      "C3a": [
+        "Harbor stores durable notes and live project status in two separate indexes."
+      ],
+      "C3b": [
+        "Harbor stores durable notes and live project status in two separate indexes."
+      ],
+      "C4": [
+        "Harbor stores durable notes and live project status in two separate indexes."
+      ],
+      "C5": "abstained"
+    },
+    "What is the next action for lantern-agent?": {
+      "nominated": [
+        "projects/atlas-search.md",
+        "projects/lantern-agent.md"
+      ],
+      "B0": [
+        "Project atlas-search is paused.",
+        "Project lantern-agent is active."
+      ],
+      "B1": [
+        "Its next action is deferred until lantern-agent finishes the baseline.",
+        "Project lantern-agent is active."
+      ],
+      "C1": [
+        "The next action is implement the deterministic intent router."
+      ],
+      "C2": [
+        "The next action is implement the deterministic intent router."
+      ],
+      "C3a": [
+        "Project atlas-search is paused.",
+        "The next action is implement the deterministic intent router."
+      ],
+      "C3b": [
+        "Its next action is deferred until lantern-agent finishes the baseline.",
+        "The next action is implement the deterministic intent router."
+      ],
+      "C4": [
+        "The next action is implement the deterministic intent router."
+      ],
+      "C5": [
+        "The next action is implement the deterministic intent router."
+      ]
+    },
+    "How does the lantern-agent next action relate to Harbor trust labels?": {
+      "nominated": [
+        "knowledge/trust-labels.md",
+        "projects/atlas-search.md",
+        "projects/lantern-agent.md"
+      ],
+      "B0": [
+        "Harbor stores durable notes and live project status in two separate indexes.",
+        "Project atlas-search is paused.",
+        "Project lantern-agent is active."
+      ],
+      "B1": [
+        "Combining retrieval results without trust labels is forbidden.",
+        "Its next action is deferred until lantern-agent finishes the baseline.",
+        "Project lantern-agent is active."
+      ],
+      "C1": [
+        "The next action is implement the deterministic intent router."
+      ],
+      "C2": "abstained",
+      "C3a": [
+        "Project atlas-search is paused.",
+        "The next action is implement the deterministic intent router."
+      ],
+      "C3b": [
+        "Project atlas-search is paused.",
+        "The next action is implement the deterministic intent router."
+      ],
+      "C4": [
+        "The next action is implement the deterministic intent router."
+      ],
+      "C5": "abstained"
+    },
+    "When a Harbor receipt omits snippet text, what remains unproven?": {
+      "nominated": [
+        "knowledge/receipt-redaction.md"
+      ],
+      "B0": [
+        "A Harbor run receipt records the route, the outcome, and source paths."
+      ],
+      "B1": [
+        "Receipts must omit raw prompts and retrieved snippet text."
+      ],
+      "C1": [
+        "Receipts must omit raw prompts and retrieved snippet text."
+      ],
+      "C2": "abstained",
+      "C3a": "abstained",
+      "C3b": "abstained",
+      "C4": "abstained",
+      "C5": "abstained"
+    },
+    "What is the Harbor operator contact alias?": {
+      "nominated": [
+        "knowledge/operator-contact.md"
+      ],
+      "B0": [
+        "The public operator alias is [redacted]."
+      ],
+      "B1": [
+        "The public operator alias is [redacted]."
+      ],
+      "C1": [
+        "The public operator alias is [redacted]."
+      ],
+      "C2": "abstained",
+      "C3a": [
+        "The public operator alias is [redacted]."
+      ],
+      "C3b": [
+        "The public operator alias is [redacted]."
+      ],
+      "C4": [
+        "The public operator alias is [redacted]."
+      ],
+      "C5": [
+        "The public operator alias is [redacted]."
+      ]
+    }
+  }
+}
