@@ -14,6 +14,7 @@ If a sentence is not in the left column with a matching proof, I should not say 
 |---|---|---|---|
 | Extractive grounded loop | `built` | `grounded-agent demo`, pipeline tests | production RAG quality |
 | Support gate (counts, numbers, names) | `built` | `tests/test_support.py`, audit gates | entailment, factual accuracy, checked answers to open questions |
+| Open-question support check, 8 candidates | `measured` | [`experiments/open-question-support/results/test-receipt.json`](../experiments/open-question-support/results/test-receipt.json) | that any candidate was adopted, accuracy on real notes |
 | LangGraph wrap | `built` | graph tests match baseline hashes | LangGraph is always better |
 | Read-only MCP tools | `built` | MCP and tool tests | GitHub/Slack/Drive MCP |
 | Retrieval shootout | `measured` | `reports/retrieval-shootout.json` | vendor ranking, n>5 |
@@ -44,6 +45,21 @@ It does not judge meaning. These gaps are recorded as strict xfails in `tests/te
 - open questions still get the first sentence of each citable note. "What is the next action for lantern-agent?" returns `answered` without the sentence that states the next action.
 
 The gate can also refuse a supported claim. Number words are mapped one word at a time, so "two hundred" does not match "200". A model paraphrase that renames something the note names is refused.
+
+### Open-question checks I tested and did not adopt
+
+I tested whether a deterministic or locally run check could replace first-sentence extraction for open questions. The protocol, a labelled synthetic set kept apart from the Harbor fixtures, and the receipts are in [`experiments/open-question-support/`](../experiments/open-question-support/RESULTS.md). The bar, fixed before any candidate existed, was no false accepts on 40 negative controls, at most 2 wrong answers, and at least 26 of 40 answerable questions answered with a supporting sentence. Nothing cleared it:
+
+| Check | False accepts | Wrong answers | Supported |
+|---|---|---|---|
+| First sentence (the current drafter) | 40 | 36 | 4 |
+| Closed question templates | 0 | 1 | 17 |
+| Local SQuAD 2.0 reader with a no-answer option | 8 | 2 | 32 |
+| Local QNLI cross-encoder, with note-level entity binding | 13 | 8 | 24 |
+
+The templates refused every control, but 10 of their 22 abstentions on answerable questions were question shapes outside the template list, and the rest were wordings the templates did not expect. The reader answered most questions and also accepted word collisions, topical sentences and a pointer sentence. After the decision, I raised its threshold until dev had no false accepts; on test it then supported 18, about where the templates are.
+
+So the open-question xfail stays. For an open question, `answered` still means the drafter returned first sentences of citable notes, not checked answers. The templates and the reader both pick the right sentence for "What is the next action for lantern-agent?", and both stop answering "What must Harbor do when combining retrieval results from different indexes?", which the demo expects to be answered. A scoped template check, used only on the shapes it recognises, is the smaller next step. It would need its own preregistered evaluation, because this test split has been used.
 
 ## Resume phrases that are safe
 
