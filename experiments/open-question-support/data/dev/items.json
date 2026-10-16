@@ -1,0 +1,716 @@
+[
+  {
+    "id": "d001",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "What is the next action for heron-backfill?",
+    "notes": [
+      "projects/heron-backfill.md",
+      "projects/quill-exporter.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/heron-backfill.md",
+        "sentence": "The next action is replay the October queue into the staging index."
+      }
+    ],
+    "why": "The quill-exporter next action names heron-backfill but is quill-exporter's own."
+  },
+  {
+    "id": "d002",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun"
+    ],
+    "question": "Who maintains quill-exporter?",
+    "notes": [
+      "projects/quill-exporter.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/quill-exporter.md",
+        "sentence": "The Reporting team maintains it."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d003",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first"
+    ],
+    "question": "What is the status of saltmarsh-ui?",
+    "notes": [
+      "projects/saltmarsh-ui.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/saltmarsh-ui.md",
+        "sentence": "Project saltmarsh-ui is in review."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d004",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase",
+      "pronoun",
+      "distractor"
+    ],
+    "question": "Who is responsible for tern-scheduler?",
+    "notes": [
+      "projects/tern-scheduler.md",
+      "projects/gannet-cache.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/tern-scheduler.md",
+        "sentence": "The Platform team owns it."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d005",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun"
+    ],
+    "question": "What does quill-exporter write?",
+    "notes": [
+      "projects/quill-exporter.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/quill-exporter.md",
+        "sentence": "The exporter writes redacted CSV files for the review desk."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d006",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "What is the next action for gannet-cache?",
+    "notes": [
+      "projects/gannet-cache.md"
+    ],
+    "gold": [],
+    "why": "The note is about gannet-cache and states no next action."
+  },
+  {
+    "id": "d007",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "What is the next action for tern-scheduler?",
+    "notes": [
+      "projects/tern-scheduler.md",
+      "projects/heron-backfill.md"
+    ],
+    "gold": [],
+    "why": "The only next action in these notes belongs to heron-backfill."
+  },
+  {
+    "id": "d008",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "What is the next action for saltmarsh-ui?",
+    "notes": [
+      "projects/saltmarsh-ui.md"
+    ],
+    "gold": [],
+    "why": "'Action items from the last review' uses action in another sense."
+  },
+  {
+    "id": "d009",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "Who owns saltmarsh-ui?",
+    "notes": [
+      "projects/saltmarsh-ui.md",
+      "knowledge/status-notes.md"
+    ],
+    "gold": [],
+    "why": "The status-notes rule says every note names an owner, without naming one."
+  },
+  {
+    "id": "d010",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "What is the cloud budget for the review desk?",
+    "notes": [
+      "projects/quill-exporter.md",
+      "knowledge/tool-timeouts.md"
+    ],
+    "gold": [],
+    "why": "Shares 'review desk' and 'budget'; neither note addresses a cloud budget."
+  },
+  {
+    "id": "d011",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first"
+    ],
+    "question": "What must a citation path name?",
+    "notes": [
+      "knowledge/citation-paths.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/citation-paths.md",
+        "sentence": "A citation path must name a note that retrieval returned as citable."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d012",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later"
+    ],
+    "question": "What must a next action be?",
+    "notes": [
+      "knowledge/status-notes.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/status-notes.md",
+        "sentence": "A next action must be a single step that someone can start today."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d013",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first",
+      "paraphrase"
+    ],
+    "question": "What must Harbor do with a tool call that exceeds its budget?",
+    "notes": [
+      "knowledge/tool-timeouts.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/tool-timeouts.md",
+        "sentence": "A tool call that exceeds its budget is cancelled."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d014",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "What may a reviewer do with the draft?",
+    "notes": [
+      "knowledge/review-interrupt.md",
+      "knowledge/citation-paths.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/review-interrupt.md",
+        "sentence": "A reviewer may approve or reject the draft."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d015",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase"
+    ],
+    "question": "What must Harbor wait for before restarting the heron-backfill replay?",
+    "notes": [
+      "projects/heron-backfill.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/heron-backfill.md",
+        "sentence": "Do not restart the replay until the schema check passes."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d016",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "What must Harbor do when an export file is too large?",
+    "notes": [
+      "knowledge/export-format.md",
+      "knowledge/cache-invalidation.md"
+    ],
+    "gold": [],
+    "why": "Nothing addresses export size."
+  },
+  {
+    "id": "d017",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "What must a reviewer check before approving a draft?",
+    "notes": [
+      "knowledge/review-interrupt.md"
+    ],
+    "gold": [],
+    "why": "'Reviewers follow the review checklist' names the checklist without its content."
+  },
+  {
+    "id": "d018",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "What must tern-scheduler do before a restart?",
+    "notes": [
+      "projects/tern-scheduler.md",
+      "projects/heron-backfill.md"
+    ],
+    "gold": [],
+    "why": "The restart rule belongs to the heron-backfill replay."
+  },
+  {
+    "id": "d019",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "What must a reviewer check?",
+    "notes": [
+      "projects/tern-scheduler.md"
+    ],
+    "gold": [],
+    "why": "'The nightly link check' uses check as a noun for a scheduled job."
+  },
+  {
+    "id": "d020",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "What must Harbor do before deleting an export?",
+    "notes": [
+      "knowledge/export-format.md"
+    ],
+    "gold": [],
+    "why": "The note is about exports and says nothing about deleting them."
+  },
+  {
+    "id": "d021",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later"
+    ],
+    "question": "What happens when a reviewer rejects the draft?",
+    "notes": [
+      "knowledge/review-interrupt.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/review-interrupt.md",
+        "sentence": "When a reviewer rejects the draft, the run abstains with the review reason."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d022",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later"
+    ],
+    "question": "When a source note changes, what happens to its cached results?",
+    "notes": [
+      "knowledge/cache-invalidation.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/cache-invalidation.md",
+        "sentence": "When a source note changes, its cached results are dropped."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d023",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "What happens when a tool call times out?",
+    "notes": [
+      "knowledge/tool-timeouts.md",
+      "knowledge/cache-invalidation.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/tool-timeouts.md",
+        "sentence": "A tool call that exceeds its budget is cancelled."
+      },
+      {
+        "note": "knowledge/tool-timeouts.md",
+        "sentence": "When a tool call times out, the run records the tool name in its tool errors."
+      },
+      {
+        "note": "knowledge/tool-timeouts.md",
+        "sentence": "A timed-out call never counts as an empty result."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d024",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first",
+      "distractor"
+    ],
+    "question": "What does the graph do when review is requested?",
+    "notes": [
+      "knowledge/review-interrupt.md",
+      "projects/quill-exporter.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/review-interrupt.md",
+        "sentence": "The graph pauses before it emits a receipt when review is requested."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d025",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first"
+    ],
+    "question": "What happens to cached results after a day?",
+    "notes": [
+      "knowledge/cache-invalidation.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/cache-invalidation.md",
+        "sentence": "Cached retrieval results expire after one day."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d026",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "What happens when a reviewer approves the draft?",
+    "notes": [
+      "knowledge/review-interrupt.md"
+    ],
+    "gold": [],
+    "why": "Only rejection has a stated outcome."
+  },
+  {
+    "id": "d027",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "What happens when an export changes?",
+    "notes": [
+      "knowledge/cache-invalidation.md",
+      "knowledge/export-format.md"
+    ],
+    "gold": [],
+    "why": "The change rule is about source notes, not exports."
+  },
+  {
+    "id": "d028",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "What happens after a failed export?",
+    "notes": [
+      "knowledge/export-format.md"
+    ],
+    "gold": [],
+    "why": "The note points at the export runbook instead of stating the outcome."
+  },
+  {
+    "id": "d029",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "What happens when the review desk rejects an export?",
+    "notes": [
+      "projects/quill-exporter.md",
+      "knowledge/review-interrupt.md"
+    ],
+    "gold": [],
+    "why": "The rejection rule is about a graph reviewer rejecting a draft."
+  },
+  {
+    "id": "d030",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "What happens when the staging cluster loses power?",
+    "notes": [
+      "knowledge/cache-invalidation.md",
+      "projects/heron-backfill.md"
+    ],
+    "gold": [],
+    "why": "Shares 'staging'; nothing addresses power loss."
+  },
+  {
+    "id": "d031",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun",
+      "paraphrase",
+      "distractor"
+    ],
+    "question": "How does quill-exporter depend on heron-backfill?",
+    "notes": [
+      "projects/quill-exporter.md",
+      "projects/heron-backfill.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/quill-exporter.md",
+        "sentence": "Its next action is to wait for heron-backfill to finish the replay."
+      },
+      {
+        "note": "projects/quill-exporter.md",
+        "sentence": "Quill-exporter reads the staging index that heron-backfill fills."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d032",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun",
+      "distractor"
+    ],
+    "question": "How does gannet-cache relate to tern-scheduler?",
+    "notes": [
+      "projects/gannet-cache.md",
+      "projects/tern-scheduler.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/gannet-cache.md",
+        "sentence": "It was replaced by the warm cache step in tern-scheduler."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d033",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "How does tern-scheduler relate to quill-exporter?",
+    "notes": [
+      "projects/tern-scheduler.md",
+      "projects/quill-exporter.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/tern-scheduler.md",
+        "sentence": "Tern-scheduler triggers quill-exporter after each nightly run."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d034",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase",
+      "pronoun"
+    ],
+    "question": "How do the review desk and quill-exporter connect?",
+    "notes": [
+      "projects/quill-exporter.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/quill-exporter.md",
+        "sentence": "The exporter writes redacted CSV files for the review desk."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d035",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "What is the relationship between cache invalidation and source notes?",
+    "notes": [
+      "knowledge/cache-invalidation.md",
+      "knowledge/citation-paths.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/cache-invalidation.md",
+        "sentence": "When a source note changes, its cached results are dropped."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "d036",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "How does the billing team relate to the staging index?",
+    "notes": [
+      "projects/heron-backfill.md",
+      "projects/quill-exporter.md"
+    ],
+    "gold": [],
+    "why": "Shares 'staging index'; no billing team appears."
+  },
+  {
+    "id": "d037",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "How does heron-backfill relate to tern-scheduler?",
+    "notes": [
+      "projects/heron-backfill.md",
+      "projects/gannet-cache.md"
+    ],
+    "gold": [],
+    "why": "The tern-scheduler relation belongs to gannet-cache."
+  },
+  {
+    "id": "d038",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "How does gannet-cache relate to quill-exporter?",
+    "notes": [
+      "projects/gannet-cache.md",
+      "projects/quill-exporter.md"
+    ],
+    "gold": [],
+    "why": "Both subjects have notes; no sentence relates them."
+  },
+  {
+    "id": "d039",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "How does saltmarsh-ui depend on tern-scheduler?",
+    "notes": [
+      "projects/saltmarsh-ui.md",
+      "knowledge/status-notes.md"
+    ],
+    "gold": [],
+    "why": "Status notes list dependencies in general; none is given here."
+  },
+  {
+    "id": "d040",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "How does the Platform wiki relate to tern-scheduler?",
+    "notes": [
+      "projects/gannet-cache.md",
+      "projects/tern-scheduler.md"
+    ],
+    "gold": [],
+    "why": "'The Platform team owns it' uses Platform for a team, not the wiki."
+  }
+]

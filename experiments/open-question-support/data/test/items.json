@@ -1,0 +1,1435 @@
+[
+  {
+    "id": "t001",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "What is the next action for kestrel-indexer?",
+    "notes": [
+      "projects/kestrel-indexer.md",
+      "projects/marlin-sync.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/kestrel-indexer.md",
+        "sentence": "The next action is rebuild the shard map from the latest snapshot."
+      }
+    ],
+    "why": "The marlin-sync next action names kestrel-indexer but is marlin-sync's own."
+  },
+  {
+    "id": "t002",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase"
+    ],
+    "question": "What is the next action for puffin-reports?",
+    "notes": [
+      "projects/puffin-reports.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/puffin-reports.md",
+        "sentence": "The next step is add a column for the abstain reason."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t003",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun",
+      "distractor"
+    ],
+    "question": "Who owns cormorant-alerts?",
+    "notes": [
+      "projects/cormorant-alerts.md",
+      "projects/kestrel-indexer.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/cormorant-alerts.md",
+        "sentence": "The Alerts team owns it."
+      }
+    ],
+    "why": "'The Indexing team owns it' is kestrel-indexer's owner."
+  },
+  {
+    "id": "t004",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first"
+    ],
+    "question": "What is the status of marlin-sync?",
+    "notes": [
+      "projects/marlin-sync.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/marlin-sync.md",
+        "sentence": "Project marlin-sync is blocked."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t005",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first",
+      "distractor"
+    ],
+    "question": "What is the status of avocet-portal?",
+    "notes": [
+      "projects/avocet-portal.md",
+      "projects/egret-lens.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/avocet-portal.md",
+        "sentence": "Project avocet-portal is on hold."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t006",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase",
+      "pronoun"
+    ],
+    "question": "Who is responsible for wren-ledger?",
+    "notes": [
+      "projects/wren-ledger.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/wren-ledger.md",
+        "sentence": "The Records team maintains it."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t007",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun"
+    ],
+    "question": "What does skua-importer do?",
+    "notes": [
+      "projects/skua-importer.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/skua-importer.md",
+        "sentence": "The importer turns partner exports into Harbor notes."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t008",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun",
+      "distractor"
+    ],
+    "question": "What does wren-ledger store?",
+    "notes": [
+      "projects/wren-ledger.md",
+      "knowledge/migration-windows.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/wren-ledger.md",
+        "sentence": "The ledger stores one row per receipt hash."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t009",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun"
+    ],
+    "question": "Who signs off on osprey-gateway changes?",
+    "notes": [
+      "projects/osprey-gateway.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/osprey-gateway.md",
+        "sentence": "The Security team signs off on gateway changes."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t010",
+    "kind": "attribute",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun"
+    ],
+    "question": "When is the osprey-gateway review due?",
+    "notes": [
+      "projects/osprey-gateway.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/osprey-gateway.md",
+        "sentence": "Its review is due on Thursday."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t011",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "Who owns curlew-mirror?",
+    "notes": [
+      "projects/curlew-mirror.md"
+    ],
+    "gold": [],
+    "why": "The note is about curlew-mirror and names no owner."
+  },
+  {
+    "id": "t012",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "Who owns marlin-sync?",
+    "notes": [
+      "projects/marlin-sync.md",
+      "projects/kestrel-indexer.md"
+    ],
+    "gold": [],
+    "why": "'The Indexing team owns it' is kestrel-indexer's owner."
+  },
+  {
+    "id": "t013",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "What does curlew-mirror check?",
+    "notes": [
+      "projects/curlew-mirror.md"
+    ],
+    "gold": [],
+    "why": "The mirror is the thing that gets checked; nothing says what it checks."
+  },
+  {
+    "id": "t014",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "What is the next action for curlew-mirror?",
+    "notes": [
+      "projects/curlew-mirror.md",
+      "knowledge/status-note-rules.md"
+    ],
+    "gold": [],
+    "why": "The rule says active projects list a next action, without one for curlew-mirror."
+  },
+  {
+    "id": "t015",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "What is the hosting cost of the read replicas?",
+    "notes": [
+      "projects/marlin-sync.md",
+      "knowledge/index-rebuilds.md"
+    ],
+    "gold": [],
+    "why": "Shares 'read replicas'; no cost appears."
+  },
+  {
+    "id": "t016",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "When is the kestrel-indexer review due?",
+    "notes": [
+      "projects/kestrel-indexer.md",
+      "projects/osprey-gateway.md"
+    ],
+    "gold": [],
+    "why": "The only review date belongs to osprey-gateway."
+  },
+  {
+    "id": "t017",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "What is the next action for egret-lens?",
+    "notes": [
+      "projects/egret-lens.md",
+      "projects/cormorant-alerts.md"
+    ],
+    "gold": [],
+    "why": "The only next action belongs to cormorant-alerts."
+  },
+  {
+    "id": "t018",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "What is the next action for plover-archive?",
+    "notes": [
+      "projects/plover-archive.md"
+    ],
+    "gold": [],
+    "why": "'Its action history' uses action for past records."
+  },
+  {
+    "id": "t019",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "Which team owns skua-importer?",
+    "notes": [
+      "projects/skua-importer.md",
+      "knowledge/status-note-rules.md"
+    ],
+    "gold": [],
+    "why": "The rule says a status note names one owning team, without naming it."
+  },
+  {
+    "id": "t020",
+    "kind": "attribute",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "What is the backup schedule for the Docs space?",
+    "notes": [
+      "knowledge/snapshot-retention.md",
+      "projects/egret-lens.md"
+    ],
+    "gold": [],
+    "why": "Shares 'Docs space' and snapshot words; no backup schedule for it."
+  },
+  {
+    "id": "t021",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "What must happen before an index rebuild?",
+    "notes": [
+      "knowledge/snapshot-retention.md",
+      "knowledge/index-rebuilds.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/snapshot-retention.md",
+        "sentence": "A snapshot must be taken before any index rebuild."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t022",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later"
+    ],
+    "question": "What must a reviewer do before a quarantined note returns to the index?",
+    "notes": [
+      "knowledge/quarantine.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/quarantine.md",
+        "sentence": "A reviewer must clear a quarantined note before it returns to the index."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t023",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first",
+      "distractor"
+    ],
+    "question": "What must be removed when a source is revoked?",
+    "notes": [
+      "knowledge/source-revocation.md",
+      "knowledge/quarantine.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/source-revocation.md",
+        "sentence": "A revoked source must be removed from every answer that cites it."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t024",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later"
+    ],
+    "question": "What must a handover note list?",
+    "notes": [
+      "knowledge/handover-notes.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/handover-notes.md",
+        "sentence": "A handover note must list open pages and their owners."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t025",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase",
+      "distractor"
+    ],
+    "question": "What must a storage migration go through first?",
+    "notes": [
+      "knowledge/migration-windows.md",
+      "projects/wren-ledger.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/migration-windows.md",
+        "sentence": "A migration must be rehearsed on the staging cluster first."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t026",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "What may partners read?",
+    "notes": [
+      "knowledge/partner-access.md",
+      "projects/avocet-portal.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/partner-access.md",
+        "sentence": "Partners may read receipts but never snippets."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t027",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase"
+    ],
+    "question": "What must emergency fixes have during a freeze?",
+    "notes": [
+      "knowledge/freeze-windows.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/freeze-windows.md",
+        "sentence": "Emergency fixes need sign-off from the Security team during a freeze."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t028",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first",
+      "paraphrase",
+      "distractor"
+    ],
+    "question": "What changes are blocked during a freeze window?",
+    "notes": [
+      "knowledge/freeze-windows.md",
+      "knowledge/migration-windows.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/freeze-windows.md",
+        "sentence": "During a freeze window, no index changes are deployed."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t029",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase",
+      "distractor"
+    ],
+    "question": "What is not allowed for a quarantined note?",
+    "notes": [
+      "knowledge/quarantine.md",
+      "knowledge/source-revocation.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/quarantine.md",
+        "sentence": "A quarantined note cannot be cited."
+      },
+      {
+        "note": "knowledge/quarantine.md",
+        "sentence": "A reviewer must clear a quarantined note before it returns to the index."
+      }
+    ],
+    "why": "Both sentences state a restriction on a quarantined note."
+  },
+  {
+    "id": "t030",
+    "kind": "rule",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first"
+    ],
+    "question": "How must the review queue be ordered?",
+    "notes": [
+      "knowledge/review-queue.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/review-queue.md",
+        "sentence": "The review queue is ordered by request time."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t031",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "What must a reviewer check before clearing a quarantined note?",
+    "notes": [
+      "knowledge/quarantine.md"
+    ],
+    "gold": [],
+    "why": "The note says a reviewer must clear the note, not what to check."
+  },
+  {
+    "id": "t032",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "What must be taken before a storage migration?",
+    "notes": [
+      "knowledge/snapshot-retention.md",
+      "projects/wren-ledger.md"
+    ],
+    "gold": [],
+    "why": "The snapshot rule is for index rebuilds, not storage migrations."
+  },
+  {
+    "id": "t033",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "What must partners log?",
+    "notes": [
+      "knowledge/partner-access.md"
+    ],
+    "gold": [],
+    "why": "Partner requests are logged; nothing says partners log anything."
+  },
+  {
+    "id": "t034",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "What must Harbor do to contain an incident?",
+    "notes": [
+      "knowledge/incident-rules.md"
+    ],
+    "gold": [],
+    "why": "The note points at the incident runbook; summaries are not containment."
+  },
+  {
+    "id": "t035",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "What must Harbor do to rotate a database password?",
+    "notes": [
+      "knowledge/alias-rotation.md",
+      "knowledge/partner-access.md"
+    ],
+    "gold": [],
+    "why": "Shares 'rotate'; no database password appears."
+  },
+  {
+    "id": "t036",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "What must a snapshot be checked for?",
+    "notes": [
+      "knowledge/snapshot-retention.md"
+    ],
+    "gold": [],
+    "why": "The note is about snapshots and says nothing about checking them."
+  },
+  {
+    "id": "t037",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "What must the Docs team sign off on during a freeze?",
+    "notes": [
+      "knowledge/freeze-windows.md"
+    ],
+    "gold": [],
+    "why": "The freeze sign-off belongs to the Security team."
+  },
+  {
+    "id": "t038",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "What must a code sample in the docs show?",
+    "notes": [
+      "knowledge/trace-sampling.md"
+    ],
+    "gold": [],
+    "why": "The note is about sampling traces, not code samples."
+  },
+  {
+    "id": "t039",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "What must a partner agree to before access?",
+    "notes": [
+      "knowledge/partner-access.md"
+    ],
+    "gold": [],
+    "why": "The note points at the partner agreement without its terms."
+  },
+  {
+    "id": "t040",
+    "kind": "rule",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "What must Harbor encrypt at rest?",
+    "notes": [
+      "knowledge/snapshot-retention.md",
+      "projects/wren-ledger.md"
+    ],
+    "gold": [],
+    "why": "Shares storage words; nothing addresses encryption."
+  },
+  {
+    "id": "t041",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "What happens when a migration overruns?",
+    "notes": [
+      "knowledge/migration-windows.md",
+      "projects/wren-ledger.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/migration-windows.md",
+        "sentence": "When a migration overruns, the ledger stays read-only until it finishes."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t042",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first"
+    ],
+    "question": "What happens to queries during an index rebuild?",
+    "notes": [
+      "knowledge/index-rebuilds.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/index-rebuilds.md",
+        "sentence": "Queries during an index rebuild are served from the mirror."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t043",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "What happens when an index rebuild fails?",
+    "notes": [
+      "knowledge/index-rebuilds.md",
+      "projects/curlew-mirror.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/index-rebuilds.md",
+        "sentence": "A rebuild that fails leaves the previous index in place."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t044",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later"
+    ],
+    "question": "What happens to traces when sampling is disabled?",
+    "notes": [
+      "knowledge/trace-sampling.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/trace-sampling.md",
+        "sentence": "When sampling is disabled, no traces leave the run."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t045",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later"
+    ],
+    "question": "What happens when a source is revoked?",
+    "notes": [
+      "knowledge/source-revocation.md",
+      "knowledge/quarantine.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/source-revocation.md",
+        "sentence": "A revoked source must be removed from every answer that cites it."
+      },
+      {
+        "note": "knowledge/source-revocation.md",
+        "sentence": "Revocation sends the affected notes to quarantine."
+      },
+      {
+        "note": "knowledge/source-revocation.md",
+        "sentence": "The revocation log names who revoked the source."
+      },
+      {
+        "note": "knowledge/quarantine.md",
+        "sentence": "Notes enter quarantine when their source is revoked."
+      }
+    ],
+    "why": "Every revocation sentence states something that follows from a revocation."
+  },
+  {
+    "id": "t046",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later"
+    ],
+    "question": "What happens to an old operator alias after rotation?",
+    "notes": [
+      "knowledge/alias-rotation.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/alias-rotation.md",
+        "sentence": "The old alias forwards to the new one for two weeks."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t047",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase"
+    ],
+    "question": "What happens to a draft that waits too long in the review queue?",
+    "notes": [
+      "knowledge/review-queue.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/review-queue.md",
+        "sentence": "A draft that waits longer is returned to its author."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t048",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun"
+    ],
+    "question": "What does cormorant-alerts do when the tool error rate passes five percent?",
+    "notes": [
+      "projects/cormorant-alerts.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/cormorant-alerts.md",
+        "sentence": "It pages the on-call engineer when a tool error rate passes five percent."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t049",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first",
+      "distractor"
+    ],
+    "question": "What happens to a partner account after six months without use?",
+    "notes": [
+      "knowledge/partner-access.md",
+      "knowledge/alias-rotation.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/partner-access.md",
+        "sentence": "Partner accounts expire after six months without use."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t050",
+    "kind": "consequence",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first"
+    ],
+    "question": "What happens to snapshots after ninety days?",
+    "notes": [
+      "knowledge/snapshot-retention.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/snapshot-retention.md",
+        "sentence": "Snapshots older than ninety days are deleted."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t051",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "What happens when a handover note is late?",
+    "notes": [
+      "knowledge/handover-notes.md"
+    ],
+    "gold": [],
+    "why": "The note covers handover notes but not lateness."
+  },
+  {
+    "id": "t052",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "What happens when a partner account is reactivated?",
+    "notes": [
+      "knowledge/partner-access.md"
+    ],
+    "gold": [],
+    "why": "Only expiry is covered."
+  },
+  {
+    "id": "t053",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "What happens when a snapshot restore fails?",
+    "notes": [
+      "knowledge/snapshot-retention.md"
+    ],
+    "gold": [],
+    "why": "The note says where restores start, not what happens when one fails."
+  },
+  {
+    "id": "t054",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "What happens when a partner account is revoked?",
+    "notes": [
+      "knowledge/source-revocation.md",
+      "knowledge/partner-access.md"
+    ],
+    "gold": [],
+    "why": "The revocation rules are for sources, not partner accounts."
+  },
+  {
+    "id": "t055",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "What happens when a reviewer clears the review queue?",
+    "notes": [
+      "knowledge/quarantine.md",
+      "knowledge/review-queue.md"
+    ],
+    "gold": [],
+    "why": "'Clear' in the quarantine rule means approving a note, not emptying a queue."
+  },
+  {
+    "id": "t056",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "What happens when someone checks out the curlew-mirror branch?",
+    "notes": [
+      "projects/curlew-mirror.md"
+    ],
+    "gold": [],
+    "why": "'Checked against the primary' is a nightly comparison, not a branch checkout."
+  },
+  {
+    "id": "t057",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "What happens after a failed partner import?",
+    "notes": [
+      "projects/skua-importer.md"
+    ],
+    "gold": [],
+    "why": "The note points at the import runbook instead of stating the outcome."
+  },
+  {
+    "id": "t058",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "What happens when a trace sample is flagged?",
+    "notes": [
+      "knowledge/trace-sampling.md"
+    ],
+    "gold": [],
+    "why": "The note points at the review guide instead of stating the outcome."
+  },
+  {
+    "id": "t059",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "What happens when the service token expires?",
+    "notes": [
+      "projects/osprey-gateway.md",
+      "knowledge/partner-access.md"
+    ],
+    "gold": [],
+    "why": "Shares 'service token' and 'expire'; token expiry is not addressed."
+  },
+  {
+    "id": "t060",
+    "kind": "consequence",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "What happens to the ledger when the Docs space moves?",
+    "notes": [
+      "projects/wren-ledger.md",
+      "projects/egret-lens.md"
+    ],
+    "gold": [],
+    "why": "Shares 'ledger' and 'Docs space'; nothing connects them."
+  },
+  {
+    "id": "t061",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun",
+      "paraphrase"
+    ],
+    "question": "How does marlin-sync depend on kestrel-indexer?",
+    "notes": [
+      "projects/marlin-sync.md",
+      "projects/kestrel-indexer.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/marlin-sync.md",
+        "sentence": "Its next action is to wait for kestrel-indexer to publish a new shard map."
+      },
+      {
+        "note": "projects/kestrel-indexer.md",
+        "sentence": "Kestrel-indexer publishes the shard map that marlin-sync copies."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t062",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun",
+      "distractor"
+    ],
+    "question": "How does plover-archive relate to wren-ledger?",
+    "notes": [
+      "projects/plover-archive.md",
+      "projects/wren-ledger.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/plover-archive.md",
+        "sentence": "It was folded into wren-ledger in the spring."
+      },
+      {
+        "note": "projects/plover-archive.md",
+        "sentence": "Its action history moved to wren-ledger."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t063",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "distractor"
+    ],
+    "question": "How does kestrel-indexer use curlew-mirror?",
+    "notes": [
+      "projects/curlew-mirror.md",
+      "projects/kestrel-indexer.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/curlew-mirror.md",
+        "sentence": "Kestrel-indexer reads from the mirror during rebuilds."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t064",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun",
+      "distractor"
+    ],
+    "question": "How does skua-importer relate to quarantine?",
+    "notes": [
+      "projects/skua-importer.md",
+      "knowledge/quarantine.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/skua-importer.md",
+        "sentence": "Imported notes are quarantined until a reviewer clears them."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t065",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "paraphrase",
+      "pronoun"
+    ],
+    "question": "How does puffin-reports work with the Records team?",
+    "notes": [
+      "projects/puffin-reports.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/puffin-reports.md",
+        "sentence": "Report drafts go to the Records team for review."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t066",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun"
+    ],
+    "question": "What is the relationship between dunlin-checker and receipts?",
+    "notes": [
+      "projects/dunlin-checker.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/dunlin-checker.md",
+        "sentence": "It compares each answer's citations with the receipt."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t067",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later"
+    ],
+    "question": "How do source revocation and quarantine relate?",
+    "notes": [
+      "knowledge/source-revocation.md",
+      "knowledge/quarantine.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/source-revocation.md",
+        "sentence": "Revocation sends the affected notes to quarantine."
+      },
+      {
+        "note": "knowledge/quarantine.md",
+        "sentence": "Notes enter quarantine when their source is revoked."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t068",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "later",
+      "pronoun"
+    ],
+    "question": "How does osprey-gateway relate to tool calls?",
+    "notes": [
+      "projects/osprey-gateway.md"
+    ],
+    "gold": [
+      {
+        "note": "projects/osprey-gateway.md",
+        "sentence": "The gateway checks the service token on every tool call."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t069",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first",
+      "distractor"
+    ],
+    "question": "How does the mirror relate to index rebuilds?",
+    "notes": [
+      "knowledge/index-rebuilds.md",
+      "knowledge/trace-sampling.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/index-rebuilds.md",
+        "sentence": "Queries during an index rebuild are served from the mirror."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t070",
+    "kind": "relation",
+    "label": "answerable",
+    "negative_type": null,
+    "tags": [
+      "first",
+      "paraphrase",
+      "distractor"
+    ],
+    "question": "How do freeze windows affect index changes?",
+    "notes": [
+      "knowledge/freeze-windows.md",
+      "knowledge/index-rebuilds.md"
+    ],
+    "gold": [
+      {
+        "note": "knowledge/freeze-windows.md",
+        "sentence": "During a freeze window, no index changes are deployed."
+      }
+    ],
+    "why": ""
+  },
+  {
+    "id": "t071",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "How does avocet-portal relate to kestrel-indexer?",
+    "notes": [
+      "projects/avocet-portal.md",
+      "projects/kestrel-indexer.md"
+    ],
+    "gold": [],
+    "why": "Both subjects have notes; no sentence relates them."
+  },
+  {
+    "id": "t072",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "How does wren-ledger depend on kestrel-indexer?",
+    "notes": [
+      "projects/wren-ledger.md",
+      "projects/marlin-sync.md"
+    ],
+    "gold": [],
+    "why": "The dependency on kestrel-indexer belongs to marlin-sync."
+  },
+  {
+    "id": "t073",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "wrong_subject",
+    "tags": [],
+    "question": "How does skua-importer relate to wren-ledger?",
+    "notes": [
+      "projects/skua-importer.md",
+      "projects/plover-archive.md"
+    ],
+    "gold": [],
+    "why": "The wren-ledger relation belongs to plover-archive."
+  },
+  {
+    "id": "t074",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "How does kestrel-indexer relate to the Indexing guide?",
+    "notes": [
+      "projects/kestrel-indexer.md"
+    ],
+    "gold": [],
+    "why": "'The Indexing team owns it' names a team, not a guide."
+  },
+  {
+    "id": "t075",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "How does egret-lens depend on dunlin-checker?",
+    "notes": [
+      "projects/egret-lens.md",
+      "knowledge/status-note-rules.md"
+    ],
+    "gold": [],
+    "why": "The rule says dependencies are on the shared board, without listing any."
+  },
+  {
+    "id": "t076",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "How does the billing service relate to the read replicas?",
+    "notes": [
+      "projects/marlin-sync.md",
+      "knowledge/partner-access.md"
+    ],
+    "gold": [],
+    "why": "Shares 'read replicas'; no billing service appears."
+  },
+  {
+    "id": "t077",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "topic",
+    "tags": [],
+    "question": "How does cormorant-alerts relate to osprey-gateway?",
+    "notes": [
+      "projects/cormorant-alerts.md",
+      "projects/osprey-gateway.md"
+    ],
+    "gold": [],
+    "why": "Both notes mention tool calls; no sentence relates the two projects."
+  },
+  {
+    "id": "t078",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "echo",
+    "tags": [],
+    "question": "How does dunlin-checker relate to puffin-reports?",
+    "notes": [
+      "projects/dunlin-checker.md",
+      "knowledge/status-note-rules.md"
+    ],
+    "gold": [],
+    "why": "The rule says dependencies are on the shared board, without listing any."
+  },
+  {
+    "id": "t079",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "collision",
+    "tags": [],
+    "question": "How does marlin-sync relate to the Docs team's copy edits?",
+    "notes": [
+      "projects/marlin-sync.md",
+      "projects/egret-lens.md"
+    ],
+    "gold": [],
+    "why": "Marlin-sync copies shard maps; copy edits are a different sense of copy."
+  },
+  {
+    "id": "t080",
+    "kind": "relation",
+    "label": "negative",
+    "negative_type": "unanswerable",
+    "tags": [],
+    "question": "How does the press office relate to the citation trails?",
+    "notes": [
+      "projects/egret-lens.md",
+      "projects/dunlin-checker.md"
+    ],
+    "gold": [],
+    "why": "Shares 'citation'; no press office appears."
+  }
+]
