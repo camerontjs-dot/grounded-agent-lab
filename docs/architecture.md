@@ -22,11 +22,13 @@ The LangGraph wrap uses five named nodes: `route`, `retrieve`, `draft`, `review`
 |---|---|---|
 | `route` | knowledge, project, or federated | scopes must match intent |
 | `retrieve` | two labelled tools only | unknown or write-shaped names |
-| `draft` | extractive default; Ollama/hosted optional | missing provider, invented citation paths, injection |
+| `draft` | extractive default; Ollama/hosted optional | missing provider, invented citation paths, injection, a requested quantity the cited notes do not state, a model claim with numbers or names its cited notes lack |
 | `review` | optional interrupt | approve still cannot add tools |
 | `emit_receipt` | hash of paths, cited-file bytes, corpus manifests, version, outcome, tools, provider | question text, snippets, planted secrets, a citation with no source digest |
 
 Federated questions query both indexes. They never return one unlabelled list. That split is a type invariant, not a prompt instruction.
+
+Retrieval nominates. Before an answer can carry citations, `draft` runs the deterministic support gate in `src/grounded_agent/support.py`, for the extractive drafter and for model drafts alike. [`limitations.md`](limitations.md#support-gate) says what it checks and what it misses.
 
 ## What the receipt binds
 
