@@ -90,7 +90,34 @@ jobs:
       - name: Tests
         run: python -m pytest -q --junitxml=test-results.xml
       - name: Original audit regression assertions
-        run: python -m pytest -q --runxfail tests/test_audit_regressions.py
+        run: python -m pytest -q --runxfail --junitxml=audit-results.xml tests/test_audit_regressions.py
+      - name: Check the known failure boundary
+        run: |
+          python - <<'PYTHON'
+          import xml.etree.ElementTree as ET
+          known = {
+              "test_known_gap_dropped_negation",
+              "test_known_gap_fabrication_without_numbers_or_names",
+              "test_known_gap_count_from_the_wrong_index",
+              "test_known_gap_open_question_first_sentence",
+          }
+          cases = ET.parse("test-results.xml").findall(".//testcase")
+          assert cases, "no test results"
+          assert not any(c.find("failure") is not None or c.find("error") is not None for c in cases)
+          xfails = {
+              c.attrib["name"] for c in cases
+              if (s := c.find("skipped")) is not None and s.attrib.get("type") == "pytest.xfail"
+          }
+          skips = {
+              c.attrib["name"] for c in cases
+              if (s := c.find("skipped")) is not None and s.attrib.get("type") != "pytest.xfail"
+          }
+          assert xfails == known, xfails
+          assert skips <= {"test_live_ollama_missing_model_fail_closed"}, skips
+          audit = ET.parse("audit-results.xml").findall(".//testcase")
+          assert len(audit) == 14 and all(len(c) == 0 for c in audit), "original audit did not pass 14/14"
+          print("Original audit 14/14; exactly four known support xfails; no unexpected skips")
+          PYTHON
       - name: Compile
         run: python -m compileall -q src scripts
       - name: Preserve dependency and test evidence
@@ -104,6 +131,7 @@ jobs:
             dependency-versions.json
             collected.txt
             test-results.xml
+            audit-results.xml
 
   installed-wheel-smoke:
     name: Installed wheel smoke (py${{ matrix.python-version }}, ${{ matrix.dependencies }})
