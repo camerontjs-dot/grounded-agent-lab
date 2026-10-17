@@ -1,0 +1,3 @@
+# Tested MCP minimum with this Pydantic pairing, not a minimum of all dependencies.
+mcp==1.21.1
+pydantic==2.14.1

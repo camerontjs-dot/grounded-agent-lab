@@ -14,6 +14,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import tomllib
 import venv
 from pathlib import Path
 
@@ -40,6 +41,10 @@ def run(*args: str, cwd: Path, env: dict[str, str] | None = None) -> str:
 
 
 def main() -> int:
+    env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
+    env["PYTHONNOUSERSITE"] = "1"
+    expected_version = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"]
     with tempfile.TemporaryDirectory(prefix="grounded-agent-wheel-smoke-") as temporary:
         temp = Path(temporary)
         wheelhouse = temp / "wheels"
@@ -55,6 +60,7 @@ def main() -> int:
             str(wheelhouse),
             str(ROOT),
             cwd=temp,
+            env=env,
         )
         wheels = list(wheelhouse.glob("grounded_agent_lab-*.whl"))
         if len(wheels) != 1:
@@ -63,14 +69,29 @@ def main() -> int:
         venv.EnvBuilder(with_pip=True).create(venv_dir)
         scripts = "Scripts" if os.name == "nt" else "bin"
         pip = venv_dir / scripts / ("pip.exe" if os.name == "nt" else "pip")
+        python = venv_dir / scripts / ("python.exe" if os.name == "nt" else "python")
         cli = venv_dir / scripts / (
             "grounded-agent.exe" if os.name == "nt" else "grounded-agent"
         )
         print("Installing wheel into a new environment...", flush=True)
-        run(str(pip), "install", "--disable-pip-version-check", str(wheels[0]), cwd=temp)
-        env = os.environ.copy()
-        env.pop("PYTHONPATH", None)
-        env["PYTHONNOUSERSITE"] = "1"
+        run(str(pip), "install", "--disable-pip-version-check", str(wheels[0]), cwd=temp, env=env)
+        print(run(str(pip), "check", cwd=temp, env=env).strip(), flush=True)
+        probe = """
+import importlib.metadata as metadata
+import json
+import sys
+from pathlib import Path
+import grounded_agent
+from grounded_agent.mcp_server import build_harbor_mcp
+versions = {name: metadata.version(name) for name in (
+    "grounded-agent-lab", "mcp", "pydantic", "langgraph"
+)}
+assert versions["grounded-agent-lab"] == grounded_agent.__version__ == sys.argv[1]
+assert Path(grounded_agent.__file__).is_relative_to(Path(sys.prefix))
+assert build_harbor_mcp().tool_registry.frozen
+print(json.dumps({"installed_versions": versions, "imports_from_install": True}))
+"""
+        print(run(str(python), "-c", probe, expected_version, cwd=temp, env=env).strip())
         print("Invoking installed CLI from outside the checkout...", flush=True)
         raw = run(str(cli), "demo", "--json", cwd=temp, env=env)
         payload = json.loads(raw)
