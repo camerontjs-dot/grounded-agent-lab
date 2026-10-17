@@ -40,6 +40,7 @@ class ResearchGraphState(TypedDict):
     review_decision: NotRequired[ReviewDecision]
     tools_used: NotRequired[list[str]]
     tool_errors: NotRequired[list[str]]
+    corpus_digests: NotRequired[list[list[str]]]
     provider: NotRequired[str]
     receipt: NotRequired[dict[str, Any]]
 
@@ -61,6 +62,7 @@ def _retrieve(state: ResearchGraphState) -> dict[str, Any]:
         "evidence": _json(trace.bundle),
         "tools_used": list(trace.tools_used),
         "tool_errors": list(trace.tool_errors),
+        "corpus_digests": [list(pair) for pair in trace.corpus_digests],
     }
 
 
@@ -103,6 +105,8 @@ def _emit_receipt(state: ResearchGraphState) -> dict[str, Any]:
     request = ResearchRequest.model_validate(state["request"])
     route = RouteDecision.model_validate(state["route"])
     answer = Answer.model_validate(state["answer"])
+    evidence = EvidenceBundle.model_validate(state["evidence"])
+    digests = tuple((scope, digest) for scope, digest in state.get("corpus_digests") or ())
     if state.get("review_decision") == "reject":
         answer = Answer(
             outcome="abstained",
@@ -113,6 +117,8 @@ def _emit_receipt(state: ResearchGraphState) -> dict[str, Any]:
         request,
         route,
         answer,
+        evidence=evidence,
+        corpus_digests=digests,
         tools_used=tuple(state.get("tools_used") or ()),
         tool_errors=tuple(state.get("tool_errors") or ()),
         provider=str(state.get("provider") or "extractive"),

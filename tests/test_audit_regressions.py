@@ -93,7 +93,6 @@ def test_unmodified_receipt_is_reproducible_and_redacted() -> None:
     assert "Harbor stores durable notes" not in serialized
 
 
-@pytest.mark.xfail(strict=True, reason="#11: retrieval nomination is not factual-answer warrant")
 def test_count_question_without_count_evidence_abstains_in_both_runtimes() -> None:
     request = _request("missing-count", COUNT_QUESTION)
     baseline = pipeline_module.run_research(request)
@@ -108,7 +107,6 @@ def test_count_question_without_count_evidence_abstains_in_both_runtimes() -> No
     assert graphed.receipt.outcome == "abstained"
 
 
-@pytest.mark.xfail(strict=True, reason="#11: overlap does not warrant a number")
 def test_citable_near_miss_without_number_abstains() -> None:
     request = _request("near-miss", COUNT_QUESTION)
     evidence = _citable_note(
@@ -119,7 +117,6 @@ def test_citable_near_miss_without_number_abstains() -> None:
     assert answer.citations == ()
 
 
-@pytest.mark.xfail(strict=True, reason="#11: citation path does not warrant invented facts")
 def test_model_valid_path_does_not_warrant_unrelated_salary_claim() -> None:
     draft = ModelDraft(
         outcome="answered",
@@ -131,7 +128,6 @@ def test_model_valid_path_does_not_warrant_unrelated_salary_claim() -> None:
     assert answer.citations == ()
 
 
-@pytest.mark.xfail(strict=True, reason="#11: changed number not warranted by cited text")
 def test_model_valid_path_does_not_warrant_changed_number() -> None:
     draft = ModelDraft(
         outcome="answered",
@@ -143,7 +139,6 @@ def test_model_valid_path_does_not_warrant_changed_number() -> None:
     assert answer.citations == ()
 
 
-@pytest.mark.xfail(strict=True, reason="#14: receipt hash does not bind cited source bytes")
 def test_same_path_changed_source_bytes_change_receipt_hash(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

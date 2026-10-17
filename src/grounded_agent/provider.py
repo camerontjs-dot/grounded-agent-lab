@@ -14,6 +14,7 @@ from pydantic import BaseModel, ConfigDict, ValidationError
 from grounded_agent.draft import _citation, draft_or_abstain, evidence_is_injection, is_injection
 from grounded_agent.models import Answer, EvidenceBundle, NonBlankStr, Outcome, ResearchRequest
 from grounded_agent.redact import redact_text
+from grounded_agent.support import claim_support_problem
 
 DEFAULT_OLLAMA_URL = "http://127.0.0.1:11434"
 DEFAULT_OLLAMA_MODEL = "llama3.2"
@@ -162,7 +163,19 @@ def parse_model_draft(raw: object) -> ModelDraft:
         raise ValueError("model JSON failed the draft schema") from exc
 
 
-def answer_from_model_draft(draft: ModelDraft, evidence: EvidenceBundle) -> Answer:
+def answer_from_model_draft(
+    draft: ModelDraft,
+    evidence: EvidenceBundle,
+    *,
+    request: ResearchRequest | None = None,
+) -> Answer:
+    """Accept a model answer only if its paths are citable and its claim passes the gate.
+
+    A valid citation path is not warrant. The claim may not add numbers or names
+    that its cited notes lack, and with `request` a quantity question must get a
+    quantity those notes state. See `grounded_agent.support` for the limits.
+    """
+
     if draft.outcome == "abstained":
         reason = draft.abstain_reason or "insufficient_evidence"
         return Answer(outcome="abstained", text=redact_text(draft.text), abstain_reason=reason)
@@ -175,7 +188,19 @@ def answer_from_model_draft(draft: ModelDraft, evidence: EvidenceBundle) -> Answ
             text="Model cited a path that is not in the citable evidence.",
             abstain_reason="unsupported_citation",
         )
-    citations = tuple(_citation(citable[path]) for path in dict.fromkeys(draft.citation_paths))
+    cited = tuple(citable[path] for path in dict.fromkeys(draft.citation_paths))
+    problem = claim_support_problem(
+        draft.text,
+        cited,
+        question=request.question if request is not None else None,
+    )
+    if problem is not None:
+        return Answer(
+            outcome="abstained",
+            text=f"Refused: the model's {problem}.",
+            abstain_reason="unsupported_claim",
+        )
+    citations = tuple(_citation(item) for item in cited)
     return Answer(outcome="answered", text=redact_text(draft.text), citations=citations)
 
 
@@ -282,7 +307,7 @@ class OllamaProvider:
                 text="Model output was not valid structured JSON.",
                 abstain_reason="provider_unparseable",
             )
-        return answer_from_model_draft(draft, evidence)
+        return answer_from_model_draft(draft, evidence, request=request)
 
 
 class HostedProvider:
@@ -365,7 +390,7 @@ class HostedProvider:
                 text="Model output was not valid structured JSON.",
                 abstain_reason="provider_unparseable",
             )
-        return answer_from_model_draft(draft, evidence)
+        return answer_from_model_draft(draft, evidence, request=request)
 
 
 PROVIDER_NAMES = ("extractive", "ollama", "hosted")

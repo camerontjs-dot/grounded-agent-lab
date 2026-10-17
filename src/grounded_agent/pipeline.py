@@ -40,6 +40,8 @@ def run_research(
         request,
         route,
         answer,
+        evidence=retrieval.bundle,
+        corpus_digests=retrieval.corpus_digests,
         tools_used=retrieval.tools_used,
         tool_errors=retrieval.tool_errors,
         provider=drafter.name,

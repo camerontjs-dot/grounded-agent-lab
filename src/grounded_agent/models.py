@@ -2,16 +2,31 @@
 
 from __future__ import annotations
 
+import re
 from typing import Annotated, Literal, Self
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import AfterValidator, BaseModel, ConfigDict, Field, field_validator, model_validator
 
 NonBlankStr = Annotated[str, Field(min_length=1)]
+
+_SHA256_HEX = re.compile(r"[0-9a-f]{64}")
+
+
+def _require_sha256_hex(value: str) -> str:
+    if _SHA256_HEX.fullmatch(value) is None:
+        raise ValueError("expected a sha256 digest: 64 lowercase hex characters")
+    return value
+
+
+Sha256Hex = Annotated[str, AfterValidator(_require_sha256_hex)]
 
 TrustProfile = Literal["durable_knowledge", "project_status"]
 Intent = Literal["knowledge", "project", "federated"]
 Outcome = Literal["answered", "abstained"]
 CitationClass = Literal["citable", "weak_fit", "excluded"]
+ReceiptSchema = Literal["grounded-agent-receipt-v2"]
+
+RECEIPT_SCHEMA: ReceiptSchema = "grounded-agent-receipt-v2"
 
 KNOWLEDGE_SCOPE: tuple[TrustProfile, ...] = ("durable_knowledge",)
 PROJECT_SCOPE: tuple[TrustProfile, ...] = ("project_status",)
@@ -62,6 +77,7 @@ class EvidenceItem(FrozenModel):
     score: float
     weak_fit: bool
     citation_class: CitationClass
+    source_sha256: Sha256Hex | None = None
 
     @model_validator(mode="after")
     def weak_fit_not_citable(self) -> Self:
@@ -118,11 +134,15 @@ class Answer(FrozenModel):
 
 
 class Receipt(FrozenModel):
+    receipt_schema: ReceiptSchema = RECEIPT_SCHEMA
+    implementation_version: NonBlankStr
     request_id: NonBlankStr
     intent: Intent
     scopes: tuple[TrustProfile, ...]
     outcome: Outcome
     citation_paths: tuple[str, ...] = ()
+    cited_source_sha256: tuple[Sha256Hex, ...] = ()
+    corpus_digests: tuple[tuple[TrustProfile, Sha256Hex], ...] = ()
     trust_profiles_used: tuple[TrustProfile, ...] = ()
     abstain_reason: str | None = None
     tools_used: tuple[str, ...] = ()
@@ -130,6 +150,12 @@ class Receipt(FrozenModel):
     provider: NonBlankStr = "extractive"
     content_redacted: Literal[True] = True
     receipt_hash: NonBlankStr
+
+    @model_validator(mode="after")
+    def cited_digests_align_with_paths(self) -> Self:
+        if len(self.cited_source_sha256) != len(self.citation_paths):
+            raise ValueError("cited_source_sha256 must align with citation_paths")
+        return self
 
 
 class ResearchResult(FrozenModel):
