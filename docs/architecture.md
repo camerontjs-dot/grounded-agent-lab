@@ -22,7 +22,7 @@ The LangGraph wrap uses five named nodes: `route`, `retrieve`, `draft`, `review`
 |---|---|---|
 | `route` | knowledge, project, or federated | scopes must match intent |
 | `retrieve` | two labelled tools only | unknown or write-shaped names |
-| `draft` | extractive default; Ollama/hosted optional | missing provider, invented citation paths, injection, a requested quantity the cited notes do not state, a model claim with numbers or names its cited notes lack |
+| `draft` | extractive default; Ollama/hosted optional | missing provider, invented citation paths, injection, a requested quantity absent from cited sentences, or certain model-added numbers and names |
 | `review` | optional interrupt | approve still cannot add tools |
 | `emit_receipt` | hash of paths, cited-file bytes, corpus manifests, version, outcome, tools, provider | question text, snippets, planted secrets, a citation with no source digest |
 
@@ -30,7 +30,7 @@ Federated questions query both indexes. They never return one unlabelled list. T
 
 Every scope the router selects is required. There is no optional-source tier: if retrieval fails or times out for any routed scope, the run abstains with `abstain_reason="required_source_unavailable"`, cites nothing, and does not call the drafter. An injected question or a poisoned surviving note still abstains as `unsafe_instruction`. Either way the receipt keeps `tools_used` and `tool_errors` exactly as observed, and `evidence` keeps whatever a surviving index returned. The baseline and LangGraph runtimes share `guarded_draft`, so they make the same decision.
 
-Retrieval nominates. Before an answer can carry citations, `draft` runs the deterministic support gate in `src/grounded_agent/support.py`, for the extractive drafter and for model drafts alike. [`limitations.md`](limitations.md#support-gate) says what it checks and what it misses.
+Retrieval nominates. Before an answer can carry citations, `draft` runs the narrow deterministic support gate in `src/grounded_agent/support.py`, for the extractive drafter and for model drafts alike. It checks requested quantities and certain model-added specifics; it does not establish entailment or general claim support. Four known gaps remain strict xfails. See [`limitations.md`](limitations.md#support-gate-and-known-gaps) for the cases.
 
 ## What the receipt binds
 

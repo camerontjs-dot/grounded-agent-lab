@@ -9,9 +9,9 @@
 · [Decisions](DECISIONS.md)
 · [Shootout](reports/retrieval-shootout.md)
 
-This agent answers from cited Harbor notes, or it abstains. I built it around a concrete loop: typed state, labelled retrieval, a read-only tool allowlist, a provider switch that fails closed, and an evaluation receipt you can rerun.
+Harbor runs against a synthetic, labelled two-index corpus. It returns a cited draft or abstains under specific checks. A citation is a retrieved nomination; it does not prove that a passage is true or supports the answer.
 
-The hard part is not attaching sources. The hard part is refusing to speak when those sources do not warrant the claim. Retrieval only nominates notes. A deterministic support gate then refuses the two things it can actually detect: a count or amount that no cited sentence states, and a model claim that adds a number or a name its cited notes do not contain. It does not judge meaning, and for open questions the extractive answer is still the first sentence of each citable note. [Limits](docs/limitations.md#support-gate) lists what still gets through.
+The loop uses typed state, labelled retrieval, a read-only tool allowlist, a provider switch that fails closed, and a redacted receipt. A deterministic support gate checks whether cited sentences state requested quantities and whether model drafts add certain numbers, acronyms, identifiers, email addresses, URLs, or capitalised names absent from their cited notes. It does not check entailment. Four support gaps remain recorded as strict expected failures: dropped negation, ordinary-word fabrication, counts taken from the wrong index, and unchecked first-sentence extracts for open questions. See [the support boundary](docs/limitations.md#support-gate-and-known-gaps).
 
 ```text
 question
@@ -22,7 +22,7 @@ question
   -> redacted receipt
 ```
 
-For the shortest reproduction path, install, run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). 66 tests run on Python 3.11-3.13 in CI. The demo exits non-zero if an expected refusal does not hold.
+For the shortest reproduction path, install, run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). CI runs lint, tests, compilation, and an installed-wheel demo on Python 3.11–3.13. The demo checks seven fixture cases; the four support gaps above remain expected failures. See the [0.8.0 migration notes](docs/migration-0.8.md) for dependency-floor and receipt/output changes.
 
 ## Install
 
@@ -82,8 +82,8 @@ Provider switch (this should fail closed unless you actually have the backend):
 | Trust groups cannot mix | `src/grounded_agent/models.py` |
 | Knowledge / project / federated stay labelled | router tests |
 | Weak-fit matches are not citations | retrieval tests |
-| A citable note is not a count it never states; model claims cannot add numbers or names | `tests/test_support.py` |
-| Missing evidence and injection fail closed | pipeline + CLI above |
+| Narrow support checks validate requested quantities and certain model-added specifics | `tests/test_support.py` |
+| Required-source failures, injection, and specific support checks fail closed | pipeline + CLI above |
 | Receipts omit snippets and prompts | receipt tests |
 | LangGraph matches the baseline fixtures | `tests/test_graph.py` |
 | Review can pause before a receipt | `tests/test_graph_checkpoint.py` |
@@ -100,7 +100,7 @@ Provider switch (this should fail closed unless you actually have the backend):
 
 This is not a live knowledge base. Tests use the synthetic Harbor corpus. A live MindGraph URL is fail-closed unless you set it, and CI never requires it.
 
-Retrieval nominates. It does not prove a passage is true, and neither does the support gate. The gate only refuses counts, numbers, and names that the cited notes do not state.
+Retrieval nominates. It does not prove a passage is true, and neither does the support gate. The gate checks requested quantities and certain model-added literal details; it can still accept a claim with dropped negation, ordinary-word fabrication, a count from the wrong index, or an open-question extract that omits the answer.
 
 Injection coverage is a fixture, not a threat model. I planted a forged tool card and a fake secret so the tests have something to catch. That is not Lakera or a production red-team.
 

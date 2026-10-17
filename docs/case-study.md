@@ -1,6 +1,6 @@
 # Harbor case study
 
-I wanted a repo a reviewer can clone without a private knowledge base, and still see a refusal. The tooling-landscape poster is a trap. One demo per logo does not show whether you can keep a weak source from becoming a claim.
+I wanted a public repo anyone can run without access to a private knowledge base, with a small example that exposes where cited retrieval stops being support. The tooling-landscape poster is a trap. One demo per logo does not show whether a weak source becomes a claim.
 
 Harbor is a synthetic dual-index corpus. It is not a company wiki and it is not my live notes. I used it so this repository can stay public.
 
@@ -26,9 +26,9 @@ The skills still have a runnable path: a local vector index, an explicit graph w
 
 ## The hard part
 
-The hard part was not attaching citations. The hard part was keeping weak-fit nominations out of answers, and keeping a forged tool card from minting `write_index`.
+The hard part was keeping weak-fit nominations out of citation lists, and keeping a forged tool card from minting `write_index`.
 
-The 2026-10-15 audit found that keeping weak-fit notes out was not enough. A citable note "answered" how many Harbor notes the durable index holds with a sentence about two indexes, and a model draft could cite a valid path while inventing a salary or changing a number. The repair is a narrow deterministic gate for counts, numbers, and names. It is not a semantic judge, and open questions still get first-sentence extracts.
+The 2026-10-15 audit found that keeping weak-fit notes out was not enough. A citable note "answered" how many Harbor notes the durable index holds with a sentence about two indexes, and a model draft could cite a valid path while inventing a salary or changing a number. The deterministic gate checks requested quantities and certain model-added numbers and names; it does not judge entailment. Four support gaps remain strict xfails: dropped negation, ordinary-word fabrication, a count from the wrong index, and unchecked first-sentence extraction for open questions.
 
 A planted operator alias is copied as `[redacted]`. Receipts and JSONL traces fail if that alias appears. Missing Ollama or hosted credentials exit 2. They do not fall back to extractive.
 
