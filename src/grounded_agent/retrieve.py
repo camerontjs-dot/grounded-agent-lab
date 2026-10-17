@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -42,6 +44,9 @@ class FixtureNote:
     trust_profile: TrustProfile
     title: str
     body: str
+    # Set by parse_note from the file's bytes. Notes built in memory have none and
+    # cannot enter a corpus digest or a receipt citation.
+    source_sha256: str | None = None
 
 
 def _tokens(text: str) -> set[str]:
@@ -65,7 +70,8 @@ def overlap_score(question: str, body: str) -> float:
 
 
 def parse_note(path: Path, expected_trust: TrustProfile) -> FixtureNote:
-    text = path.read_text(encoding="utf-8")
+    raw = path.read_bytes()
+    text = raw.decode("utf-8")
     if not text.startswith("---"):
         raise ValueError(f"fixture note missing frontmatter: {path.name}")
     parts = text.split("---", 2)
@@ -87,6 +93,7 @@ def parse_note(path: Path, expected_trust: TrustProfile) -> FixtureNote:
         trust_profile=expected_trust,
         title=title,
         body=parts[2].strip(),
+        source_sha256=hashlib.sha256(raw).hexdigest(),
     )
 
 
@@ -110,6 +117,17 @@ def load_corpus(directory: Path, expected_trust: TrustProfile) -> tuple[FixtureN
     return notes
 
 
+def corpus_digest(notes: tuple[FixtureNote, ...]) -> str:
+    """Manifest digest: which notes were searched, and the bytes behind each one."""
+
+    missing = [note.source_path for note in notes if note.source_sha256 is None]
+    if missing:
+        raise ValueError(f"cannot digest a corpus with unhashed notes: {missing}")
+    manifest = sorted([note.source_path, note.source_sha256] for note in notes)
+    canonical = json.dumps(manifest, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
 def _to_item(note: FixtureNote, score: float, shared_tokens: int) -> EvidenceItem:
     if score >= CITABLE_THRESHOLD and shared_tokens >= MIN_CITABLE_TOKENS:
         citation_class = "citable"
@@ -129,6 +147,7 @@ def _to_item(note: FixtureNote, score: float, shared_tokens: int) -> EvidenceIte
         score=round(score, 4),
         weak_fit=weak_fit,
         citation_class=citation_class,
+        source_sha256=note.source_sha256,
     )
 
 
@@ -141,9 +160,19 @@ def _search(notes: tuple[FixtureNote, ...], question: str) -> tuple[EvidenceItem
     return tuple(item for item in ranked if item.citation_class != "excluded")
 
 
-def search_corpus(question: str, trust_profile: TrustProfile) -> tuple[EvidenceItem, ...]:
+def search_corpus_with_digest(
+    question: str, trust_profile: TrustProfile
+) -> tuple[tuple[EvidenceItem, ...], str]:
+    """Search one corpus and return the manifest digest of the notes it searched."""
+
     directory = KNOWLEDGE_CORPUS if trust_profile == "durable_knowledge" else PROJECT_CORPUS
-    return _search(load_corpus(directory, trust_profile), question)
+    notes = load_corpus(directory, trust_profile)
+    return _search(notes, question), corpus_digest(notes)
+
+
+def search_corpus(question: str, trust_profile: TrustProfile) -> tuple[EvidenceItem, ...]:
+    items, _digest = search_corpus_with_digest(question, trust_profile)
+    return items
 
 
 def retrieve(request: ResearchRequest, route: RouteDecision) -> EvidenceBundle:

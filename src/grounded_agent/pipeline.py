@@ -28,7 +28,7 @@ def run_research(
         project_paths=[item.source_path for item in retrieval.bundle.project],
         tool_errors=list(retrieval.tool_errors),
     )
-    answer = guarded_draft(drafter, request, retrieval.bundle)
+    answer = guarded_draft(drafter, request, retrieval.bundle, tool_errors=retrieval.tool_errors)
     log.emit(
         "draft",
         outcome=answer.outcome,
@@ -40,6 +40,8 @@ def run_research(
         request,
         route,
         answer,
+        evidence=retrieval.bundle,
+        corpus_digests=retrieval.corpus_digests,
         tools_used=retrieval.tools_used,
         tool_errors=retrieval.tool_errors,
         provider=drafter.name,

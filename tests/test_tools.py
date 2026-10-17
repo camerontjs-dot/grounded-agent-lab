@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import time
+
 import pytest
 from pydantic import ValidationError
 
+import grounded_agent.pipeline as pipeline_module
+import grounded_agent.tools as tools_module
 from grounded_agent.models import ResearchRequest
 from grounded_agent.pipeline import run_research
 from grounded_agent.router import route_intent
@@ -44,14 +48,22 @@ def test_extra_arguments_fail_schema() -> None:
         client.invoke("query_knowledge", {})
 
 
-def test_timeout_fails_closed() -> None:
-    client = FixtureToolClient(min_delay_s=0.3)
+def test_timeout_fails_closed_and_returns_control_within_budget() -> None:
+    timeout_s = 0.05
+    worker_delay_s = 0.3
+    client = FixtureToolClient(min_delay_s=worker_delay_s)
+    started = time.monotonic()
     with pytest.raises(ToolTimeout, match="query_knowledge"):
         client.invoke(
             "query_knowledge",
             {"question": "Harbor trust labels"},
-            timeout_s=0.05,
+            timeout_s=timeout_s,
         )
+    elapsed = time.monotonic() - started
+    assert elapsed < timeout_s * 4, (
+        f"timed-out call returned after {elapsed:.3f}s; "
+        f"worker delay was {worker_delay_s:.3f}s"
+    )
 
 
 def test_federated_route_calls_both_labelled_tools() -> None:
@@ -100,3 +112,33 @@ def test_live_adapter_fail_closed_without_url(monkeypatch: pytest.MonkeyPatch) -
         live.invoke("write_index", {"question": "Harbor"})
     with pytest.raises(ValidationError):
         live.invoke("query_knowledge", {"question": "Harbor", "scope": "both"})
+
+
+def test_timeout_on_a_required_index_abstains_and_keeps_survivor(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class SlowProjectsClient(FixtureToolClient):
+        def invoke(self, name: str, arguments: dict, *, timeout_s: float | None = None):
+            if name == "query_projects":
+                slow = FixtureToolClient(min_delay_s=0.2, timeout_s=0.02)
+                return slow.invoke(name, arguments)
+            return super().invoke(name, arguments, timeout_s=timeout_s)
+
+    original = tools_module.retrieve_traced
+    monkeypatch.setattr(
+        pipeline_module,
+        "retrieve_traced",
+        lambda request, route: original(request, route, client=SlowProjectsClient()),
+    )
+    result = run_research(
+        ResearchRequest(
+            request_id="t-required-timeout",
+            question="How does the lantern-agent next action relate to Harbor trust labels?",
+        )
+    )
+
+    assert result.receipt.tool_errors == ("query_projects:ToolTimeout",)
+    assert result.answer.abstain_reason == "required_source_unavailable"
+    assert result.answer.citations == ()
+    assert result.evidence.knowledge
+    assert result.evidence.project == ()
