@@ -79,11 +79,13 @@ def test_answered_requires_citation_and_abstain_forbids_it() -> None:
 
 def test_receipt_serialization_has_no_snippet_field() -> None:
     receipt = Receipt(
+        implementation_version="0.0.0-test",
         request_id="r1",
         intent="knowledge",
         scopes=("durable_knowledge",),
         outcome="answered",
         citation_paths=("knowledge/trust-labels.md",),
+        cited_source_sha256=("b" * 64,),
         trust_profiles_used=("durable_knowledge",),
         content_redacted=True,
         receipt_hash="a" * 64,

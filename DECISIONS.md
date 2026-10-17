@@ -2,6 +2,26 @@
 
 Newest first. These are public architecture tradeoffs for this repository.
 
+## ADR-013: Receipts bind the bytes they cite (2026-10-15)
+
+**Decision:** The receipt hash now covers the sha256 of each cited note's raw bytes (`cited_source_sha256`, in citation order), one manifest digest per index that was searched (`corpus_digests`), the declared package version (`implementation_version`), and a schema name (`receipt_schema`). Digests are taken when a note is read for retrieval, not when the receipt is written. `build_receipt` requires the evidence and refuses to bind a citation that has no digest.
+
+**Rejected:** A git SHA as the implementation identity, which an installed wheel does not carry. Putting snippets, the question, or the answer back on the receipt. Editing Harbor notes to show a new hash.
+
+**Reason:** A cited file could change in place while the receipt hash stayed the same (#14), so a receipt could not say which text an answer was cited to.
+
+**Consequence:** Two unreleased commits that share `__version__` still produce the same `implementation_version`. The corpus digest records which fixture text was searched, not whether the answer is true. The leak guard checks the question, every retrieved snippet sentence of 16 characters or more, answered text, and the planted secrets. It catches copied text, not paraphrase. A model-written `abstain_reason` is still free text.
+
+## ADR-010: A support gate sits between nomination and answer (2026-10-15)
+
+**Decision:** Retrieval nominates; it does not license an answer. A deterministic gate in `src/grounded_agent/support.py` now sits in both drafting paths. A quantity question ("how many", "how much", "number of") needs a cited sentence that states the quantity, with the number attached to the counted noun. A model claim may not add numbers, acronyms, identifiers, e-mail addresses, URLs, or mid-sentence capitalised names that its cited notes lack. Refusals use `abstain_reason=unsupported_claim`.
+
+**Rejected:** An NLI or LLM judge as the gate. Nothing here would qualify its accuracy, and a confident unvalidated judge is the failure this lab exists to catch. Also rejected: requiring every word of a model claim to appear in the cited note. That refuses ordinary paraphrase and still accepts a dropped "not".
+
+**Reason:** The PR #21 regressions showed a citable note answering a count it never stated, and a valid citation path carrying an invented salary and a changed number. Those failures are about specifics, and specifics are what a deterministic check can see.
+
+**Consequence:** The four #11 regressions pass without their xfail markers. Open questions still get first-sentence extracts, which are nominations, not checked answers. The known gaps (dropped negation, ordinary-word fabrication, a count from the wrong index, unchecked open-question extracts) are strict xfails in `tests/test_support.py`. Closing them needs a different mechanism with its own evaluation, not more overlap thresholds.
+
 ## ADR-009: The demo is the packaging gate (2026-08-23)
 
 **Decision:** Phase 7 packaging is a runnable `grounded-agent demo`, an architecture note, a case study, and a limitations page. The README stays the ninety-second path. The demo checks expected outcomes and exits non-zero on mismatch.
