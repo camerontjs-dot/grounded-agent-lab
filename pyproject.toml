@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grounded-agent-lab"
-version = "0.7.0"
-description = "Research agent that cites Harbor notes or abstains. Typed state, labelled retrieval, read-only MCP tools, LangGraph wrap, fail-closed providers, reviewer demo."
+version = "0.8.0"
+description = "Research agent with cited Harbor extracts, narrow deterministic support checks, labelled retrieval, read-only MCP tools, and redacted receipts."
 readme = "README.md"
 requires-python = ">=3.11"
 keywords = ["agents", "rag", "retrieval", "evaluation", "provenance"]
@@ -26,7 +26,7 @@ classifiers = [
 dependencies = [
     "pydantic>=2.6,<3",
     "langgraph>=0.6,<0.7",
-    "mcp>=1.0,<2",
+    "mcp>=1.21.1,<2",
 ]
 
 [project.optional-dependencies]
@@ -43,6 +43,9 @@ grounded-agent = "grounded_agent.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+grounded_agent = ["fixtures/*.json", "fixtures/corpus/*/*.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

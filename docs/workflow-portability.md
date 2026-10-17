@@ -6,7 +6,7 @@ I did not run Temporal, Airflow, Prefect, or n8n in this lab. This note maps Har
 
 The LangGraph wrap has five nodes: `route`, `retrieve`, `draft`, `review`, `emit_receipt`. Review is an interrupt. `emit_receipt` writes once per thread. `receipt_hash` is the stable id.
 
-CLI `ask` is a one-shot trigger. That is the whole production surface today.
+CLI `ask` is a one-shot command-line trigger. The lab has no durable worker or scheduled production surface.
 
 ## Trigger
 

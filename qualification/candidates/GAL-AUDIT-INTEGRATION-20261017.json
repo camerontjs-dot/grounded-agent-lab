@@ -1,0 +1,72 @@
+{
+  "schema": "grounded-agent-qualification-candidate/v1",
+  "candidate_id": "GAL-AUDIT-INTEGRATION-20261017",
+  "project": "grounded-agent-lab",
+  "package_version": "0.7.0",
+  "source_commit": "1f6fb3f8cf8df6759a6ceca8467917e78d24bfef",
+  "source_tree": "f4c040ba517319d694ded7faa0da461bbbbff416",
+  "base_commit": "ddc65e347c30b1300df4cb21646bba1b14908942",
+  "created_at": "2026-10-17T14:02:59.426382+00:00",
+  "lifecycle_state": "frozen",
+  "advancement_readiness": "NOT_QUALIFIED",
+  "freeze_commit": "the commit introducing this manifest; resolved externally to avoid self-reference",
+  "included_prs": [
+    {
+      "number": 21,
+      "head": "64ebe48172171092e3d210a228b2ae208e4b9fd5"
+    },
+    {
+      "number": 22,
+      "head": "c6dce3bd27bc04268ef1bb179a00717ccdcc26c8"
+    },
+    {
+      "number": 27,
+      "head": "1d67b84984c441e1a143b78da92faa8c1bd52341"
+    },
+    {
+      "number": 25,
+      "head": "593f862cc494bb2e7d2ab434926d232e56019b74"
+    },
+    {
+      "number": 23,
+      "head": "1f98c00b8cf2da2f3b570165721b68b0a00c7469"
+    },
+    {
+      "number": 24,
+      "head": "2c8ba34f617a96472d888e0932a01d1dacc475f4"
+    },
+    {
+      "number": 26,
+      "head": "5877d1ce64da191767244eb0833d5ca058767995"
+    },
+    {
+      "number": 28,
+      "head": "74fa7712651582e7c14b4f3174988aac07dc5fc0"
+    }
+  ],
+  "excluded_scope": [
+    "fix/11-open-question-support (472e93eaf7c35ddbbe60d6a1b717017029736e81), all failed open-question experimental candidates",
+    "merge, release, existing PR head updates, historical report changes"
+  ],
+  "evidence": {
+    "component": "prior PR CI; complete independent verification pending",
+    "replay": "all eight intermediate Git trees match saved 2026-10-16 replay",
+    "independent_acceptance": "NOT_RUN at freeze; record subsequent receipts separately"
+  },
+  "known_support_limitations": [
+    "dropped negation",
+    "ordinary-word fabrication without numbers or names",
+    "count from wrong index",
+    "unchecked first-sentence open-question extraction"
+  ],
+  "external_inputs": [
+    "2026-10-16 runbook/resolvers; hashes recorded in local qualification receipts"
+  ],
+  "non_claims": [
+    "not factual entailment verification",
+    "not production qualification",
+    "not release approval",
+    "not proof that the later research candidates passed"
+  ],
+  "update_rule": "immutable; findings and repairs require separate evidence or successor candidate"
+}

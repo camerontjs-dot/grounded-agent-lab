@@ -1,6 +1,6 @@
 # Harbor case study
 
-I wanted a repo a reviewer can clone without a private knowledge base, and still see a refusal. The tooling-landscape poster is a trap. One demo per logo does not show whether you can keep a weak source from becoming a claim.
+I wanted a public repo anyone can run without access to a private knowledge base, with a small example that exposes where cited retrieval stops being support. The tooling-landscape poster is a trap. One demo per logo does not show whether a weak source becomes a claim.
 
 Harbor is a synthetic dual-index corpus. It is not a company wiki and it is not my live notes. I used it so this repository can stay public.
 
@@ -16,6 +16,8 @@ The retrieval shootout compares lexical overlap, a hashed-token vector index, an
 
 n is five. That is the whole experiment. I inspected the misses, including a designed lexical miss that graph expansion is supposed to recover. Do not quote those recalls as an embedding benchmark.
 
+The first published table (2026-08-23) measured the harness as much as the methods. It applied the lexical recall cutoff to cosine scores, gave graph expansion no way to abstain, and timed per-note work for every question. The 2026-10-15 republish gives each method its own gate, builds indexes outside the timer, and keeps the old table in `reports/history/` with a note on what it measured.
+
 ## What I skipped, and how the skill still shows up
 
 I did not use Pinecone, CrewAI, LangSmith, Lakera, or Temporal.
@@ -24,7 +26,9 @@ The skills still have a runnable path: a local vector index, an explicit graph w
 
 ## The hard part
 
-The hard part was not attaching citations. The hard part was keeping weak-fit nominations out of answers, and keeping a forged tool card from minting `write_index`.
+The hard part was keeping weak-fit nominations out of citation lists, and keeping a forged tool card from minting `write_index`.
+
+The 2026-10-15 audit found that keeping weak-fit notes out was not enough. A citable note "answered" how many Harbor notes the durable index holds with a sentence about two indexes, and a model draft could cite a valid path while inventing a salary or changing a number. The deterministic gate checks requested quantities and certain model-added numbers and names; it does not judge entailment. Four support gaps remain strict xfails: dropped negation, ordinary-word fabrication, a count from the wrong index, and unchecked first-sentence extraction for open questions.
 
 A planted operator alias is copied as `[redacted]`. Receipts and JSONL traces fail if that alias appears. Missing Ollama or hosted credentials exit 2. They do not fall back to extractive.
 

@@ -9,9 +9,9 @@
 · [Decisions](DECISIONS.md)
 · [Shootout](reports/retrieval-shootout.md)
 
-This agent answers from cited Harbor notes, or it abstains. I built it around a concrete loop: typed state, labelled retrieval, a read-only tool allowlist, a provider switch that fails closed, and an evaluation receipt you can rerun.
+Harbor runs against a synthetic, labelled two-index corpus. It returns a cited draft or abstains under specific checks. A citation is a retrieved nomination; it does not prove that a passage is true or supports the answer.
 
-The hard part is not attaching sources. The hard part is refusing to speak when those sources do not warrant the claim.
+The loop uses typed state, labelled retrieval, a read-only tool allowlist, a provider switch that fails closed, and a redacted receipt. A deterministic support gate checks whether cited sentences state requested quantities and whether model drafts add certain numbers, acronyms, identifiers, email addresses, URLs, or capitalised names absent from their cited notes. It does not check entailment. Four support gaps remain recorded as strict expected failures: dropped negation, ordinary-word fabrication, counts taken from the wrong index, and unchecked first-sentence extracts for open questions. See [the support boundary](docs/limitations.md#support-gate-and-known-gaps).
 
 ```text
 question
@@ -22,7 +22,7 @@ question
   -> redacted receipt
 ```
 
-For the shortest reproduction path, install, run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). 66 tests run on Python 3.11-3.13 in CI. The demo exits non-zero if an expected refusal does not hold.
+For the shortest reproduction path, install, run `grounded-agent demo`, then read [`docs/limitations.md`](docs/limitations.md) and [`docs/case-study.md`](docs/case-study.md). CI runs lint, tests, compilation, and an installed-wheel demo on Python 3.11–3.13. The demo checks seven fixture cases; the four support gaps above remain expected failures. See the [0.8.0 migration notes](docs/migration-0.8.md) for dependency-floor and receipt/output changes.
 
 ## Install
 
@@ -82,7 +82,8 @@ Provider switch (this should fail closed unless you actually have the backend):
 | Trust groups cannot mix | `src/grounded_agent/models.py` |
 | Knowledge / project / federated stay labelled | router tests |
 | Weak-fit matches are not citations | retrieval tests |
-| Missing evidence and injection fail closed | pipeline + CLI above |
+| Narrow support checks validate requested quantities and certain model-added specifics | `tests/test_support.py` |
+| Required-source failures, injection, and specific support checks fail closed | pipeline + CLI above |
 | Receipts omit snippets and prompts | receipt tests |
 | LangGraph matches the baseline fixtures | `tests/test_graph.py` |
 | Review can pause before a receipt | `tests/test_graph_checkpoint.py` |
@@ -99,11 +100,11 @@ Provider switch (this should fail closed unless you actually have the backend):
 
 This is not a live knowledge base. Tests use the synthetic Harbor corpus. A live MindGraph URL is fail-closed unless you set it, and CI never requires it.
 
-Retrieval nominates. It does not prove a passage is true.
+Retrieval nominates. It does not prove a passage is true, and neither does the support gate. The gate checks requested quantities and certain model-added literal details; it can still accept a claim with dropped negation, ordinary-word fabrication, a count from the wrong index, or an open-question extract that omits the answer.
 
 Injection coverage is a fixture, not a threat model. I planted a forged tool card and a fake secret so the tests have something to catch. That is not Lakera or a production red-team.
 
-The shootout is not a neural embedding bake-off. `hashed_vector` is a bag-of-tokens index. Sentence Transformers is optional (`pip install -e ".[embeddings]"`) and fail-closed when missing. The gold set is five labelled questions. Do not quote those recalls as a general benchmark.
+The shootout is not a neural embedding bake-off. `hashed_vector` is a bag-of-tokens index. Sentence Transformers is optional (`pip install -e ".[embeddings]"`) and fail-closed when missing. The gold set is five labelled questions. Do not quote those recalls as a general benchmark. Each method has its own gate; the first published table, which did not, is kept in `reports/history/`.
 
 Ollama is optional. CI does not start a daemon and does not pull a model. Hosted is the OpenAI-compatible HTTP shape; I have not run OpenAI, Anthropic, or another paid API from this repo. Default `ask` stays extractive.
 
@@ -113,8 +114,8 @@ I did not run Temporal, Airflow, Prefect, or n8n. [`docs/workflow-portability.md
 
 ```text
 src/grounded_agent/   pipeline, LangGraph wrap, tools, MCP server, providers, demo
+  fixtures/           Harbor corpus, questions, gold labels (shipped in the wheel)
 tests/                fixture, graph, checkpoint, tools, MCP, shootout, providers, demo
-fixtures/             Harbor corpus, questions, gold labels
 reports/              shootout JSON receipt + Markdown
 docs/                 architecture, case study, limits, workflow mapping
 DECISIONS.md          architecture tradeoffs
