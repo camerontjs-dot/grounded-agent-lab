@@ -14,6 +14,7 @@ from pydantic import BaseModel, ConfigDict, ValidationError
 from grounded_agent.draft import _citation, draft_or_abstain, evidence_is_injection, is_injection
 from grounded_agent.models import Answer, EvidenceBundle, NonBlankStr, Outcome, ResearchRequest
 from grounded_agent.redact import redact_text
+from grounded_agent.support import claim_support_problem
 
 DEFAULT_OLLAMA_URL = "http://127.0.0.1:11434"
 DEFAULT_OLLAMA_MODEL = "llama3.2"
@@ -88,12 +89,29 @@ class UrlLibTransport:
 
 
 def guarded_draft(
-    provider: DraftProvider, request: ResearchRequest, evidence: EvidenceBundle
+    provider: DraftProvider,
+    request: ResearchRequest,
+    evidence: EvidenceBundle,
+    *,
+    tool_errors: tuple[str, ...] = (),
 ) -> Answer:
-    """Refuse injection and empty evidence before calling a live model."""
+    """Refuse injection, failed required sources, and empty evidence before a live model.
+
+    Every routed scope is required. Any tool error means no complete answer: the provider
+    is not called and surviving evidence is not cited. Injection is checked first so a
+    poisoned surviving note is still reported as unsafe; the outage stays in tool_errors.
+    """
 
     provider.ensure()
-    if is_injection(request.question) or evidence_is_injection(evidence) or not evidence.citable():
+    if is_injection(request.question) or evidence_is_injection(evidence):
+        return draft_or_abstain(request, evidence)
+    if tool_errors:
+        return Answer(
+            outcome="abstained",
+            text="A required index was unavailable, so no complete answer was produced.",
+            abstain_reason="required_source_unavailable",
+        )
+    if not evidence.citable():
         return draft_or_abstain(request, evidence)
     return provider.draft(request, evidence)
 
@@ -145,7 +163,19 @@ def parse_model_draft(raw: object) -> ModelDraft:
         raise ValueError("model JSON failed the draft schema") from exc
 
 
-def answer_from_model_draft(draft: ModelDraft, evidence: EvidenceBundle) -> Answer:
+def answer_from_model_draft(
+    draft: ModelDraft,
+    evidence: EvidenceBundle,
+    *,
+    request: ResearchRequest | None = None,
+) -> Answer:
+    """Accept a model answer only if its paths are citable and its claim passes the gate.
+
+    A valid citation path is not warrant. The claim may not add numbers or names
+    that its cited notes lack, and with `request` a quantity question must get a
+    quantity those notes state. See `grounded_agent.support` for the limits.
+    """
+
     if draft.outcome == "abstained":
         reason = draft.abstain_reason or "insufficient_evidence"
         return Answer(outcome="abstained", text=redact_text(draft.text), abstain_reason=reason)
@@ -158,7 +188,19 @@ def answer_from_model_draft(draft: ModelDraft, evidence: EvidenceBundle) -> Answ
             text="Model cited a path that is not in the citable evidence.",
             abstain_reason="unsupported_citation",
         )
-    citations = tuple(_citation(citable[path]) for path in dict.fromkeys(draft.citation_paths))
+    cited = tuple(citable[path] for path in dict.fromkeys(draft.citation_paths))
+    problem = claim_support_problem(
+        draft.text,
+        cited,
+        question=request.question if request is not None else None,
+    )
+    if problem is not None:
+        return Answer(
+            outcome="abstained",
+            text=f"Refused: the model's {problem}.",
+            abstain_reason="unsupported_claim",
+        )
+    citations = tuple(_citation(item) for item in cited)
     return Answer(outcome="answered", text=redact_text(draft.text), citations=citations)
 
 
@@ -265,7 +307,7 @@ class OllamaProvider:
                 text="Model output was not valid structured JSON.",
                 abstain_reason="provider_unparseable",
             )
-        return answer_from_model_draft(draft, evidence)
+        return answer_from_model_draft(draft, evidence, request=request)
 
 
 class HostedProvider:
@@ -348,7 +390,7 @@ class HostedProvider:
                 text="Model output was not valid structured JSON.",
                 abstain_reason="provider_unparseable",
             )
-        return answer_from_model_draft(draft, evidence)
+        return answer_from_model_draft(draft, evidence, request=request)
 
 
 PROVIDER_NAMES = ("extractive", "ollama", "hosted")

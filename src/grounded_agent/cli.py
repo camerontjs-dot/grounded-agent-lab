@@ -10,7 +10,6 @@ from pathlib import Path
 
 from grounded_agent.demo import format_demo, run_demo
 from grounded_agent.models import ResearchRequest
-from grounded_agent.paths import REPORTS_DIR
 from grounded_agent.pipeline import run_research
 from grounded_agent.provider import PROVIDER_NAMES, ProviderUnavailable, build_provider
 from grounded_agent.shootout import write_shootout
@@ -45,8 +44,11 @@ def build_parser() -> argparse.ArgumentParser:
     shoot = sub.add_parser("shootout", help="Run the Harbor retrieval comparison")
     shoot.add_argument(
         "--out",
-        default=str(REPORTS_DIR),
-        help="Directory for retrieval-shootout.json and .md",
+        default="reports",
+        help=(
+            "Directory for retrieval-shootout.json and .md "
+            "(default: ./reports in the current directory)"
+        ),
     )
     demo = sub.add_parser("demo", help="Run the reviewer checklist against Harbor fixtures")
     demo.add_argument("--json", action="store_true", help="Print machine-readable output")

@@ -11,7 +11,7 @@
 
 This agent answers from cited Harbor notes, or it abstains. I built it around a concrete loop: typed state, labelled retrieval, a read-only tool allowlist, a provider switch that fails closed, and an evaluation receipt you can rerun.
 
-The hard part is not attaching sources. The hard part is refusing to speak when those sources do not warrant the claim.
+The hard part is not attaching sources. The hard part is refusing to speak when those sources do not warrant the claim. Retrieval only nominates notes. A deterministic support gate then refuses the two things it can actually detect: a count or amount that no cited sentence states, and a model claim that adds a number or a name its cited notes do not contain. It does not judge meaning, and for open questions the extractive answer is still the first sentence of each citable note. [Limits](docs/limitations.md#support-gate) lists what still gets through.
 
 ```text
 question
@@ -82,6 +82,7 @@ Provider switch (this should fail closed unless you actually have the backend):
 | Trust groups cannot mix | `src/grounded_agent/models.py` |
 | Knowledge / project / federated stay labelled | router tests |
 | Weak-fit matches are not citations | retrieval tests |
+| A citable note is not a count it never states; model claims cannot add numbers or names | `tests/test_support.py` |
 | Missing evidence and injection fail closed | pipeline + CLI above |
 | Receipts omit snippets and prompts | receipt tests |
 | LangGraph matches the baseline fixtures | `tests/test_graph.py` |
@@ -99,7 +100,7 @@ Provider switch (this should fail closed unless you actually have the backend):
 
 This is not a live knowledge base. Tests use the synthetic Harbor corpus. A live MindGraph URL is fail-closed unless you set it, and CI never requires it.
 
-Retrieval nominates. It does not prove a passage is true.
+Retrieval nominates. It does not prove a passage is true, and neither does the support gate. The gate only refuses counts, numbers, and names that the cited notes do not state.
 
 Injection coverage is a fixture, not a threat model. I planted a forged tool card and a fake secret so the tests have something to catch. That is not Lakera or a production red-team.
 
@@ -113,8 +114,8 @@ I did not run Temporal, Airflow, Prefect, or n8n. [`docs/workflow-portability.md
 
 ```text
 src/grounded_agent/   pipeline, LangGraph wrap, tools, MCP server, providers, demo
+  fixtures/           Harbor corpus, questions, gold labels (shipped in the wheel)
 tests/                fixture, graph, checkpoint, tools, MCP, shootout, providers, demo
-fixtures/             Harbor corpus, questions, gold labels
 reports/              shootout JSON receipt + Markdown
 docs/                 architecture, case study, limits, workflow mapping
 DECISIONS.md          architecture tradeoffs
