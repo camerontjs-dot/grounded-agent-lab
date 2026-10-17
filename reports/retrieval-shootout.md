@@ -9,9 +9,9 @@ top_k=3. Methods: lexical, hashed_vector, graph_expand.
 
 | method | n | macro recall | macro precision | abstain ok | mean query ms | mean index build ms |
 |---|---:|---:|---:|---:|---:|---:|
-| lexical | 5 | 0.8 | 0.5333 | 1/1 | 0.003 | 0.0347 |
-| hashed_vector | 5 | 0.7 | 0.6 | 1/1 | 0.0178 | 0.0998 |
-| graph_expand | 5 | 1.0 | 0.6333 | 1/1 | 0.0035 | 0.0384 |
+| lexical | 5 | 0.8 | 0.5333 | 1/1 | 0.0032 | 0.0371 |
+| hashed_vector | 5 | 0.7 | 0.6 | 1/1 | 0.019 | 0.1082 |
+| graph_expand | 5 | 1.0 | 0.6333 | 1/1 | 0.0037 | 0.0387 |
 
 ## Gates
 
@@ -19,7 +19,7 @@ top_k=3. Methods: lexical, hashed_vector, graph_expand.
 - `hashed_vector`: cosine above the 95th percentile of a single-shared-token null (hashed-vector-single-token-null-v1).
 - `graph_expand`: lexical seeds that pass the lexical gate, plus one-hop [[wiki]] neighbours.
 
-Query times are medians over 25 runs with the index already built. The hashed_vector cutoff is computed once per question before timing (mean 16.3392 ms) and is not in either column.
+Query times are medians over 25 runs with the index already built. The hashed_vector cutoff is computed once per question before timing (mean 17.2145 ms) and is not in either column.
 
 | question | query tokens | null scores | hashed_vector cutoff |
 |---|---:|---:|---:|
